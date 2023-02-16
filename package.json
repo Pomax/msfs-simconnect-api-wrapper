@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "node-simconnect": "^3.3.0"
+  }
+}
