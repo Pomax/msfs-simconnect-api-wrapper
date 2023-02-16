@@ -1,5 +1,8 @@
 {
   "type": "module",
+  "scripts": {
+    "test": "node test.js"
+  },
   "dependencies": {
     "node-simconnect": "^3.3.0"
   }

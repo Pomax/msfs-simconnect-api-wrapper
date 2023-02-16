@@ -21,7 +21,7 @@ const ADF = {
   "ADF IDENT": {
     desc: `ICAO code`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   //   "ADF LATLONALT:index": {
   //     desc:`Returns the latitude, longitude and altitude of the station the radio equipment is currently tuned to, or zeros if the radio is not tuned to any ADF station. Index of 1 or 2 for ADF 1 and ADF 2.`,
@@ -73,7 +73,7 @@ const ATC = {
   "ATC AIRLINE": {
     desc: `The name of the Airline used by ATC, as a string with a maximum length of 50 characters.`,
     units: null,
-    ...dataType(`StringV`, SETTABLE),
+    ...dataType(`String32`, SETTABLE),
   },
   "ATC AIRPORT IS TOWERED": {
     desc: `If the airport is controlled, this boolean is true.`,
@@ -108,7 +108,7 @@ const ATC = {
   "ATC FLIGHT NUMBER": {
     desc: `Flight Number used by ATC, as a string with a maximum number of 6 characters.`,
     units: null,
-    ...dataType(`StringV`, SETTABLE),
+    ...dataType(`String32`, SETTABLE),
   },
   "ATC FLIGHTPLAN DIFF ALT": {
     desc: `Altitude between the position of the aircraft and his closest waypoints in the flightplan.`,
@@ -133,7 +133,7 @@ const ATC = {
   "ATC ID": {
     desc: `ID used by ATC, as a string with a maximum number of 10 characters.`,
     units: null,
-    ...dataType(`StringV`, SETTABLE),
+    ...dataType(`String32`, SETTABLE),
   },
   "ATC IFR FP TO REQUEST": {
     desc: `Returns true if the user has a valid IFR flight plan they can as for clearance for with ATC at the airport they are currently at.`,
@@ -143,7 +143,7 @@ const ATC = {
   "ATC MODEL": {
     desc: `Model used by ATC, as a string with a maximum number of 10 characters.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "ATC ON PARKING SPOT": {
     desc: `Is ATC aircraft on parking spot.`,
@@ -158,7 +158,7 @@ const ATC = {
   "ATC RUNWAY AIRPORT NAME": {
     desc: `The name of the airport of the runway assigned by the ATC. Returns "" if no runway is assigned.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "ATC RUNWAY DISTANCE": {
     desc: `This float represents the distance between the player's plane and the center of the runway selected by the ATC.`,
@@ -240,11 +240,11 @@ const ATC = {
     units: `meters`,
     ...dataType(`Float64`),
   },
-  //   "ATC TYPE": {
-  //     desc:`Type used by ATC.`,
-  //     units: null,
-  //     ...dataType(`String30`), // There is no String30 data type in node-simconnect atm
-  //   },
+  "ATC TYPE": {
+    desc: `Type used by ATC.`,
+    units: null,
+    ...dataType(`String32`),
+  },
 };
 
 const COM = {
@@ -281,12 +281,12 @@ const COM = {
   "COM ACTIVE FREQ IDENT:index": {
     desc: `The identity of the station that is tuned on the indexed active COM radio. Index is 1, 2, or 3.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "COM ACTIVE FREQ TYPE:index": {
     desc: `The type of COM frequency for the active indexed COM system. Index is 1, 2, or 3.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   // "COM ACTIVE LATLONALT:index": {
   //   desc: `See documentation`,
@@ -331,12 +331,12 @@ const COM = {
   "COM STANDBY FREQ IDENT:index": {
     desc: `The identity of the station that is tuned on the indexed standby COM radio. Index is 1, 2, or 3.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "COM STANDBY FREQ TYPE:index": {
     desc: `The type of COM frequency for the standby indexed COM system. Index is 1, 2, or 3.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "COM STATUS:index": {
     desc: `Radio status flag for the indexed com channel. Index is 1, 2 or 3.`,
@@ -403,12 +403,12 @@ const GPS = {
   "GPS APPROACH AIRPORT ID": {
     desc: `ID of airport.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "GPS APPROACH APPROACH ID": {
     desc: `ID of approach.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "GPS APPROACH APPROACH INDEX": {
     desc: `Index of approach for given airport.`,
@@ -453,7 +453,7 @@ const GPS = {
   "GPS APPROACH TRANSITION ID": {
     desc: `ID of approach transition.`,
     units: null,
-    ...dataType(`StringV`, SETTABLE),
+    ...dataType(`String32`, SETTABLE),
   },
   "GPS APPROACH TRANSITION INDEX": {
     desc: `Index of approach transition.`,
@@ -689,7 +689,7 @@ const GPS = {
   "GPS WP NEXT ID": {
     desc: `ID of next GPS waypoint.`,
     units: null,
-    ...dataType(`StringV`, SETTABLE),
+    ...dataType(`String32`, SETTABLE),
   },
   "GPS WP NEXT LAT": {
     desc: `Latitude of next waypoint.`,
@@ -709,7 +709,7 @@ const GPS = {
   "GPS WP PREV ID": {
     desc: `ID of previous GPS waypoint.`,
     units: null,
-    ...dataType(`StringV`, SETTABLE),
+    ...dataType(`String32`, SETTABLE),
   },
   "GPS WP PREV LAT": {
     desc: `Latitude of previous waypoint.`,
@@ -898,7 +898,7 @@ const NAV = {
   "NAV CLOSE IDENT:index": {
     desc: `ICAO code. Requires an index value from 1 to 4 to set which NAV to target.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "NAV CLOSE LOCALIZER:index": {
     desc: `Closest Localizer course heading. Requires an index value from 1 to 4 to set which NAV to target.`,
@@ -908,7 +908,7 @@ const NAV = {
   "NAV CLOSE NAME:index": {
     desc: `Descriptive name. Requires an index value from 1 to 4 to set which NAV to target.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "NAV CODES": {
     desc: `Returns bit flags with the listed meaning.`,
@@ -1008,7 +1008,7 @@ const NAV = {
   "NAV IDENT": {
     desc: `ICAO code.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "NAV LOCALIZER": {
     desc: `Localizer course heading.`,
@@ -1018,17 +1018,17 @@ const NAV = {
   "NAV LOC AIRPORT IDENT": {
     desc: `The airport ICAO ident for the localizer that is currently tuned on the nav radio (like 'EGLL' or 'KJFK')`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "NAV LOC RUNWAY DESIGNATOR": {
     desc: `The letter code for the runway that the currently tuned localizer is tuned to.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "NAV LOC RUNWAY NUMBER": {
     desc: `NAV LOC RUNWAY NUMBER - The number portion of the runway that the currently tuned localizer is tuned to (so if the runway was 15L, this would be 15).`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "NAV MAGVAR": {
     desc: `Magnetic variation of tuned Nav station.`,
@@ -1038,7 +1038,7 @@ const NAV = {
   "NAV NAME": {
     desc: `Descriptive name.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "NAV OBS": {
     desc: `OBS setting. Index of 1 or 2.`,
@@ -1156,7 +1156,7 @@ const TACAN = {
   "TACAN STATION IDENT:index": {
     desc: `The tuned station identifier for the indexed Tacan.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   // "TACAN STATION LATLONALT:index": {
   //   desc: `Retrieves the latitude, longitude and altitude of the Tacan station.`,
@@ -1204,27 +1204,27 @@ const MISC = {
   "PILOT TRANSMITTING": {
     desc: `Whether or not the pilot is transmitting.`,
     units: `bool`,
-    ...dataType(`Int32`)
+    ...dataType(`Int32`),
   },
   "RADIO HEIGHT": {
     desc: `Radar altitude.`,
     units: `feet`,
-    ...dataType(`Float64`)
+    ...dataType(`Float64`),
   },
   "TRANSPONDER AVAILABLE": {
     desc: `True if a transponder is available.`,
     units: `bool`,
-    ...dataType(`Int32`)
+    ...dataType(`Int32`),
   },
   "TRANSPONDER CODE:index": {
     desc: `4-digit code.`,
     units: `number`,
-    ...dataType(`Int32`)
+    ...dataType(`Int32`),
   },
   "TRANSPONDER IDENT": {
     desc: `This can set the Ident transponder using the KEY_XPNDR_IDENT_SET, KEY_XPNDR_IDENT_TOGGLE, KEY_XPNDR_IDENT_ON or KEY_XPNDR_IDENT_OFF Event IDs (see XPNDR (Transponder) section for more information). When set to true, it will automatically turn false after 18 seconds.`,
     units: `bool`,
-    ...dataType(`Int32`, SETTABLE)
+    ...dataType(`Int32`, SETTABLE),
   },
   "TRANSPONDER STATE": {
     desc: `Transponder State.`,
