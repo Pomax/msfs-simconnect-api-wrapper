@@ -32,8 +32,18 @@ try {
 
 ### methods
 
-- `on(evtName, handler)`, starts listening for a specific simconnect event with a specific handler, returns a corresponding arg-less `off()` function to clean up the listener.
+- `on(evtName, handler)`, starts listening for a specific simconnect event with a specific handler. Returns a corresponding arg-less `off()` function to clean up the listener.
 - `off(evtName, handler)`, stop listening for a specific simconnect event with a specific handler. You'll typically not need to call this, just use the function that `on` returns.
 - `get(...propNames)`, accepts a list of simvars (with spaces or underscores) and async-returns a key/value pair object with each simvar as key (with spaces replaced by underscores).
+- `schedule(handler, interval, ...propNames)`, sets up a periodic call to `handler` every `interval` milliseconds with the result of `get(...propNames)`. Returns an arg-less `off()` to end the scheduled call.
 - `set(propName, value)`, accepts a single simvar and the value its should be set to. This will throw for simvars that are not settable.
 - `trigger(triggerName, value?)`, triggers a simconnect event, with optional value.
+
+#### API status
+
+- `on()` _pending_
+- `off()` _pending_
+- `get()` **implemented**
+- `schedule()` _pending_
+- `set()` **implemented**
+- `trigger()` _pending_
