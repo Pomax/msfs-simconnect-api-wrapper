@@ -2,12 +2,50 @@
 
 import { dataType, SETTABLE } from "./simvar-utils.js";
 
-General
-Variometer
-Water Ballast
-Lights
-Hydraulics
-Partial Panels
-Payload Stations
-Warning Variables
-Yoke
+const GENERAL = {
+  //
+};
+
+const VARIOMETER = {
+  //
+};
+
+const WATER_BALLAST = {
+  //
+};
+
+const LIGHTS = {
+  //
+};
+
+const HYDRAULICS = {
+  //
+};
+
+const PARTIAL_PANELS = {
+  //
+};
+
+const PAYLOAD_STATIONS = {
+  //
+};
+
+const WARNING_VARIABLES = {
+  //
+};
+
+const YOKE = {
+  //
+};
+
+export const AircraftSystemVariables = {
+  ...GENERAL,
+  ...VARIOMETER,
+  ...WATER_BALLAST,
+  ...LIGHTS,
+  ...HYDRAULICS,
+  ...PARTIAL_PANELS,
+  ...PAYLOAD_STATIONS,
+  ...WARNING_VARIABLES,
+  ...YOKE,
+};
