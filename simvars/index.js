@@ -24,12 +24,13 @@ const SimVars = {
   ...CameraVariables,
 };
 
-// Make sure that variables that use a :number suffix
-// resolve to the ":index" definition for that variable.
+// Make sure that variables that use a :number suffix resolve
+// to the ":index" definition for that variable, and that any
+// underscore in a varname is replace with a space.
 const proxy = new Proxy(SimVars, {
   get(target, prop) {
     if (prop.includes(`:`)) prop = prop.replace(/:.*/, `:index`);
-    return target[prop];
+    return target[prop.replaceAll(`_`, ` `)];
   },
 });
 

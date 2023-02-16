@@ -1,6 +1,6 @@
 import { open, Protocol } from "node-simconnect";
 import { MSFS_API } from "./msfs-api.js";
-import { SimVars } from "./msfs-simvars.js";
+import { SimVars } from "./simvars/index.js";
 
 const EVENT_ID_PAUSE = 1;
 

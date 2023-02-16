@@ -3,7 +3,9 @@ import {
   SimConnectPeriod,
   SimConnectConstants,
 } from "node-simconnect";
-import { SimVars } from "./msfs-simvars.js";
+
+import { SimEvents } from "./simevents/index.js";
+import { SimVars } from "./simvars/index.js";
 
 function getDefinition(name) {
   return SimVars[name];
@@ -57,7 +59,12 @@ export class MSFS_API {
     this.handler.off(eventName, eventHandler);
   }
 
-  trigger(triggerName, value=undefined) {
+  /**
+   *
+   * @param {*} triggerName
+   * @param {*} value
+   */
+  trigger(triggerName, value = undefined) {
     if (value !== undefined) {
       // ...
     }

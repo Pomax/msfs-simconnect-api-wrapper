@@ -2,6 +2,7 @@
   "name": "msfs-simconnect-api-wrapper",
   "author": "Pomax",
   "type": "module",
+  "main": "msfs-api.js",
   "scripts": {
     "test": "node test.js"
   },

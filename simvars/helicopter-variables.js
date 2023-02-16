@@ -1,0 +1,1 @@
+// See https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Helicopter_Variables.htm
