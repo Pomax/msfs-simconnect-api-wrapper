@@ -50,7 +50,7 @@ const AIRCRAFT_STATES = {
   },
   "SURFACE TYPE": {
     desc: `The type of surface under the aircraft`,
-    units: `enum:`,
+    units: `enum`,
     ...dataType(`Int32`),
   },
   "STRUCTURAL ICE PCT": {
@@ -58,7 +58,7 @@ const AIRCRAFT_STATES = {
     units: `percent Over 100`,
     ...dataType(`Float64`),
   },
-  TITLE: {
+  "TITLE": {
     desc: `Title from aircraft.cfg`,
     units: null,
     ...dataType(`String128`),
@@ -78,32 +78,32 @@ const AIRCRAFT_STATES = {
 const AIRCRAFT_POSITION_DIRECTION_AND_SPEED = {
   "ACCELERATION BODY X": {
     desc: `Acceleration relative to aircraft X axis, in east/west direction`,
-    units: `feet (ft) per second squared`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "ACCELERATION BODY Y": {
     desc: `Acceleration relative to aircraft Y axis, in vertical direction`,
-    units: `feet (ft) per second squared`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "ACCELERATION BODY Z": {
     desc: `Acceleration relative to aircraft Z axis, in north/south direction`,
-    units: `feet (ft) per second squared`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "ACCELERATION WORLD X": {
     desc: `Acceleration relative to the earth X axis, in east/west direction`,
-    units: `feet (ft) per second squared`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "ACCELERATION WORLD Y": {
     desc: `Acceleration relative to the earth Y axis, in vertical direction`,
-    units: `feet (ft) per second squared`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "ACCELERATION WORLD Z": {
     desc: `Acceleration relative to the earth Z axis, in north/south direction`,
-    units: `feet (ft) per second squared`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "SURFACE RELATIVE GROUND SPEED": {
@@ -111,24 +111,24 @@ const AIRCRAFT_POSITION_DIRECTION_AND_SPEED = {
     units: `feet per second`,
     ...dataType(`Float64`),
   },
-  "GROUND VELOCITY 	": {
+  "GROUND VELOCITY": {
     desc: ` relative to the earths surface`,
     units: `knots`,
     ...dataType(`Float64`),
   },
   "PLANE ALTITUDE": {
     desc: `Altitude of aircraft`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "PLANE ALT ABOVE GROUND": {
     desc: `Altitude above the surface`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "PLANE ALT ABOVE GROUND MINUS CG": {
     desc: `Altitude above the surface minus CG`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "PLANE BANK DEGREES": {
@@ -193,7 +193,7 @@ const AIRCRAFT_POSITION_DIRECTION_AND_SPEED = {
   },
   "PLANE TOUCHDOWN NORMAL VELOCITY": {
     desc: `This float represents the player's plane speed according to ground normal from the last touchdown`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "PLANE TOUCHDOWN PITCH DEGREES": {
@@ -203,17 +203,17 @@ const AIRCRAFT_POSITION_DIRECTION_AND_SPEED = {
   },
   "RELATIVE WIND VELOCITY BODY X": {
     desc: `Lateral (X axis) speed relative to wind`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "RELATIVE WIND VELOCITY BODY Y": {
     desc: `Vertical (Y axis) speed relative to wind`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "RELATIVE WIND VELOCITY BODY Z": {
     desc: `Longitudinal (Z axis) speed relative to wind`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "ROTATION ACCELERATION BODY X": {
@@ -233,17 +233,17 @@ const AIRCRAFT_POSITION_DIRECTION_AND_SPEED = {
   },
   "ROTATION VELOCITY BODY X": {
     desc: `Rotation velocity relative to aircraft X axis`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "ROTATION VELOCITY BODY Y": {
     desc: `Rotation velocity relative to aircraft Y axis`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "ROTATION VELOCITY BODY Z": {
     desc: `Rotation velocity relative to aircraft Z axis`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "SLOPE TO ATC RUNWAY": {
@@ -253,22 +253,22 @@ const AIRCRAFT_POSITION_DIRECTION_AND_SPEED = {
   },
   "VELOCITY BODY X": {
     desc: `True lateral speed, relative to aircraft X axis`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "VELOCITY BODY Y": {
     desc: `True vertical speed, relative to aircraft Y axis`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "VELOCITY BODY Z": {
     desc: `True longitudinal speed, relative to aircraft Z axis`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
   "VERTICAL SPEED": {
     desc: `The current indicated vertical speed for the aircraft`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`, SETTABLE),
   },
 };
@@ -368,12 +368,12 @@ const AIRSPEED = {
   },
   "TOTAL VELOCITY": {
     desc: `Velocity regardless of direction. For example, if a helicopter is ascending vertically at 100 fps, getting this variable will return 100.`,
-    units: `feet (ft per second)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "WINDSHIELD WIND VELOCITY": {
     desc: `Longitudinal speed of wind on the windshield.`,
-    units: `feet (ft per second)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
 };

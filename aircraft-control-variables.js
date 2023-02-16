@@ -30,7 +30,7 @@ const AILERONS = {
   },
   "AILERON RIGHT DEFLECTION PCT": {
     desc: `Percent deflection`,
-    unit: `percent Over 100`,
+    units: `percent Over 100`,
     ...dataType(`Float64`),
   },
   "AILERON TRIM": {
@@ -111,102 +111,102 @@ const ELEVATOR = {
 const FLAPS = {
   "FLAP DAMAGE BY SPEED": {
     desc: `True if flaps are damaged by excessive speed`,
-    unit: `bool`,
+    units: `bool`,
     ...dataType(`Int32`),
   },
   "FLAP POSITION SET": {
     desc: `Set the position of the flaps control`,
-    unit: `position`,
+    units: `position`,
     ...dataType(`Float64`, SETTABLE),
   },
   "FLAP SPEED EXCEEDED": {
     desc: `True if safe speed limit for flaps exceeded`,
-    unit: `bool`,
+    units: `bool`,
     ...dataType(`Int32`),
   },
   "FLAPS AVAILABLE": {
     desc: `True if flaps available`,
-    unit: `bool`,
+    units: `bool`,
     ...dataType(`Int32`),
   },
   "FLAPS EFFECTIVE HANDLE INDEX:index": {
     desc: `This returns the effective flaps handle index, after some of the conditions have potentially forced the state to change`,
-    unit: `number`,
+    units: `number`,
     ...dataType(`Int32`, SETTABLE),
   },
   "FLAPS HANDLE INDEX:index": {
     desc: `Index of current flap position`,
-    unit: `number`,
+    units: `number`,
     ...dataType(`Int32`),
   },
   "FLAPS HANDLE PERCENT": {
     desc: `Percent flap handle extended`,
-    unit: `percent Over 100`,
+    units: `percent Over 100`,
     ...dataType(`Float64`),
   },
   "FLAPS NUM HANDLE POSITIONS": {
     desc: `Number of available flap positions`,
-    unit: `number`,
+    units: `number`,
     ...dataType(`Int32`),
   },
   "LEADING EDGE FLAPS LEFT ANGLE": {
     desc: `Angle left leading edge flap extended. Use LEADING_EDGE_FLAPS_LEFT_PERCENT to set a value`,
-    unit: `radians`,
+    units: `radians`,
     ...dataType(`Float64`),
   },
   "LEADING EDGE FLAPS LEFT INDEX": {
     desc: `Index of left leading edge flap position`,
-    unit: `number`,
+    units: `number`,
     ...dataType(`Int32`),
   },
   "LEADING EDGE FLAPS LEFT PERCENT": {
     desc: `Percent left leading edge flap extended`,
-    unit: `percent Over 100`,
+    units: `percent Over 100`,
     ...dataType(`Float64`, SETTABLE),
   },
   "LEADING EDGE FLAPS RIGHT ANGLE": {
     desc: `Angle right leading edge flap extended. Use LEADING_EDGE_FLAPS_RIGHT_PERCENT to set a value`,
-    unit: `radians`,
+    units: `radians`,
     ...dataType(`Float64`),
   },
   "LEADING EDGE FLAPS RIGHT INDEX": {
     desc: `Index of right leading edge flap position`,
-    unit: `number`,
+    units: `number`,
     ...dataType(`Int32`),
   },
   "LEADING EDGE FLAPS RIGHT PERCENT": {
     desc: `Percent right leading edge flap extended`,
-    unit: `percent Over 100`,
+    units: `percent Over 100`,
     ...dataType(`Float64`, SETTABLE),
   },
   "TRAILING EDGE FLAPS LEFT ANGLE": {
     desc: `Angle left trailing edge flap extended. Use TRAILING_EDGE_FLAPS_LEFT_PERCENT to set a value`,
-    unit: `radians`,
+    units: `radians`,
     ...dataType(`Float64`),
   },
   "TRAILING EDGE FLAPS LEFT INDEX": {
     desc: `Index of left trailing edge flap position`,
-    unit: `number`,
+    units: `number`,
     ...dataType(`Int32`),
   },
   "TRAILING EDGE FLAPS LEFT PERCENT": {
     desc: `Percent left trailing edge flap extended`,
-    unit: `percent Over 100`,
+    units: `percent Over 100`,
     ...dataType(`Float64`, SETTABLE),
   },
   "TRAILING EDGE FLAPS RIGHT ANGLE": {
     desc: `Angle right trailing edge flap extended. Use TRAILING_EDGE_FLAPS_RIGHT_PERCENT to set a value`,
-    unit: `radians`,
+    units: `radians`,
     ...dataType(`Float64`),
   },
   "TRAILING EDGE FLAPS RIGHT INDEX": {
     desc: `Index of right trailing edge flap position`,
-    unit: `number`,
+    units: `number`,
     ...dataType(`Int32`),
   },
   "TRAILING EDGE FLAPS RIGHT PERCENT": {
     desc: `Percent right trailing edge flap extended`,
-    unit: `percent Over 100`,
+    units: `percent Over 100`,
     ...dataType(`Float64`, SETTABLE),
   },
 };
@@ -323,17 +323,17 @@ const SPOILERS = {
   },
   "SPOILERS HANDLE POSITION": {
     desc: `Spoiler handle position`,
-    units: `percent Over 100 or position`,
+    units: `percent Over 100`,
     ...dataType(`Float64`),
   },
   "SPOILERS LEFT POSITION": {
     desc: `Percent left spoiler deflected`,
-    units: `percent Over 100 or position`,
+    units: `percent Over 100`,
     ...dataType(`Float64`),
   },
   "SPOILERS RIGHT POSITION": {
     desc: `Percent right spoiler deflected`,
-    units: `percent Over 100 or position`,
+    units: `percent Over 100`,
     ...dataType(`Float64`),
   },
 };

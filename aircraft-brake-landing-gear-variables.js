@@ -7,12 +7,10 @@ const BRAKES = {
     desc:`True if antiskid brakes active. This can be set using the AntiSkidActive parameter`,
     units:`bool`,
     ...dataType(`Int32`),
-    ...dataType(`Int32`),
   },
   "AUTOBRAKES ACTIVE": {
     desc:`Whether or not the AutoBrakes are currently active`,
     units:`bool`,
-    ...dataType(`Int32`),
     ...dataType(`Int32`),
   },
   "AUTO BRAKE SWITCH CB": {
@@ -22,7 +20,7 @@ const BRAKES = {
   },
   "BRAKE DEPENDENT HYDRAULIC PRESSURE": {
     desc:`Brake dependent hydraulic pressure reading`,
-    units:`pounds per square foot (psf)`,
+    units:`pounds`,
     ...dataType(`Float64`),
   },
   "BRAKE INDICATOR": {
@@ -44,12 +42,10 @@ const BRAKES = {
     desc:`Parking brake indicator`,
     units:`bool`,
     ...dataType(`Int32`),
-    ...dataType(`Int32`),
   },
   "BRAKE PARKING POSITION": {
     desc:`Gets the parking brake position - either on (true) or off (false)`,
     units:`bool`,
-    ...dataType(`Int32`),
     ...dataType(`Int32`),
   },
   "BRAKE RIGHT POSITION": {
@@ -66,12 +62,10 @@ const BRAKES = {
     desc:`Whether or not the rejected takeoff brakes are currently active.`,
     units:`bool`,
     ...dataType(`Int32`),
-    ...dataType(`Int32`),
   },
   "TOE BRAKES AVAILABLE": {
     desc:`True if toe brakes are available`,
     units:`bool`,
-    ...dataType(`Int32`),
     ...dataType(`Int32`),
   },
 };
@@ -79,19 +73,17 @@ const BRAKES = {
 const CONTACT_POINTS = {
   "CONTACT POINT COMPRESSION:index": {
     desc:`The percentage value representing the amount the contact point is compressed.`,
-    units:`position`,
+    units:`percent`,
     ...dataType(`Float64`),
   },
   "CONTACT POINT IS ON GROUND:index": {
     desc:`Returns true if the indexed contact point is on the ground, or will return false otherwise.`,
     units:`bool`,
     ...dataType(`Int32`),
-    ...dataType(`Int32`),
   },
   "CONTACT POINT IS SKIDDING:index": {
     desc:`Returns true if the indexed contact point is skidding, or will return false otherwise.`,
     units:`bool`,
-    ...dataType(`Int32`),
     ...dataType(`Int32`),
   },
   "CONTACT POINT POSITION:index": {
@@ -107,7 +99,7 @@ const CONTACT_POINTS = {
   },
   "CONTACT POINT WATER DEPTH:index": {
     desc:`This returns the depth of the water for the indexed contact point.`,
-    units:`feet (ft)`,
+    units:`feet`,
     ...dataType(`Float64`),
   },
 };
@@ -185,7 +177,7 @@ const LANDING_GEAR = {
   },
   "GEAR HYDRAULIC PRESSURE": {
     desc:`Gear hydraulic pressure`,
-    units:`Pound force per square foot (psf)`,
+    units:`pounds`,
     ...dataType(`Float64`),
   },
   "GEAR IS ON GROUND:index": {
@@ -261,6 +253,7 @@ const LANDING_GEAR = {
   "GEAR WATER DEPTH": {
     desc:`The depth of the gear in the water`,
     units:`centimeters`,
+    ...dataType(`Float64`),
   },
   "IS GEAR FLOATS": {
     desc:`True if landing gear are floats`,
@@ -377,7 +370,7 @@ const LANDING_GEAR = {
     units:`percent Over 100`,
     ...dataType(`Float64`, SETTABLE),
   },
-  "WHEEL ROTATION ANGLE:inde": {
+  "WHEEL ROTATION ANGLE:index": {
     desc:`Wheel rotation angle (rotation around the axis for the wheel)`,
     units:`radians`,
     ...dataType(`Float64`),

@@ -30,7 +30,7 @@ const ADF = {
   "ADF NAME:index": {
     desc: `Descriptive name`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "ADF RADIAL:index": {
     desc: `Current direction from NDB station`,
@@ -288,21 +288,21 @@ const COM = {
     units: null,
     ...dataType(`StringV`),
   },
-  "COM ACTIVE LATLONALT:index": {
-    desc: `See documentation`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "COM ACTIVE LATLONALT:index": {
+  //   desc: `See documentation`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
   "COM AVAILABLE:index": {
     desc: `True if COM1, COM2 or COM3 is available (depending on the index, either 1, 2, or 3)`,
     units: `bool`,
     ...dataType(`Int32`),
   },
-  "COM LATLONALT:index": {
-    desc: `Not currently used in the simulation.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "COM LATLONALT:index": {
+  //   desc: `Not currently used in the simulation.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
   "COM RECEIVE:index": {
     desc: `Whether or not the plane is receiving on the indexed com channel or not (either 1, 2, or 3 for the index).`,
     units: `bool`,
@@ -550,11 +550,12 @@ const GPS = {
     units: `bool`,
     ...dataType(`Int32`, SETTABLE),
   },
-  "GPS HSI NEEDLE": {
-    desc: `The glide deviation of the needle for a CDI instrument. The simvar displays the deviation from -127 to +127. It returns a value if a flight plan is set (otherwise it will return 0) even if the autopilot isn't on GPS mode. Scaling can also be set through the GPS CDI SCALING simvar.`,
-    units: `number`,
-    ...dataType(`Int32`),
-  },
+  // THIS VAR DOES NOT SEEM TO WORK, FOR REASONS I DON'T UNDERSTAND
+  // "GPS HSI NEEDLE": {
+  //   desc: `The glide deviation of the needle for a CDI instrument. The simvar displays the deviation from -127 to +127. It returns a value if a flight plan is set (otherwise it will return 0) even if the autopilot isn't on GPS mode. Scaling can also be set through the GPS CDI SCALING simvar.`,
+  //   units: `number`,
+  //   ...dataType(`Int32`),
+  // },
   "GPS IS ACTIVE FLIGHT PLAN": {
     desc: `Flight plan mode active.`,
     units: `bool`,
@@ -796,7 +797,7 @@ const HSI = {
   "HSI STATION IDENT": {
     desc: `Returns the ident of the the next GPS waypoint, if GPS_DRIVES_NAV1 is true. If GPS DRIVES NAV1 is false, it returns the identity of the station that is tuned on nav radio 1.`,
     units: null,
-    ...dataType(`StringV`),
+    ...dataType(`String32`),
   },
   "HSI TF FLAGS": {
     desc: `Nav TO/FROM flag.`,
@@ -811,11 +812,11 @@ const MARKERS = {
     units: `bool`,
     ...dataType(`Int32`, SETTABLE),
   },
-  "INNER MARKER LATLONALT": {
-    desc: `Returns the latitude, longitude and altitude of the inner marker of an approach to a runway, if the aircraft is within the required proximity, otherwise it will return zeros.`,
-    units: `struct`,
-    ...dataType(`LatLongAlt`),
-  },
+  // "INNER MARKER LATLONALT": {
+  //   desc: `Returns the latitude, longitude and altitude of the inner marker of an approach to a runway, if the aircraft is within the required proximity, otherwise it will return zeros.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
   "MARKER AVAILABLE": {
     desc: `True if Marker is available.`,
     units: `bool`,
@@ -846,21 +847,21 @@ const MARKERS = {
     units: `bool`,
     ...dataType(`Int32`, SETTABLE),
   },
-  "MIDDLE MARKER LATLONALT": {
-    desc: `Returns the latitude, longitude and altitude of the middle marker.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "MIDDLE MARKER LATLONALT": {
+  //   desc: `Returns the latitude, longitude and altitude of the middle marker.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
   "OUTER MARKER": {
     desc: `Outer marker state.`,
     units: `bool`,
     ...dataType(`Int32`, SETTABLE),
   },
-  "OUTER MARKER LATLONALT": {
-    desc: `Returns the latitude, longitude and altitude of the outer marker.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "OUTER MARKER LATLONALT": {
+  //   desc: `Returns the latitude, longitude and altitude of the outer marker.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
 };
 
 const NAV = {
@@ -911,12 +912,12 @@ const NAV = {
   },
   "NAV CODES": {
     desc: `Returns bit flags with the listed meaning.`,
-    units: `Flags:`,
+    units: `flags`,
     ...dataType(`Int32`),
   },
   "NAV DME": {
     desc: `DME distance.`,
-    unitn: `Nautical miles`,
+    units: `Nautical miles`,
     ...dataType(`Float64`),
   },
   "NAV DMESPEED": {
@@ -924,11 +925,11 @@ const NAV = {
     units: `knots`,
     ...dataType(`Float64`),
   },
-  "NAV DME LATLONALT:index": {
-    desc: `Returns the DME station.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "NAV DME LATLONALT:index": {
+  //   desc: `Returns the DME station.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
   "NAV FREQUENCY": {
     desc: `Localizer course frequency`,
     units: `Hz`,
@@ -959,16 +960,16 @@ const NAV = {
     units: `bool`,
     ...dataType(`Int32`),
   },
-  "NAV GS LATLONALT:index": {
-    desc: `Returns the glide slope.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
-  "NAV GS LLAF64": {
-    desc: `Nav GS latitude, longitude, altitude.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "NAV GS LATLONALT:index": {
+  //   desc: `Returns the glide slope.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
+  // "NAV GS LLAF64": {
+  //   desc: `Nav GS latitude, longitude, altitude.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
   "NAV HAS CLOSE DME": {
     desc: `Flag if found a close station with a DME.`,
     units: `bool`,
@@ -1094,16 +1095,16 @@ const NAV = {
     units: `meters`,
     ...dataType(`Float64`),
   },
-  "NAV VOR LATLONALT:index": {
-    desc: `Returns the VOR station latitude, longitude and altitude.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
-  "NAV VOR LLAF64": {
-    desc: `Nav VOR latitude, longitude, altitude.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "NAV VOR LATLONALT:index": {
+  //   desc: `Returns the VOR station latitude, longitude and altitude.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
+  // "NAV VOR LLAF64": {
+  //   desc: `Nav VOR latitude, longitude, altitude.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
 };
 
 const TACAN = {
@@ -1157,11 +1158,11 @@ const TACAN = {
     units: null,
     ...dataType(`StringV`),
   },
-  "TACAN STATION LATLONALT:index": {
-    desc: `Retrieves the latitude, longitude and altitude of the Tacan station.`,
-    units: `struct`,
-    ...dataType(`LatLonAlt`),
-  },
+  // "TACAN STATION LATLONALT:index": {
+  //   desc: `Retrieves the latitude, longitude and altitude of the Tacan station.`,
+  //   units: `struct`,
+  //   ...dataType(`LatLonAlt`),
+  // },
   "TACAN STATION RADIAL:index": {
     desc: `The radial between the Tacan station and the aircraft.`,
     units: `degrees`,
@@ -1169,7 +1170,7 @@ const TACAN = {
   },
   "TACAN STATION RADIAL ERROR:index": {
     desc: `Difference between the current radial and OBS tuned radial, in degrees.`,
-    units: `Degrees.`,
+    units: `degrees`,
     ...dataType(`Float64`),
   },
   "TACAN STATION TOFROM:index": {
@@ -1217,7 +1218,7 @@ const MISC = {
   },
   "TRANSPONDER CODE:index": {
     desc: `4-digit code.`,
-    units: `BCD16`,
+    units: `number`,
     ...dataType(`Int32`)
   },
   "TRANSPONDER IDENT": {

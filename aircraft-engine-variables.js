@@ -75,7 +75,7 @@ export const AircraftEngineVariables = {
   },
   "ENG HYDRAULIC PRESSURE:index": {
     desc: `The indexed engine hydraulic pressure`,
-    units: `pounds per square foot (psf)`,
+    units: `pounds`,
     ...dataType(`Float64`),
   },
   "ENG HYDRAULIC QUANTITY:index": {
@@ -85,7 +85,7 @@ export const AircraftEngineVariables = {
   },
   "ENG MANIFOLD PRESSURE:index": {
     desc: `The indexed engine manifold pressure`,
-    units: `Inches of mercury (inHg)`,
+    units: `inches`,
     ...dataType(`Float64`),
   },
   "ENG MAX RPM": {
@@ -105,7 +105,7 @@ export const AircraftEngineVariables = {
   },
   "ENG OIL PRESSURE:index": {
     desc: `The indexed engine oil pressure`,
-    units: `pounds per square foot (psf)`,
+    units: `pounds`,
     ...dataType(`Float64`),
   },
   "ENG OIL QUANTITY:index": {
@@ -200,7 +200,7 @@ export const AircraftEngineVariables = {
   },
   "GENERAL ENG FUEL PRESSURE:index": {
     desc: `The indexed engine fuel pressure`,
-    units: `pounds per square inch (psi)`,
+    units: `pounds`,
     ...dataType(`Float64`, SETTABLE),
   },
   "GENERAL ENG FUEL PUMP ON:index": {
@@ -265,7 +265,7 @@ export const AircraftEngineVariables = {
   },
   "GENERAL ENG OIL PRESSURE:index": {
     desc: `The indexed engine oil pressure`,
-    units: `pounds per square foot (psf)`,
+    units: `pounds`,
     ...dataType(`Float64`, SETTABLE),
   },
   "GENERAL ENG OIL TEMPERATURE:index": {
@@ -465,7 +465,7 @@ export const AircraftEngineVariables = {
   },
   "RECIP ENG BRAKE POWER:index": {
     desc: `Brake power produced by the indexed engine`,
-    units: `Foot pounds (ftlbs) per second`,
+    units: `pounds`,
     ...dataType(`Float64`, SETTABLE),
   },
   "RECIP ENG COOLANT RESERVOIR PERCENT:index": {
@@ -545,7 +545,7 @@ export const AircraftEngineVariables = {
   },
   "RECIP ENG MANIFOLD PRESSURE:index": {
     desc: `The indexed engine manifold pressure`,
-    units: `pounds per square inch (psi)`,
+    units: `pounds`,
     ...dataType(`Float64`, SETTABLE),
   },
   "RECIP ENG NITROUS TANK MAX QUANTITY:index": {
@@ -650,7 +650,7 @@ export const AircraftEngineVariables = {
   },
   "TURB ENG BLEED AIR:index": {
     desc: `Bleed air pressure for the indexed engine`,
-    units: `pounds per square inch (psi)`,
+    units: `pounds`,
     ...dataType(`Float64`),
   },
   "TURB ENG COMMANDED N1:index": {

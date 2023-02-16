@@ -10,52 +10,52 @@ const GENERAL = {
   },
   "DECISION ALTITUDE MSL": {
     desc: `Design decision altitude above mean sea level`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DECISION HEIGHT": {
     desc: `Design decision height`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DESIGN CRUISE ALT": {
     desc: `This design constant represents the optimal altitude the aircraft should maintain when in cruise. It is derived from the cruise_alt setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. Default is 1500ft.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DESIGN SPAWN ALTITUDE CRUISE": {
     desc: `This design constant represents the spawn altitude for the aircraft when spawning in cruise. It is derived from the spawn_cruise_altitude setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. Default is 1500ft.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DESIGN SPAWN ALTITUDE DESCENT": {
     desc: `This design constant represents the spawn altitude for the aircraft when spawning in descent. It is derived from the spawn_descent_altitude setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. Default is 500ft.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DESIGN SPEED CLIMB": {
     desc: `This design constant represents the optimal climb speed for the aircraft. It is derived from the climb_speed setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. Default value is -1.`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DESIGN SPEED MIN ROTATION": {
     desc: `This design constant represents the minimum speed required for aircraft rotation. It is derived from the rotation_speed_min setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. Default value is -1.`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DESIGN SPEED VC": {
     desc: `This design constant represents the aircraft ideal cruising speed. It is derived from the cruise_speed setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. The default value is computed an internal function that uses the estimated cruise altitude and estimated cruise percent power, according of the engine type, the number of engines, the density, the wing area and some drag parameters. Normally this value is set in the CFG file and the default value is never used.`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "DESIGN SPEED VS0": {
     desc: `This design constant represents the the stall speed when flaps are fully extended. It is derived from the full_flaps_stall_speed setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. Default value is 0.8 x VS.`,
-    units: `kias`,
+    units: `knots`,
     ...dataType(`Float64`),
   },
   "DESIGN SPEED VS1": {
     desc: `This design constant represents the stall speed when flaps are fully retracted. It is derived from the flaps_up_stall_speed setting in the [REFERENCE SPEEDS] section of the flightmodel.cfg. Default value is 0.`,
-    units: `kias`,
+    units: `knots`,
     ...dataType(`Float64`),
   },
   "DESIGN TAKEOFF SPEED": {
@@ -65,12 +65,12 @@ const GENERAL = {
   },
   "DYNAMIC PRESSURE": {
     desc: `Dynamic pressure`,
-    units: `pounds per square foot (psf)`,
+    units: `pounds`,
     ...dataType(`Float64`),
   },
   "ESTIMATED CRUISE SPEED": {
     desc: `Estimated cruise speed`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "G FORCE": {
@@ -115,7 +115,7 @@ const GENERAL = {
   },
   "MIN DRAG VELOCITY": {
     desc: `Minimum drag velocity, in clean, with no input and no gears, when at 10000ft.`,
-    units: `feet (ft) per second`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "MIN G FORCE": {
@@ -126,10 +126,11 @@ const GENERAL = {
   "SEMIBODY LOADFACTOR Y": {
     desc: `Acceleration along the axis Y divided by the gravity constant g (usually around 9.81m.s²)`,
     units: `Number`,
+    ...dataType(`Float64`)
   },
   "SEMIBODY LOADFACTOR YDOT": {
     desc: `Derivative of SEMIBODY LOADFACTOR Y in relation to time.`,
-    units: `per second`,
+    units: `Number`,
     ...dataType(`Float64`),
   },
   "SIGMA SQRT": {
@@ -139,7 +140,7 @@ const GENERAL = {
   },
   "SIMULATED RADIUS": {
     desc: `Simulated radius`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "STALL ALPHA": {
@@ -154,12 +155,12 @@ const GENERAL = {
   },
   "TYPICAL DESCENT RATE": {
     desc: `the typical (normal) descent rate for the aircraft.`,
-    units: `feet (ft) per minute`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "WING AREA": {
     desc: `Total wing area`,
-    units: `qquare feet (ft)`,
+    units: `square feet`,
     ...dataType(`Float64`),
   },
   "WING FLEX PCT:index": {
@@ -169,7 +170,7 @@ const GENERAL = {
   },
   "WING SPAN": {
     desc: `Total wing span`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "YAW STRING ANGLE": {
@@ -197,32 +198,32 @@ const CENTER_OF_GRAVITY = {
   },
   "CG FEET": {
     desc: `The longitudinal CG position relative to the Reference Datum Position.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "CG FEET AFT LIMIT": {
     desc: `The aft CG limit position relative to the Reference Datum Position.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "CG FEET LATERAL": {
     desc: `The lateral CG position relative to the Reference Datum Position.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "CG FEET LATERAL LEFT LIMIT": {
     desc: `The left hand lateral CG position relative to the Reference Datum Position.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "CG FEET LATERAL RIGHT LIMIT": {
     desc: `The right hand lateral CG position relative to the Reference Datum Position.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "CG FEET FWD LIMIT": {
     desc: `The forward CG limit position relative to the Reference Datum Position.`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "CG FWD LIMIT": {
@@ -252,7 +253,7 @@ const CENTER_OF_GRAVITY = {
   },
   "STATIC CG TO GROUND": {
     desc: `Static CG position with reference to the ground`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
 };
@@ -315,17 +316,17 @@ const INTERACTIVE_POINTS = {
   },
   "INTERACTIVE POINT POSX": {
     desc: `Interactive Point X position relative to datum reference point`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "INTERACTIVE POINT POSY": {
     desc: `Interactive Point Y position relative to datum reference point`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "INTERACTIVE POINT POSZ": {
     desc: `Interactive Point Z position relative to datum reference point`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "INTERACTIVE POINT TYPE": {
@@ -343,22 +344,22 @@ const WEIGHT = {
   },
   "EMPTY WEIGHT CROSS COUPLED MOI": {
     desc: `Empty weight cross coupled moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
   "EMPTY WEIGHT PITCH MOI": {
     desc: `Empty weight pitch moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
   "EMPTY WEIGHT ROLL MOI": {
     desc: `Empty weight roll moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
   "EMPTY WEIGHT YAW MOI": {
     desc: `Empty weight yaw moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
   "MAX GROSS WEIGHT": {
@@ -373,22 +374,22 @@ const WEIGHT = {
   },
   "TOTAL WEIGHT CROSS COUPLED MOI": {
     desc: `Total weight cross coupled moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
   "TOTAL WEIGHT PITCH MOI": {
     desc: `Total weight pitch moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
   "TOTAL WEIGHT ROLL MOI": {
     desc: `Total weight roll moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
   "TOTAL WEIGHT YAW MOI": {
     desc: `Total weight yaw moment of inertia`,
-    units: `slugs per feet squared`,
+    units: `slugs`,
     ...dataType(`Float64`),
   },
 };

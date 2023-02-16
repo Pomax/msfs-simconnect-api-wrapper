@@ -84,7 +84,7 @@ const ALTERNATORS = {
 const APU = {
   "APU BLEED PRESSURE RECEIVED BY ENGINE": {
     desc: `Bleed air pressure received by the engine from the APU`,
-    units: `pounds per square inch (psi)`,
+    units: `pounds`,
     ...dataType(`Float64`),
   },
   "APU GENERATOR ACTIVE:index": {

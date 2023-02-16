@@ -50,7 +50,7 @@ const AUTOPILOT = {
   },
   "AUTOPILOT ALTITUDE LOCK VAR": {
     desc: `Set or get the slot index which the altitude hold mode will track when captured. See alt_mode_slot_index for more information`,
-    units: `feet (ft)`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "AUTOPILOT ALTITUDE MANUALLY TUNABLE": {
@@ -240,7 +240,7 @@ const AUTOPILOT = {
   },
   "AUTOPILOT MAX BANK ID": {
     desc: `Returns the index of the current maximum bank setting of the autopilot`,
-    units: `integer`,
+    units: `number`,
     ...dataType(`Int32`),
   },
   "AUTOPILOT MAX SPEED HOLD": {
@@ -286,15 +286,15 @@ const AUTOPILOT = {
   "AUTOPILOT SPEED SETTING": {
     desc: `Currently not used within the simulation`,
     units: `knots`,
-    ...dataType(`float64`),
+    ...dataType(`Float64`),
   },
   "AUTOPILOT SPEED SLOT INDEX": {
     desc: `Index of the managed references`,
     units: `number`,
     ...dataType(`Int32`),
   },
-  "AUTOPILOT TAKEOFF POWER ACTIV": {
-    desc: `E 	Takeoff / Go Around power mode active`,
+  "AUTOPILOT TAKEOFF POWER ACTIVE": {
+    desc: `Takeoff / Go Around power mode active`,
     units: `bool`,
     ...dataType(`Int32`),
   },
@@ -315,7 +315,7 @@ const AUTOPILOT = {
   },
   "AUTOPILOT VERTICAL HOLD VAR": {
     desc: `Selected vertical speed`,
-    units: `feet (ft)/minute`,
+    units: `feet`,
     ...dataType(`Float64`),
   },
   "AUTOPILOT VS SLOT INDEX": {
@@ -379,7 +379,11 @@ const AI_AIRCRAFT_PILOT = {
     units: `percent Over 100`,
     ...dataType(`Float64`),
   },
-  "ATTITUDE CAGE": { desc: `AI caged state`, units: `Bool` },
+  "ATTITUDE CAGE": {
+    desc: `AI caged state`,
+    units: `bool`,
+    ...dataType(`Int32`),
+  },
   "ATTITUDE INDICATOR BANK DEGREES": {
     desc: `AI bank indication`,
     units: `radians`,
