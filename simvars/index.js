@@ -30,7 +30,7 @@ const SimVars = {
 const proxy = new Proxy(SimVars, {
   get(target, prop) {
     if (prop.includes(`:`)) prop = prop.replace(/:.*/, `:index`);
-    return target[prop.replaceAll(`_`, ` `)];
+    return target[prop];
   },
 });
 

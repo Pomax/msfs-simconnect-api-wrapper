@@ -44,6 +44,6 @@ try {
 - `on()` _pending_
 - `off()` _pending_
 - `get()` **implemented**
-- `schedule()` _pending_
+- `schedule()` **implemented**
 - `set()` **implemented**
 - `trigger()` _pending_

@@ -7,10 +7,6 @@ import {
 import { SimEvents } from "./simevents/index.js";
 import { SimVars } from "./simvars/index.js";
 
-function getDefinition(name) {
-  return SimVars[name];
-}
-
 function codeSafe(string) {
   return string.replaceAll(` `, `_`);
 }
@@ -64,11 +60,17 @@ export class MSFS_API {
    * @param {*} triggerName
    * @param {*} value
    */
-  trigger(triggerName, value = undefined) {
-    if (value !== undefined) {
-      // ...
-    }
-    // ...
+  trigger(triggerName, value = 0) {
+    throw new Error(`not implemented`);
+    const { handle } = this;
+    const def = SimEvents[triggerName];
+    handle.transmitClientEvent(
+      SimConnectConstants.OBJECT_ID_USER,
+      def.id,
+      value,
+      0,
+      0
+    );
   }
 
   /**
@@ -136,7 +138,8 @@ export class MSFS_API {
   get(...propNames) {
     const DATA_ID = this.nextId();
     const REQUEST_ID = DATA_ID;
-    const defs = propNames.map((propName) => getDefinition(propName));
+    propNames = propNames.map((s) => s.replaceAll(`_`, ` `));
+    const defs = propNames.map((propName) => SimVars[propName]);
     this.addDataDefinitions(DATA_ID, propNames, defs);
     return this.generateGetPromise(DATA_ID, REQUEST_ID, propNames, defs);
   }
@@ -161,5 +164,22 @@ export class MSFS_API {
       SimConnectConstants.OBJECT_ID_USER,
       payload
     );
+  }
+
+  /**
+   *
+   * @param {*} handler
+   * @param {*} interval
+   * @param  {...any} propNames
+   */
+  schedule(handler, interval, ...propNames) {
+    let running = true;
+
+    const run = async() => {
+      handler(await this.get(...propNames));
+      if (running) setTimeout(run, interval);
+    };
+    run();
+    return () => (running=false);
   }
 }
