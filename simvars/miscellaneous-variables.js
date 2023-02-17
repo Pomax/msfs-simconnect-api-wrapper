@@ -36,7 +36,7 @@ const MISC = {
   "HAND ANIM STATE": {
     desc: `What frame of the hand is currently used.`,
     units: `enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "IDLE ANIMATION ID": {
     desc: `The ID of the idle animation for the sim object.`,
@@ -51,12 +51,12 @@ const MISC = {
   "MISSION SCORE": {
     desc: ``,
     units: `Number`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "REALISM": {
     desc: `General realism percent.`,
     units: `Number`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "REALISM CRASH DETECTION": {
     desc: `True indicates crash detection is turned on.`,
@@ -71,7 +71,7 @@ const MISC = {
   "SIM DISABLED": {
     desc: `Is sim disabled.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "SIM ON GROUND": {
     desc: `On ground flag.`,
@@ -81,22 +81,22 @@ const MISC = {
   "SIM SHOULD SET ON GROUND": {
     desc: ``,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "TRACK IR ENABLE": {
     desc: `Returns true if Track IR is enabled or not.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "TOTAL WORLD VELOCITY": {
     desc: `Speed relative to the earths center.`,
     units: `Feet per second`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "USER INPUT ENABLED": {
     desc: `Is input allowed from the user.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "VISUAL MODEL RADIUS": {
     desc: `Model radius.`,
@@ -106,17 +106,17 @@ const MISC = {
   "VELOCITY WORLD X": {
     desc: `Speed relative to earth, in East/West direction.`,
     units: `Feet per second`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "VELOCITY WORLD Y": {
     desc: `Speed relative to earth, in vertical direction.`,
     units: `Feet per second`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "VELOCITY WORLD Z": {
     desc: `Speed relative to earth, in North/South direction.`,
     units: `Feet per second`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
 };
 
