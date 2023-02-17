@@ -10,6 +10,7 @@ import { AircraftMiscVariables } from "./aircraft-misc-variables.js";
 import { AircraftRadioNavigationVariables } from "./aircraft-radio-navigation-variables.js";
 import { AircraftSystemVariables } from "./aircraft-system-variables.js";
 import { CameraVariables } from "./camera-variables.js";
+import { MiscellaneousVariables } from "./miscellaneous-variables.js";
 
 const SimVars = {
   ...AircraftAutopilotAssistantVariables,
@@ -22,6 +23,7 @@ const SimVars = {
   ...AircraftRadioNavigationVariables,
   ...AircraftSystemVariables,
   ...CameraVariables,
+  ...MiscellaneousVariables,
 };
 
 // Make sure that variables that use a :number suffix resolve
