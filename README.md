@@ -4,7 +4,7 @@ A JavaScripty wrapper around EvenAR's excellent [node-simconnect](https://github
 
 See [test.js](./test.js) for the basics, which you can run (with MSFS open and sitting on the apron with a plane =) using `npm test`.
 
-This is still a work in progress, although it does wrap (almost) all the Aircraft simvars (845) as well as all Camera simvars (35) at the moment.
+This is still a work in progress, although it does wrap almost all simvars (see below) at the moment.
 
 ## API
 
@@ -50,24 +50,31 @@ API functions:
 - `set()` **implemented**
 - `trigger()` _pending_
 
-Simvars:
+Supported Simvars:
 
-- [X] Camera Variables
+("not verified" meaning that they've been ported, marked settable where appropriate, pass the test run, but they've not been individually confirmed to be correct with respect to the documentation yet)
+
+- [X] Camera Variables (_not verified_)
 - [ ] Services Variables
-- [X] Miscellaneous Variables
+- [X] Miscellaneous Variables (_not verified_)
 - Aircraft SimVars:
-  - [X] Aircraft Autopilot/Assistant Variables
-  - [X] Aircraft Brake/Landing Gear Variables
-  - [X] Aircraft Control Variables
-  - [X] Aircraft Electrics Variables
-  - [X] Aircraft Engine Variables
-  - [X] Aircraft Flight Model Variables
-  - [X] Aircraft Fuel Variables
-  - [X] Aircraft Misc. Variables
-  - [X] Aircraft Radio Navigation Variables
-  - [ ] Aircraft System Variables
+  - [X] Aircraft Autopilot/Assistant Variables (_not verified_)
+  - [X] Aircraft Brake/Landing Gear Variables (_not verified_)
+  - [X] Aircraft Control Variables (_not verified_)
+  - [X] Aircraft Electrics Variables (_not verified_)
+  - [X] Aircraft Engine Variables (_not verified_)
+  - [X] Aircraft Flight Model Variables (_not verified_)
+  - [X] Aircraft Fuel Variables (_not verified_)
+  - [X] Aircraft Misc. Variables (_not verified_)
+  - [X] Aircraft Radio Navigation Variables (_not verified_)
+  - [X] Aircraft System Variables (_not verified_)
   - [ ] Helicopter Variables
 
-SimEvents:
+Supported SimEvents:
 
 _pending_
+
+## Helping out
+
+File an issue if you want to help get this wrapper to 100% simvar and event support!
+Even if you just want to help verify a few variables, that's a few variables fewer that I'll need to run through =)

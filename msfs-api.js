@@ -22,13 +22,23 @@ function codeSafe(string) {
 export class MSFS_API {
   constructor(handle) {
     this.handle = handle;
-    this.id = 0;
-
+    this.ID_MASK = 0x00;
     // TODO: finish up the event wrapping
   }
 
   nextId() {
-    return this.id++;
+    let id = 1;
+    let test = 1;
+    while (this.ID_MASK & test) {
+      test *= 2;
+      id++;
+    }
+    this.ID_MASK += test;
+    return id;
+  }
+
+  releaseId(id) {
+    this.ID_MASK -= 1 << (id - 1);
   }
 
   /**
@@ -62,6 +72,7 @@ export class MSFS_API {
    */
   trigger(triggerName, value = 0) {
     throw new Error(`not implemented`);
+
     const { handle } = this;
     const def = SimEvents[triggerName];
     handle.transmitClientEvent(
@@ -108,12 +119,13 @@ export class MSFS_API {
     return new Promise((resolve, _reject) => {
       const handleDataRequest = ({ requestID, data }) => {
         if (requestID === REQUEST_ID) {
-          handle.off("simObjectData", handleDataRequest);
           const result = {};
           propNames.forEach((propName, pos) => {
             result[codeSafe(propName)] = defs[pos].read(data);
           });
           resolve(result);
+          handle.off("simObjectData", handleDataRequest);
+          this.releaseId(REQUEST_ID);
         }
       };
 
@@ -175,11 +187,11 @@ export class MSFS_API {
   schedule(handler, interval, ...propNames) {
     let running = true;
 
-    const run = async() => {
+    const run = async () => {
       handler(await this.get(...propNames));
       if (running) setTimeout(run, interval);
     };
     run();
-    return () => (running=false);
+    return () => (running = false);
   }
 }
