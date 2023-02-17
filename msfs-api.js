@@ -7,7 +7,6 @@ import {
 } from "node-simconnect";
 
 // imports used by the API
-import { SimEvents } from "./simevents/index.js";
 import { SimVars } from "./simvars/index.js";
 
 // direct export for users:

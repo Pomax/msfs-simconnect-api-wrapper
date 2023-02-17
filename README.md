@@ -33,17 +33,6 @@ try {
 - `set(propName, value)`, accepts a single simvar and the value its should be set to. This will throw for simvars that are not settable.
 - `trigger(triggerName, value?)`, triggers a simconnect event, with optional value.
 
-## API status
-
-API functions:
-
-- `on()` **implemented**
-- `off()` **implemented**
-- `get()` **implemented**
-- `schedule()` **implemented**
-- `set()` **implemented**
-- `trigger()` **implemented**
-
 ### System events (used for on/off handling):
 
 All event names in https://docs.flightsimulator.com/html/Programming_Tools/SimConnect/API_Reference/Events_And_Data/SimConnect_SubscribeToSystemEvent.htm are supported as constants on the `SystemEvents` object. Event names are keyed using UPPER_SNAKE_CASE. That is, the first few events are encoded as:

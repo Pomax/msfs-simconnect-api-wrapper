@@ -31,20 +31,11 @@ async function connect() {
 }
 
 async function runTests(api) {
-  await testSimEvents(api);
   await testSimVars(api);
+  await testSimEvents(api);
   testInterval(api, () => {
     // process.exit(0);
   });
-}
-
-async function testSimEvents(api) {
-  let lock = await api.get(`TAILWHEEL_LOCK_ON`);
-  await api.trigger(`TOGGLE_TAILWHEEL_LOCK`);
-  let newlock = await api.get(`TAILWHEEL_LOCK_ON`);
-  if (lock === newlock) {
-    throw new Error(`TAILWHEEL_LOCK_ON did not change state!`);
-  }
 }
 
 async function testSimVars(api) {
@@ -57,6 +48,16 @@ async function testSimVars(api) {
   }
 
   console.log(`Tested ${varKeys.length} sim vars.`);
+}
+
+async function testSimEvents(api) {
+  let lock = await api.get(`TAILWHEEL_LOCK_ON`);
+  await api.trigger(`TOGGLE_TAILWHEEL_LOCK`);
+  let newlock = await api.get(`TAILWHEEL_LOCK_ON`);
+  if (lock === newlock) {
+    throw new Error(`TAILWHEEL_LOCK_ON did not change state!`);
+  }
+  console.log(`\nSim event trigger passed.\n`);
 }
 
 function testInterval(api, done) {
