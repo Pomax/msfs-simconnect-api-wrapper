@@ -20,7 +20,7 @@ import { MSFS_API } from "./msfs-api.js";
 import { SimVars } from "./msfs-simvars.js";
 
 try {
-  const { recvOpen, handle } = await open("My app", Protocol.KittyHawk);
+  const { handle } = await open("My MSFS Connection", Protocol.KittyHawk);
   const api = new MSFS_API(handle);
 
   //...your code here...
@@ -55,7 +55,7 @@ Supported Simvars:
 ("not verified" meaning that they've been ported, marked settable where appropriate, pass the test run, but they've not been individually confirmed to be correct with respect to the documentation yet)
 
 - [X] Camera Variables (_not verified_)
-- [ ] Services Variables
+- [X] Services Variables (_not verified_)
 - [X] Miscellaneous Variables (_not verified_)
 - Aircraft SimVars:
   - [X] Aircraft Autopilot/Assistant Variables (_not verified_)
@@ -68,7 +68,7 @@ Supported Simvars:
   - [X] Aircraft Misc. Variables (_not verified_)
   - [X] Aircraft Radio Navigation Variables (_not verified_)
   - [X] Aircraft System Variables (_not verified_)
-  - [ ] Helicopter Variables
+  - [X] Helicopter Variables (_not verified_)
 
 Supported SimEvents:
 

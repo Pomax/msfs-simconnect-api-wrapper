@@ -6,7 +6,7 @@ const GENERAL = {
   "AIRSPEED TRUE CALIBRATE": {
     desc: `Angle of True calibration scale on airspeed indicator.`,
     units: `Degrees`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "ALTERNATE STATIC SOURCE OPEN:index": {
     desc: `Alternate static air source.`,
@@ -26,7 +26,7 @@ const GENERAL = {
   "APPLY HEAT TO SYSTEMS": {
     desc: `Used when too close to a fire.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "AUDIO PANEL AVAILABLE": {
     desc: `True if the audio panel is available.`,
@@ -46,7 +46,7 @@ const GENERAL = {
   "AUTO COORDINATION": {
     desc: `Is auto-coordination active.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "AVIONICS MASTER SWITCH:index": {
     desc: `The avionics master switch position, true if the switch is ON. Use an avionics circuit index when referencing.`,
@@ -66,7 +66,7 @@ const GENERAL = {
   "CANOPY OPEN": {
     desc: `Percent primary door/exit open.`,
     units: `Percent Over 100`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "CARB HEAT AVAILABLE": {
     desc: `True if carburetor heat available.`,
@@ -76,7 +76,7 @@ const GENERAL = {
   "DELTA HEADING RATE": {
     desc: `Rate of turn of heading indicator.`,
     units: `Radians per second`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "DME SOUND": {
     desc: `DME audio flag.`,
@@ -91,7 +91,7 @@ const GENERAL = {
   "EXTERNAL SYSTEM VALUE": {
     desc: `Generic SimVar.`,
     units: `Number`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "FIRE BOTTLE DISCHARGED": {
     desc: `True if the fire bottle is discharged.`,
@@ -111,7 +111,7 @@ const GENERAL = {
   "GPWS SYSTEM ACTIVE": {
     desc: `True if the Ground Proximity Warning System is active.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "GPWS WARNING": {
     desc: `True if Ground Proximity Warning System installed.`,
@@ -136,7 +136,7 @@ const GENERAL = {
   "INDICATED ALTITUDE": {
     desc: `The indicated altitude.`,
     units: `Feet`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "INDICATED ALTITUDE CALIBRATED": {
     desc: `Indicated altitude with the altimeter calibrated to current sea level pressure.`,
@@ -236,7 +236,7 @@ const GENERAL = {
   "PLANE HEADING DEGREES GYRO": {
     desc: `Heading indicator (directional gyro) indication.`,
     units: `Radians`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "PRESSURE ALTITUDE": {
     desc: `Standard Altitude, ie: at a 1013.25 hPa (1 atmosphere) setting.`,
@@ -286,7 +286,7 @@ const GENERAL = {
   "SMOKE ENABLE": {
     desc: `Set to True to activate the smoke system, if one is available. Please see the notes for SMOKESYSTEM AVAILABLE for more information.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "SPEAKER ACTIVE": {
     desc: `Whether or not the speaker is active.`,
@@ -326,12 +326,7 @@ const GENERAL = {
   "SUCTION PRESSURE": {
     desc: `Vacuum system suction pressure.`,
     units: `Inches of Mercury`,
-    ...dataType(`Float64`),
-  },
-  "SYSTEMS AVAILABLE": {
-    desc: `Deprecated, do not use!`,
-    units: `Mask`,
-    ...dataType(`Int32`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "TAILHOOK HANDLE": {
     desc: `True if the tailhook handle is engaged.`,
@@ -341,7 +336,7 @@ const GENERAL = {
   "TAILHOOK POSITION": {
     desc: `Percent tail hook extended.`,
     units: `Percent Over 100`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "TOW RELEASE HANDLE": {
     desc: `Position of tow release handle. 100 is fully deployed.`,
@@ -351,7 +346,7 @@ const GENERAL = {
   "TRUE AIRSPEED SELECTED": {
     desc: `True if True Airspeed has been selected.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "TURN COORDINATOR BALL": {
     desc: `Turn coordinator ball position.`,
@@ -384,7 +379,7 @@ const VARIOMETER = {
   "VARIOMETER MAC CREADY SETTING": {
     desc: `The MacCready setting used to fly an optimal speed between thermals.`,
     units: `Meters per second`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "VARIOMETER NETTO": {
     desc: `Variometer rate using Netto (Total Energy - polar sinkRate).`,
@@ -460,7 +455,7 @@ const LIGHTS = {
   "LIGHT BEACON": {
     desc: `Light switch state.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT BEACON ON": {
     desc: `Returns true if the target beacon light is functioning or if the switch is ON. Use beacon lightdef index.`,
@@ -470,7 +465,7 @@ const LIGHTS = {
   "LIGHT BACKLIGHT INTENSITY": {
     desc: `Vehicle backlights current intensity (0 = off, 1 = full intensity).`,
     units: `Percent Over 100`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "LIGHT BRAKE ON": {
     desc: `Returns true if the target brake light is functioning or if the switch is ON.`,
@@ -480,7 +475,7 @@ const LIGHTS = {
   "LIGHT CABIN": {
     desc: `Light switch state.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT CABIN ON": {
     desc: `Returns true if the target cabin light is functioning or if the switch is ON. Use the cabin lightdef index.`,
@@ -495,7 +490,7 @@ const LIGHTS = {
   "LIGHT GLARESHIELD": {
     desc: `Whether or not the Light switch for the Glareshield is enabled.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT GLARESHIELD ON": {
     desc: `Returns true if the target glareshield light is functioning or if the switch is ON. Use the glareshield lightdef index.`,
@@ -510,7 +505,7 @@ const LIGHTS = {
   "LIGHT GYROLIGHT INTENSITY": {
     desc: `Vehicle gyrolights current intensity (0 = off, 1 = full intensity).`,
     units: `Percent Over 100`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "LIGHT HEAD ON": {
     desc: `Returns true if the target navigation light is functioning or if the switch is ON.`,
@@ -520,7 +515,7 @@ const LIGHTS = {
   "LIGHT HEADLIGHT INTENSITY": {
     desc: `Vehicle headlights current intensity (0 = off, 1 = full intensity).`,
     units: `Percent Over 100`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "LIGHT LANDING ON": {
     desc: `Returns true if the target landing light is functioning or if the switch is ON. Use landing lightdef index.`,
@@ -530,12 +525,12 @@ const LIGHTS = {
   "LIGHT LANDING": {
     desc: `Light switch state for landing light.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT LOGO": {
     desc: `Light switch state for logo light.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT LOGO ON": {
     desc: `Returns true if the target logo light is functioning or if the switch is ON. Use the logo lightdef index.`,
@@ -550,7 +545,7 @@ const LIGHTS = {
   "LIGHT NAV": {
     desc: `Light switch state for the NAV light.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT ON STATES": {
     desc: `light on using bit mask (see documentation)`,
@@ -560,7 +555,7 @@ const LIGHTS = {
   "LIGHT PANEL": {
     desc: `Light switch state of the panel light.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT PANEL ON": {
     desc: `Returns true if the target panel light is functioning or if the switch is ON. Use the panel lightdef index.`,
@@ -575,7 +570,7 @@ const LIGHTS = {
   "LIGHT PEDESTRAL": {
     desc: `Whether or not the Light switch for the Pedestal is enabled.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT PEDESTRAL ON": {
     desc: `Returns true if the target pedestral light is functioning or if the switch is ON. Requires the pedestral lightdef index.`,
@@ -595,7 +590,7 @@ const LIGHTS = {
   "LIGHT RECOGNITION": {
     desc: `Light switch state for the recognition light.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT RECOGNITION ON": {
     desc: `Returns true if the target recognition light is functioning or if the switch is ON. Use the recognition lightdef index.`,
@@ -610,7 +605,7 @@ const LIGHTS = {
   "LIGHT STROBE": {
     desc: `Light switch state.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT STROBE ON": {
     desc: `Returns true if the target strobe light is functioning or if the switch is ON. Use the strobe lightdef index.`,
@@ -620,7 +615,7 @@ const LIGHTS = {
   "LIGHT TAXI": {
     desc: `Light switch state for the taxi light.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT TAXI ON": {
     desc: `Returns true if the target taxi light is functioning or if the switch is ON. Use taxi lightdef index.`,
@@ -630,7 +625,7 @@ const LIGHTS = {
   "LIGHT WING": {
     desc: `Light switch state for the wing lights.`,
     units: `Bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "LIGHT WING ON": {
     desc: `Returns true if the target wing light is functioning or if the switch is ON. Use the wing lightdef index.`,
@@ -658,7 +653,7 @@ const HYDRAULICS = {
   "HYDRAULIC RESERVOIR PERCENT:index": {
     desc: `Hydraulic pressure changes will follow changes to this variable. Indexes start at 1.`,
     units: `Percent Over 100`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "HYDRAULIC SWITCH": {
     desc: `True if hydraulic switch is on.`,
@@ -676,22 +671,22 @@ const PARTIAL_PANELS = {
   "PARTIAL PANEL ADF": {
     desc: `Gauge fail flag.`,
     units: `enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL AIRSPEED": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL ALTIMETER": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL ATTITUDE": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL AVIONICS": {
     desc: `Gauge fail flag.`,
@@ -701,22 +696,22 @@ const PARTIAL_PANELS = {
   "PARTIAL PANEL COMM": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL COMPASS": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL ELECTRICAL": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL ENGINE": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL FUEL INDICATOR": {
     desc: `Gauge fail flag.`,
@@ -726,22 +721,22 @@ const PARTIAL_PANELS = {
   "PARTIAL PANEL HEADING": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL NAV": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL PITOT": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL TRANSPONDER": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL TURN COORDINATOR": {
     desc: `Gauge fail flag.`,
@@ -751,12 +746,12 @@ const PARTIAL_PANELS = {
   "PARTIAL PANEL VACUUM": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "PARTIAL PANEL VERTICAL VELOCITY": {
     desc: `Gauge fail flag.`,
     units: `Enum`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
 };
 
@@ -769,7 +764,7 @@ const PAYLOAD_STATIONS = {
   "DROPPABLE OBJECTS TYPE:index": {
     desc: `The type of droppable object at the station number identified by the index.`,
     units: null,
-    ...dataType(`String32`),
+    ...dataType(`String32`, SETTABLE),
   },
   "DROPPABLE OBJECTS UI NAME:index": {
     desc: `Descriptive name, used in User Interface dialogs, of a droppable object, identified by index.`,
@@ -799,7 +794,7 @@ const PAYLOAD_STATIONS = {
   "PAYLOAD STATION WEIGHT:index": {
     desc: `Individual payload station weight.`,
     units: `Pounds`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
 };
 
@@ -861,7 +856,7 @@ const YOKE = {
   "YOKE X POSITION": {
     desc: `Percent control deflection left/right (for animation).`,
     units: `position`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "YOKE X POSITION WITH AP": {
     desc: `Percent control deflection left/right (for animation). Also includes AP's inputs.`,
@@ -878,7 +873,7 @@ const YOKE = {
   "YOKE Y POSITION": {
     desc: `Percent control deflection fore/aft (for animation).`,
     units: `position`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "YOKE Y POSITION WITH AP": {
     desc: `Percent control deflection fore/aft (for animation). Also includes AP's inputs.`,

@@ -11,6 +11,8 @@ import { AircraftRadioNavigationVariables } from "./aircraft-radio-navigation-va
 import { AircraftSystemVariables } from "./aircraft-system-variables.js";
 import { CameraVariables } from "./camera-variables.js";
 import { MiscellaneousVariables } from "./miscellaneous-variables.js";
+import { HelicopterVariables } from "./helicopter-variables.js";
+import { ServiceVariables } from "./services-variables.js";
 
 const SimVars = {
   ...AircraftAutopilotAssistantVariables,
@@ -24,11 +26,14 @@ const SimVars = {
   ...AircraftSystemVariables,
   ...CameraVariables,
   ...MiscellaneousVariables,
+  ...HelicopterVariables,
+  ...ServiceVariables,
 };
 
 // Make sure that variables that use a :number suffix resolve
-// to the ":index" definition for that variable, and that any
-// underscore in a varname is replace with a space.
+// to the ":index" definition for that variable, and to make
+// sure that underscores in varnames get replaced spaces, we
+// use a Proxy to intercept all property access.
 const proxy = new Proxy(SimVars, {
   get(target, prop) {
     if (prop.includes(`:`)) prop = prop.replace(/:.*/, `:index`);
