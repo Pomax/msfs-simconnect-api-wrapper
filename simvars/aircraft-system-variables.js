@@ -852,34 +852,37 @@ const WARNING_VARIABLES = {
 };
 
 const YOKE = {
-  "YOKE X INIDICATOR": {
+  // The official docs list the following var as "YOKE X INIDICATOR". This is clearly a typo.
+  "YOKE X INDICATOR": {
     desc: `Yoke position in horizontal direction.`,
-    units: `Position`,
+    units: `position`,
     ...dataType(`Float64`),
   },
   "YOKE X POSITION": {
     desc: `Percent control deflection left/right (for animation).`,
-    units: `Position`,
+    units: `position`,
     ...dataType(`Float64`),
   },
   "YOKE X POSITION WITH AP": {
     desc: `Percent control deflection left/right (for animation). Also includes AP's inputs.`,
-    units: `Position`,
+    units: `position`,
     ...dataType(`Float64`),
   },
-  "YOKE Y INIDICATOR": {
+  // The official docs list the following var as "YOKE Y INIDICATOR". This is clearly a typo,
+  // In fact, using the official name triggers a SIMCONNECT_EXCEPTION_NAME_UNRECOGNIZED exception.
+  "YOKE Y INDICATOR": {
     desc: `Yoke position in vertical direction.`,
-    units: `Position`,
+    units: `position`,
     ...dataType(`Float64`),
   },
   "YOKE Y POSITION": {
     desc: `Percent control deflection fore/aft (for animation).`,
-    units: `Position`,
+    units: `position`,
     ...dataType(`Float64`),
   },
   "YOKE Y POSITION WITH AP": {
     desc: `Percent control deflection fore/aft (for animation). Also includes AP's inputs.`,
-    units: `Position`,
+    units: `position`,
     ...dataType(`Float64`),
   },
 };

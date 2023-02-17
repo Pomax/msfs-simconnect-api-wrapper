@@ -22,23 +22,25 @@ function codeSafe(string) {
 export class MSFS_API {
   constructor(handle) {
     this.handle = handle;
-    this.ID_MASK = 0x00;
+    this.id = 0;
+    this.reserved = new Set();
     // TODO: finish up the event wrapping
   }
 
   nextId() {
-    let id = 1;
-    let test = 1;
-    while (this.ID_MASK & test) {
-      test *= 2;
-      id++;
+    if (this. id > 900) {
+      this.id = 0;
     }
-    this.ID_MASK += test;
+    let id = this.id++;
+    while (this.reserved.has(id)) {
+      id = this.id++;
+    }
+    this.reserved.add(id);
     return id;
   }
 
   releaseId(id) {
-    this.ID_MASK -= 1 << (id - 1);
+    this.reserved.delete(id);
   }
 
   /**
@@ -119,13 +121,14 @@ export class MSFS_API {
     return new Promise((resolve, _reject) => {
       const handleDataRequest = ({ requestID, data }) => {
         if (requestID === REQUEST_ID) {
+          handle.off("simObjectData", handleDataRequest);
+          handle.clearDataDefinition(DATA_ID);
           const result = {};
           propNames.forEach((propName, pos) => {
             result[codeSafe(propName)] = defs[pos].read(data);
           });
           resolve(result);
-          handle.off("simObjectData", handleDataRequest);
-          this.releaseId(REQUEST_ID);
+          this.releaseId(DATA_ID);
         }
       };
 
@@ -187,11 +190,11 @@ export class MSFS_API {
   schedule(handler, interval, ...propNames) {
     let running = true;
 
-    const run = async () => {
+    const run = async() => {
       handler(await this.get(...propNames));
       if (running) setTimeout(run, interval);
     };
     run();
-    return () => (running = false);
+    return () => (running=false);
   }
 }
