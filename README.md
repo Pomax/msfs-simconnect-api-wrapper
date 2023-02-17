@@ -41,9 +41,33 @@ try {
 
 #### API status
 
+API functions:
+
 - `on()` _pending_
 - `off()` _pending_
 - `get()` **implemented**
 - `schedule()` **implemented**
 - `set()` **implemented**
 - `trigger()` _pending_
+
+Simvars:
+
+- [X] Camera Variables
+- [ ] Services Variables
+- [X] Miscellaneous Variables
+- Aircraft SimVars:
+  - [X] Aircraft Autopilot/Assistant Variables
+  - [X] Aircraft Brake/Landing Gear Variables
+  - [X] Aircraft Control Variables
+  - [X] Aircraft Electrics Variables
+  - [X] Aircraft Engine Variables
+  - [X] Aircraft Flight Model Variables
+  - [X] Aircraft Fuel Variables
+  - [X] Aircraft Misc. Variables
+  - [X] Aircraft Radio Navigation Variables
+  - [ ] Aircraft System Variables
+  - [ ] Helicopter Variables
+
+SimEvents:
+
+_pending_
