@@ -2,14 +2,18 @@ import {
   RawBuffer,
   SimConnectPeriod,
   SimConnectConstants,
+  open,
+  Protocol,
 } from "node-simconnect";
 
+// imports used by the API
 import { SimEvents } from "./simevents/index.js";
 import { SimVars } from "./simvars/index.js";
 
-function codeSafe(string) {
-  return string.replaceAll(` `, `_`);
-}
+// direct export for users:
+export { SystemEvents } from "./system-events/index.js";
+
+const codeSafe = (string) => string.replaceAll(` `, `_`);
 
 /**
  * API:
@@ -20,15 +24,26 @@ function codeSafe(string) {
  * - set(propName, value)
  */
 export class MSFS_API {
-  constructor(handle) {
-    this.handle = handle;
+  constructor() {
     this.id = 0;
     this.reserved = new Set();
-    // TODO: finish up the event wrapping
+    this.eventListeners = [];
+  }
+
+  async connect(appName = "MSFS API") {
+    try {
+      const { handle } = await open(appName, Protocol.KittyHawk);
+      if (!handle) throw new Error(`No connection handle to MSFS`);
+      this.handle = handle;
+      handle.on("event", (event) => this.handleSystemEvent(event));
+      handle.on("exception", (e) => console.error(e));
+    } catch (err) {
+      throw new Error(`No connection to MSFS`);
+    }
   }
 
   nextId() {
-    if (this. id > 900) {
+    if (this.id > 900) {
       this.id = 0;
     }
     let id = this.id++;
@@ -43,28 +58,51 @@ export class MSFS_API {
     this.reserved.delete(id);
   }
 
+  handleSystemEvent(event) {
+    const { clientEventId, data } = event;
+    // console.log(event, this.eventListeners);
+    this.eventListeners.forEach(({ id, eventHandler }) => {
+      if (clientEventId === id) eventHandler(data);
+    });
+  }
+
   /**
    * Add an event listener. This returns a function that acts
    * as the corresponding `off()` function, without needing to
    * pass any arguments in.
    *
-   * @param {*} eventName
-   * @param {*} eventHandler
+   * @param {*} eventDefinition from SystemEvents
+   * @param {*} eventHandler function that gets called when the event triggers
    * @returns
    */
-  on(eventName, eventHandler) {
-    this.handler.on(eventName, eventHandler);
-    return () => this.off(eventName, eventHandler);
+  on(eventDefinition, eventHandler) {
+    const { name: eventName } = eventDefinition;
+    const { handle } = this;
+    const eventID = this.nextId();
+    handle.subscribeToSystemEvent(eventID, eventName);
+    // console.log(`registering for "${eventName}" using id ${eventID}`);
+    this.eventListeners.push({
+      id: eventID,
+      eventName,
+      eventHandler,
+    });
+    return () => this.off(eventID, eventName);
   }
 
   /**
    * Remove an event listener.
    *
-   * @param {*} eventName
-   * @param {*} eventHandler
+   * @param {*} eventID the id that was used to register this event handler
+   * @param {*} eventName the event name associated with this event id
    */
-  off(eventName, eventHandler) {
-    this.handler.off(eventName, eventHandler);
+  off(eventID, eventName) {
+    const { handle } = this;
+    handle.unsubscribeFromSystemEvent(eventID);
+    // console.log(`unregistering from "${eventName}" with id ${eventID}`);
+    const pos = this.eventListeners.findIndex((e) => e.eventName === eventName);
+    // console.log(`removing listener in position ${pos}`)
+    this.eventListeners.splice(pos, 1);
+    this.releaseId(eventID);
   }
 
   /**
@@ -73,16 +111,15 @@ export class MSFS_API {
    * @param {*} value
    */
   trigger(triggerName, value = 0) {
-    throw new Error(`not implemented`);
-
     const { handle } = this;
-    const def = SimEvents[triggerName];
+    const eventID = this.nextId();
+    handle.mapClientEventToSimEvent(eventID, triggerName);
     handle.transmitClientEvent(
       SimConnectConstants.OBJECT_ID_USER,
-      def.id,
+      eventID,
       value,
-      0,
-      0
+      1,  // highest priority
+      16, // group id is priority
     );
   }
 
@@ -190,11 +227,11 @@ export class MSFS_API {
   schedule(handler, interval, ...propNames) {
     let running = true;
 
-    const run = async() => {
+    const run = async () => {
       handler(await this.get(...propNames));
       if (running) setTimeout(run, interval);
     };
     run();
-    return () => (running=false);
+    return () => (running = false);
   }
 }
