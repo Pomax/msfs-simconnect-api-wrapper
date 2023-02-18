@@ -65,23 +65,25 @@ The API has a single property `.connected` which is either `undefined` or `true`
 
 #### System events (used for on/off handling):
 
-All event names in https://docs.flightsimulator.com/html/Programming_Tools/SimConnect/API_Reference/Events_And_Data/SimConnect_SubscribeToSystemEvent.htm are supported as constants on the `SystemEvents` object. Event names are keyed using UPPER_SNAKE_CASE. That is, the first few events are encoded as:
+All event names in https://docs.flightsimulator.com/html/Programming_Tools/SimConnect/API_Reference/Events_And_Data/SimConnect_SubscribeToSystemEvent.htm are supported as constants on the `SystemEvents` object, importable alongside MSFS_API:
 
 ```javascript
-const SystemEvents = {
-  ...
-  AIRCRAFT_LOADED: {
-    name: `AircraftLoaded`,
-    desc: `Request a notification when the aircraft flight dynamics file is changed. These files have a .AIR extension. The filename is returned in a SIMCONNECT_RECV_EVENT_FILENAME structure.`,
+import { SystemEvents, MSFS_API } from "./msfs-api.js";
+
+const api = new MSFS_API();
+
+api.connect({
+  retries: 2Infinity,
+  retryInterval: 5,
+  onConnect: () => {
+    api.on(SystemEvents.PAUSED, () => {
+      // ...
+    });
   },
-  CRASHED: {
-    name: `Crashed`,
-    desc: `Request a notification if the user aircraft crashes.`,
-  },
-  ...
+});
 ```
 
-Meaning you if you wanted to listen for the `AircraftLoaded` event, you would use `api.on(SystemEvents.AIRCRAFT_LOADED, functionHandleHere)`.
+Note that the event names are keys from the `SystemEvents` object, using UPPER_SNAKE_CASE, not strings.
 
 ### Supported Simvars:
 
