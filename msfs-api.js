@@ -34,7 +34,7 @@ export class MSFS_API {
     this.reserved = new Set();
   }
 
-  async connect(opts) {
+  async connect(opts = {}) {
     opts.retries ??= 0;
     opts.retryInterval ??= 0;
     opts.onConnect ??= () => {};

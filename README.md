@@ -47,13 +47,13 @@ function run() {
 }
 ```
 
-### properties
+### Properties
 
 The API has a single property `.connected` which is either `undefined` or `true` and can be used to determine whether the API has a connection to MSFS outside of code that relies on the `onConnect` callback.
 
-### methods
+### Methods
 
-- `connect(name?)`, sets up a connection to MSFS. This function will throw is no connection can be established.
+- `connect(opts?)`, sets up a connection to MSFS, see above for an explanation of `opts`.
 - `on(evtDefinition, handler)`, starts listening for a specific simconnect event with a specific handler. Returns a corresponding arg-less `off()` function to clean up the listener. See the "System events" section below for details on the event definition.
 - `off(evtDefinition, handler)`, stop listening for a specific simconnect event with a specific handler. You'll typically not need to call this, just use the function that `on` returns. See the "System events" section below for details on the event definition.
 - `get(...propNames)`, accepts a list of simvars (with spaces or underscores) and async-returns a key/value pair object with each simvar as key (with spaces replaced by underscores).
