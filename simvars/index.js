@@ -30,6 +30,8 @@ const SimVars = {
   ...ServiceVariables,
 };
 
+Object.entries(SimVars).forEach(([key,value]) => (value.name = key));
+
 // Make sure that variables that use a :number suffix resolve
 // to the ":index" definition for that variable, and to make
 // sure that underscores in varnames get replaced spaces, we

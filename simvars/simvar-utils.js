@@ -12,7 +12,7 @@ export function dataType(typeName, settable = false) {
           return buffer;
         }
       : function () {
-          throw new Error(`SimVar "${propName}" is not settable`);
+          throw new Error(`SimVar "${this.name}" is not settable`);
         },
     settable,
   };

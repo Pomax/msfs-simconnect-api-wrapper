@@ -219,6 +219,7 @@ export class MSFS_API {
    */
   set(propName, value) {
     const { handle } = this;
+    propName = propName.replaceAll(`_`, ` `);
     const DATA_ID = this.nextId();
     const def = SimVars[propName];
     const bufferLength = 100; // TODO: we probably want to allocate only as much buffer as we actually need
