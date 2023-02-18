@@ -1,12 +1,28 @@
 {
   "name": "msfs-simconnect-api-wrapper",
-  "author": "Pomax",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "A convenient SimConnect API for playing with Microsoft Flight Simulator 2020",
   "main": "msfs-api.js",
-  "scripts": {
-    "test": "node test.js"
-  },
   "dependencies": {
-    "node-simconnect": "^3.3.0"
-  }
+    "node-simconnect": "^3.4.0"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pomax/msfs-simconnect-api-wrapper.git"
+  },
+  "keywords": [
+    "simconnect",
+    "msfs",
+    "msfs2020",
+    "node"
+  ],
+  "author": "Pomax",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/Pomax/msfs-simconnect-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/Pomax/msfs-simconnect-api-wrapper#readme"
 }
