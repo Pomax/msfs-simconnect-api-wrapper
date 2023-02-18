@@ -220,6 +220,10 @@ export class MSFS_API {
   set(propName, value) {
     const { handle } = this;
     propName = propName.replaceAll(`_`, ` `);
+    if (value == parseFloat(value)) {
+      // Extremely intentionally use coercion to see if we're dealing with a number-as-string
+      value = parseFloat(value);
+    }
     const DATA_ID = this.nextId();
     const def = SimVars[propName];
     const bufferLength = 100; // TODO: we probably want to allocate only as much buffer as we actually need
