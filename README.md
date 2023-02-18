@@ -6,6 +6,12 @@ See [test.js](./test.js) for the basics, which you can run (with MSFS open and s
 
 This is still a work in progress, although it does wrap all simvars and system events at the moment.
 
+## Installation and use
+
+Install with `npm install msfs-simconnect-api-wrapper`.
+
+For examples on how to use this, see the [examples](https://github.com/Pomax/msfs-simconnect-api-wrapper/blob/main/examples) dir.
+
 ## API
 
 This API manager has an argless constructor that does nothing other than allocate internal values. In order to work with MSFS, you need to call the `connect` function first, which can take an options object of the following form:
