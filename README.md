@@ -21,7 +21,7 @@ This API manager has an argless constructor that does nothing other than allocat
   retries:  positive number or Infinity
   retryInterval: positive number, representing number of seconds (not milliseconds) between retries,
   onConnect: callback function with the node-simconnect handle as its only argument.
-  onRetry: callback function retry interval as its only argument, triggers _before_ the next attempt is scheduled.
+  onRetry: callback function with (retries left, retry interval) as its two arguments. This triggers _before_ the next attempt is scheduled.
 }
 ```
 
@@ -36,7 +36,9 @@ api.connect({
   retries: Infinity,
   retryInterval: 5,
   onConnect: () => run(),
-  onRetry: (_, interval) => console.log(`Connection failed: retrying in ${interval} seconds.`),
+  onRetry: (_, interval) => {
+    console.log(`Connection failed: retrying in ${interval} seconds.`);
+  },
 });
 
 function run() {
@@ -53,7 +55,7 @@ The API has a single property `.connected` which is either `undefined` or `true`
 
 ### Methods
 
-- `connect(opts?)`, sets up a connection to MSFS, see above for an explanation of `opts`.
+- `connect(opts?)`, sets up a connection to MSFS, see above for an explanation of `opts`. If let unspecified, no retries will be attempted.
 - `on(evtDefinition, handler)`, starts listening for a specific simconnect event with a specific handler. Returns a corresponding arg-less `off()` function to clean up the listener. See the "System events" section below for details on the event definition.
 - `off(evtDefinition, handler)`, stop listening for a specific simconnect event with a specific handler. You'll typically not need to call this, just use the function that `on` returns. See the "System events" section below for details on the event definition.
 - `get(...propNames)`, accepts a list of simvars (with spaces or underscores) and async-returns a key/value pair object with each simvar as key (with spaces replaced by underscores).
