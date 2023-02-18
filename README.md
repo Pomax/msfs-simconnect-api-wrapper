@@ -8,20 +8,42 @@ This is still a work in progress, although it does wrap all simvars and system e
 
 ## API
 
-This API manager has an argless constructor that does nothing other than allocate internal values. In order to work with MSFS, you need to call the `connect` function first:
+This API manager has an argless constructor that does nothing other than allocate internal values. In order to work with MSFS, you need to call the `connect` function first, which can take an options object of the following form:
+
+```javascript
+{
+  retries:  positive number or Infinity
+  retryInterval: positive number, representing number of seconds (not milliseconds) between retries,
+  onConnect: callback function with the node-simconnect handle as its only argument.
+  onRetry: callback function retry interval as its only argument, triggers _before_ the next attempt is scheduled.
+}
+```
+
+For example, we can set up an API object and have it start trying to connect, eventually dropping us into the code that knows it has an MSFS connection using the following boilerplate:
 
 ```javascript
 import { MSFS_API } from "./msfs-api.js";
 
 const api = new MSFS_API();
-try {
-  await api.connect();
 
-  //...your code here...
-} catch (err) {
-  console.error(err);
+api.connect({
+  retries: Infinity,
+  retryInterval: 5,
+  onConnect: () => run(),
+  onRetry: (_, interval) => console.log(`Connection failed: retrying in ${interval} seconds.`),
+});
+
+function run() {
+  console.log(`We have an API connection to MSFS!`);
+  //
+  // ...your code here...
+  //
 }
 ```
+
+### properties
+
+The API has a single property `.connected` which is either `undefined` or `true` and can be used to determine whether the API has a connection to MSFS outside of code that relies on the `onConnect` callback.
 
 ### methods
 
@@ -33,7 +55,7 @@ try {
 - `set(propName, value)`, accepts a single simvar and the value its should be set to. This will throw for simvars that are not settable.
 - `trigger(triggerName, value?)`, triggers a simconnect event, with optional value.
 
-### System events (used for on/off handling):
+#### System events (used for on/off handling):
 
 All event names in https://docs.flightsimulator.com/html/Programming_Tools/SimConnect/API_Reference/Events_And_Data/SimConnect_SubscribeToSystemEvent.htm are supported as constants on the `SystemEvents` object. Event names are keyed using UPPER_SNAKE_CASE. That is, the first few events are encoded as:
 

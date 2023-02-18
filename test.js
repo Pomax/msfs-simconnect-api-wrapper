@@ -1,22 +1,21 @@
-import { Airspeed, open, Protocol } from "node-simconnect";
 import { MSFS_API } from "./msfs-api.js";
 import { SystemEvents } from "./system-events/index.js";
 import { SimVars } from "./simvars/index.js";
 // import { SimEvents } from "./simevents/index.js";
 
+const api = new MSFS_API();
+
 (async function tryConnect() {
-  try {
-    connect();
-  } catch (e) {
-    console.log(`Connection failed: retrying in 5 seconds.`);
-    setTimeout(tryConnect, 5000);
-  }
+  api.connect({
+    retries: Infinity,
+    retryInterval: 5,
+    onConnect: (_nodeSimconnectHandle) => connect(),
+    onRetry: (_retries, interval) =>
+      console.log(`Connection failed: retrying in ${interval} seconds.`),
+  });
 })();
 
 async function connect() {
-  const api = new MSFS_API();
-  await api.connect();
-
   const pauseOff = api.on(SystemEvents.PAUSED, () => {
     pauseOff();
     console.log(`sim paused`);

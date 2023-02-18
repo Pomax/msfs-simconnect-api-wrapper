@@ -23,21 +23,36 @@ const codeSafe = (string) => string.replaceAll(` `, `_`);
  * - set(propName, value)
  */
 export class MSFS_API {
-  constructor() {
+  constructor(appName = "MSFS API") {
+    this.appName = appName;
+
+    // set up a listener list for simconnect event handling:
+    this.eventListeners = [];
+
+    // set up an event/data/request id counter:
     this.id = 0;
     this.reserved = new Set();
-    this.eventListeners = [];
   }
 
-  async connect(appName = "MSFS API") {
+  async connect(opts) {
+    opts.retries ??= 0;
+    opts.retryInterval ??= 0;
+    opts.onConnect ??= () => {};
+    opts.onRetry ??= () => {};
     try {
-      const { handle } = await open(appName, Protocol.KittyHawk);
+      const { handle } = await open(this.appName, Protocol.KittyHawk);
       if (!handle) throw new Error(`No connection handle to MSFS`);
       this.handle = handle;
+      this.connected = true;
+      opts.onConnect(handle);
       handle.on("event", (event) => this.handleSystemEvent(event));
       handle.on("exception", (e) => console.error(e));
     } catch (err) {
-      throw new Error(`No connection to MSFS`);
+      if (opts.retries) {
+        opts.retries--;
+        opts.onRetry(opts.retries, opts.retryInterval);
+        setTimeout(() => this.connect(opts), 1000 * opts.retryInterval);
+      } else throw new Error(`No connection to MSFS`);
     }
   }
 
@@ -117,8 +132,8 @@ export class MSFS_API {
       SimConnectConstants.OBJECT_ID_USER,
       eventID,
       value,
-      1,  // highest priority
-      16, // group id is priority
+      1, // highest priority
+      16 // group id is priority
     );
   }
 
