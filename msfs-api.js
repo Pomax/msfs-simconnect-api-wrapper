@@ -235,6 +235,11 @@ export class MSFS_API {
       SimConnectConstants.OBJECT_ID_USER,
       payload
     );
+    // cleanup, with *plenty* of time for SimConnect to resolve the data object before clearing it out.
+    setTimeout(() => {
+      this.releaseId(DATA_ID);
+      handle.clearDataDefinition(DATA_ID);
+    }, 500);
   }
 
   /**
