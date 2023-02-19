@@ -150,7 +150,7 @@ export class MSFS_API {
       if (def === undefined) {
         handle.clearDataDefinition(DATA_ID);
         this.releaseId(DATA_ID);
-        throw new Error(`SimVar "${propName}" not found.`);
+        throw new Error(`Cannot get SimVar: "${propName}" unknown.`);
       }
       handle.addToDataDefinition(
         DATA_ID,
@@ -231,6 +231,10 @@ export class MSFS_API {
     }
     const DATA_ID = this.nextId();
     const def = SimVars[propName];
+    if (def === undefined) {
+      this.releaseId(DATA_ID);
+      throw new Error(`Cannot set SimVar: "${propName}" unknown.`);
+    }
     const bufferLength = 100; // TODO: we probably want to allocate only as much buffer as we actually need
     const buffer = def.write(new RawBuffer(bufferLength), value);
     const payload = { buffer, arrayCount: 0, tagged: false };
