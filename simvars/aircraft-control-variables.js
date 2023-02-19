@@ -132,12 +132,12 @@ const FLAPS = {
   "FLAPS EFFECTIVE HANDLE INDEX:index": {
     desc: `This returns the effective flaps handle index, after some of the conditions have potentially forced the state to change`,
     units: `number`,
-    ...dataType(`Int32`, SETTABLE),
+    ...dataType(`Int32`),
   },
   "FLAPS HANDLE INDEX:index": {
     desc: `Index of current flap position`,
     units: `number`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "FLAPS HANDLE PERCENT": {
     desc: `Percent flap handle extended`,
