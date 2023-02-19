@@ -51,7 +51,7 @@ const AUTOPILOT = {
   "AUTOPILOT ALTITUDE LOCK VAR": {
     desc: `Set or get the slot index which the altitude hold mode will track when captured. See alt_mode_slot_index for more information`,
     units: `feet`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "AUTOPILOT ALTITUDE MANUALLY TUNABLE": {
     desc: `Whether or not the autopilot altitude is manually tunable or not`,
@@ -116,7 +116,7 @@ const AUTOPILOT = {
   "AUTOPILOT BANK HOLD REF": {
     desc: `The current bank-hold bank reference. Note that if you set this, the next frame the value will be overwritten by the engine, so you may need to write to this every game frame to ensure it maintains the required value`,
     units: `degrees`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "AUTOPILOT CRUISE SPEED HOLD": {
     desc: `Currently not used within the simulation`,
@@ -166,7 +166,7 @@ const AUTOPILOT = {
   "AUTOPILOT FLIGHT LEVEL CHANGE": {
     desc: `Boolean, toggles the autopilot Flight Level Change mode`,
     units: `bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "AUTOPILOT GLIDESLOPE ACTIVE": {
     desc: `When true, the autopilot is receiving a signal from the runway beacon and is following the slope to reach the ground`,
@@ -191,12 +191,12 @@ const AUTOPILOT = {
   "AUTOPILOT HEADING LOCK DIR": {
     desc: `Specifies / Returns the locked in heading for the autopilot`,
     units: `degrees`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "AUTOPILOT HEADING MANUALLY TUNABLE": {
     desc: `Whether or not the autopilot heading is manually tunable or not`,
     units: `bool`,
-    ...dataType(`Int32`),
+    ...dataType(`Int32`, SETTABLE),
   },
   "AUTOPILOT HEADING SLOT INDEX": {
     desc: `Index of the slot that the autopilot will use for the heading reference. Note that there are 3 slots (1, 2, 3) that you can set/get normally, however you can also target slot index 0. Writing to slot 0 will overwrite all other slots with the slot 0 value, and by default the autopilot will follow slot 0 if you have not selected any slot index`,
@@ -306,7 +306,7 @@ const AUTOPILOT = {
   "AUTOPILOT THROTTLE MAX THRUST": {
     desc: `This can be used to set/get the thrust lever position for autopilot maximum thrust`,
     units: `percent`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "AUTOPILOT VERTICAL HOLD": {
     desc: `True if autopilot vertical hold applied`,
@@ -316,7 +316,7 @@ const AUTOPILOT = {
   "AUTOPILOT VERTICAL HOLD VAR": {
     desc: `Selected vertical speed`,
     units: `feet`,
-    ...dataType(`Float64`),
+    ...dataType(`Float64`, SETTABLE),
   },
   "AUTOPILOT VS SLOT INDEX": {
     desc: `Index of the slot that the autopilot will use for the VS reference. Note that there are 3 slots (1, 2, 3) that you can set/get normally, however you can also target slot index 0. Writing to slot 0 will overwrite all other slots with the slot 0 value, and by default the autopilot will follow slot 0 if you have not selected any slot index`,
