@@ -26,6 +26,13 @@ async function connect() {
     console.log(`sim unpaused`);
   });
 
+  for (let i=0; i<2000; i++) {
+    try {
+      await api.get(`PLANE_LONGITUDE`, `NO_THANKS`);
+    } catch (e) {
+      console.log(`${i}: ${e.message}`);
+    }
+  }
   runTests(api);
 }
 

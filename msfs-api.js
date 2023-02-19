@@ -147,6 +147,11 @@ export class MSFS_API {
     const { handle } = this;
     propNames.forEach((propName, pos) => {
       const def = defs[pos];
+      if (def === undefined) {
+        handle.clearDataDefinition(DATA_ID);
+        this.releaseId(DATA_ID);
+        throw new Error(`SimVar "${propName}" not found.`);
+      }
       handle.addToDataDefinition(
         DATA_ID,
         propName,
