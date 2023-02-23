@@ -39,22 +39,23 @@ export class MSFS_API {
     opts.retryInterval ??= 0;
     opts.onConnect ??= () => {};
     opts.onRetry ??= () => {};
+    let handle;
     try {
-      const { handle } = await open(this.appName, Protocol.KittyHawk);
-      if (!handle) throw new Error(`No connection handle to MSFS`);
-      this.handle = handle;
-      this.connected = true;
-      opts.onConnect(handle);
-      handle.on("event", (event) => this.handleSystemEvent(event));
-      handle.on("exception", (e) => console.error(e));
+      const result = await open(this.appName, Protocol.KittyHawk);
+      handle = result.handle;
     } catch (err) {
       if (opts.retries) {
         opts.retries--;
         opts.onRetry(opts.retries, opts.retryInterval);
-        setTimeout(() => this.connect(opts), 1000 * opts.retryInterval);
+        return setTimeout(() => this.connect(opts), 1000 * opts.retryInterval);
       } else throw new Error(`No connection to MSFS`);
     }
-  }
+    this.handle = handle;
+    this.connected = true;
+    opts.onConnect(handle);
+    handle.on("event", (event) => this.handleSystemEvent(event));
+    handle.on("exception", (e) => console.error(e));
+}
 
   nextId() {
     if (this.id > 900) {
