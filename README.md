@@ -4,8 +4,6 @@ A JavaScripty wrapper around EvenAR's excellent [node-simconnect](https://github
 
 See [test.js](./test.js) for the basics, which you can run (with MSFS open and sitting on the apron with a plane =) using `npm test`.
 
-This is still a work in progress, although it does wrap all simvars and system events at the moment.
-
 ## Installation and use
 
 Install with `npm install msfs-simconnect-api-wrapper`.
@@ -87,7 +85,7 @@ Note that the event names are keys from the `SystemEvents` object, using UPPER_S
 
 ### Supported Simvars:
 
-All simvars are supported, barring several simvars with data types for which I need to figure out how to actually deference then, such as LatLonAlt structs, or the (super rare) bool/string combination.
+All simvars are supported, barring several simvars with data types for which I need to figure out how to actually deference then, such as LatLonAlt structs, or the (super rare) bool/string combination, as well a any simvar that is officially deprecated, or marked as "legacy, do not use these going forward". If you get an error about an unknown Simvar, look up that variable on the [SimConnect variables list](https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Simulation_Variables.htm) and see if it's either deprecated, or part of a collection that is considered legacy.
 
 - [x] Camera Variables (_not verified_)
 - [x] Services Variables (_not verified_)
