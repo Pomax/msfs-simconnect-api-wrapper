@@ -41,6 +41,7 @@ export class MSFS_API {
     opts.retryInterval ??= 0;
     opts.onConnect ??= () => {};
     opts.onRetry ??= () => {};
+    let handle;
     try {
       const { handle } = await open(this.appName, Protocol.KittyHawk);
       if (!handle) throw new Error(`No connection handle to MSFS`);
