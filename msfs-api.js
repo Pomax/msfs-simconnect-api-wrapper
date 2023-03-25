@@ -41,7 +41,6 @@ export class MSFS_API {
     opts.retryInterval ??= 0;
     opts.onConnect ??= () => {};
     opts.onRetry ??= () => {};
-    let handle;
     try {
       const { handle } = await open(this.appName, Protocol.KittyHawk);
       if (!handle) throw new Error(`No connection handle to MSFS`);
@@ -89,7 +88,7 @@ export class MSFS_API {
     const IN_RANGE = this.nextId();
     const OUT_OF_RANGE = this.nextId();
 
-    this.airportData = {};
+    this.airportData = [];
 
     handle.subscribeToFacilitiesEx1(
       SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT,
@@ -101,7 +100,7 @@ export class MSFS_API {
       this.airportData = data.aiports; // TODO: FIX THIS WHEN UPDATING NODE-SIMCONNECT
       this.eventListeners.forEach(({ eventName, eventHandler }) => {
         if (eventName === AIRPORTS_EVENT.name) {
-          eventHandler(this.airportData);
+          eventHandler(...this.airportData);
         }
       });
     });
@@ -142,7 +141,7 @@ export class MSFS_API {
     setTimeout(() => {
       // with a safety in case code immedately called off()...
       if (this.eventListeners.indexOf(bundle) > -1) {
-        eventHandler(this.airportData);
+        eventHandler(...this.airportData);
       }
     }, 100);
     return () => this.off(listenerId, eventName);
