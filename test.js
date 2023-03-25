@@ -1,7 +1,5 @@
-import { MSFS_API } from "./msfs-api.js";
-import { SystemEvents } from "./system-events/index.js";
+import { SystemEvents, MSFS_API } from "./msfs-api.js";
 import { SimVars } from "./simvars/index.js";
-// import { SimEvents } from "./simevents/index.js";
 
 const api = new MSFS_API();
 
@@ -9,13 +7,13 @@ const api = new MSFS_API();
   api.connect({
     retries: Infinity,
     retryInterval: 5,
-    onConnect: (_nodeSimconnectHandle) => connect(),
+    onConnect: (nodeSimconnectHandle) => connect(nodeSimconnectHandle),
     onRetry: (_retries, interval) =>
       console.log(`Connection failed: retrying in ${interval} seconds.`),
   });
 })();
 
-async function connect() {
+async function connect(handle) {
   const pauseOff = api.on(SystemEvents.PAUSED, () => {
     pauseOff();
     console.log(`sim paused`);
@@ -26,6 +24,11 @@ async function connect() {
     console.log(`sim unpaused`);
   });
 
+  const off = api.on(SystemEvents.AIRPORTS, (data) => {
+    console.log(data);
+    off();
+  });
+
   for (let i=0; i<2000; i++) {
     try {
       await api.get(`PLANE_LONGITUDE`, `NO_THANKS`);
@@ -33,14 +36,15 @@ async function connect() {
       console.log(`${i}: ${e.message}`);
     }
   }
-  runTests(api);
+
+   runTests(api);
 }
 
 async function runTests(api) {
   await testSimVars(api);
   await testSimEvents(api);
   testInterval(api, () => {
-    // process.exit(0);
+    process.exit(0);
   });
 }
 

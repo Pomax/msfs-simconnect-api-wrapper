@@ -10,9 +10,11 @@ import {
 import { SimVars } from "./simvars/index.js";
 
 // direct export for users:
-export { SystemEvents } from "./system-events/index.js";
-
+import { SystemEvents as SysEvents } from "./system-events/index.js";
+const AIRPORTS_EVENT = SysEvents.AIRPORTS;
 const codeSafe = (string) => string.replaceAll(` `, `_`);
+
+export const SystemEvents = SysEvents;
 
 /**
  * API:
@@ -47,6 +49,7 @@ export class MSFS_API {
       opts.onConnect(handle);
       handle.on("event", (event) => this.handleSystemEvent(event));
       handle.on("exception", (e) => console.error(e));
+      this.addAirportHandling(handle);
     } catch (err) {
       if (opts.retries) {
         opts.retries--;
@@ -80,6 +83,29 @@ export class MSFS_API {
     });
   }
 
+  addAirportHandling(handle) {
+    const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
+    const IN_RANGE = this.nextId();
+    const OUT_OF_RANGE = this.nextId();
+
+    this.airportData = {};
+
+    handle.subscribeToFacilitiesEx1(
+      SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT,
+      IN_RANGE,
+      OUT_OF_RANGE
+    );
+
+    handle.on("airportList", (data) => {
+      this.airportData = data.aiports; // TODO: FIX THIS WHEN UPDATING NODE-SIMCONNECT
+      this.eventListeners.forEach(({ eventName, eventHandler }) => {
+        if (eventName === AIRPORTS_EVENT.name) {
+          eventHandler(this.airportData);
+        }
+      });
+    });
+  }
+
   /**
    * Add an event listener. This returns a function that acts
    * as the corresponding `off()` function, without needing to
@@ -92,15 +118,33 @@ export class MSFS_API {
   on(eventDefinition, eventHandler) {
     const { name: eventName } = eventDefinition;
     const { handle } = this;
+
+    // special case handling
+    if (eventName === AIRPORTS_EVENT.name) {
+      return this.__subscribeToAirports(eventHandler);
+    }
+
     const eventID = this.nextId();
     handle.subscribeToSystemEvent(eventID, eventName);
     // console.log(`registering for "${eventName}" using id ${eventID}`);
-    this.eventListeners.push({
-      id: eventID,
-      eventName,
-      eventHandler,
-    });
+    this.eventListeners.push({ id: eventID, eventName, eventHandler });
     return () => this.off(eventID, eventName);
+  }
+
+  // Special case handler for getting "airports nearby" data.
+  __subscribeToAirports(eventHandler, eventName = AIRPORTS_EVENT.name) {
+    const listenerId = -this.nextId();
+    const bundle = { id: listenerId, eventName, eventHandler };
+    this.eventListeners.push(bundle);
+    // As this is not a standard event, we need to trigger the event
+    // handler manually
+    setTimeout(() => {
+      // with a safety in case code immedately called off()...
+      if (this.eventListeners.indexOf(bundle) > -1) {
+        eventHandler(this.airportData);
+      }
+    }, 100);
+    return () => this.off(listenerId, eventName);
   }
 
   /**
@@ -111,9 +155,12 @@ export class MSFS_API {
    */
   off(eventID, eventName) {
     const { handle } = this;
-    handle.unsubscribeFromSystemEvent(eventID);
+    // If this was a negative number, it's an internal id rathe than a true event ID.
+    if (eventID > 0) handle.unsubscribeFromSystemEvent(eventID);
     // console.log(`unregistering from "${eventName}" with id ${eventID}`);
-    const pos = this.eventListeners.findIndex((e) => e.eventName === eventName);
+    const pos = this.eventListeners.findIndex(
+      (e) => e.id === eventID && e.eventName === eventName
+    );
     // console.log(`removing listener in position ${pos}`)
     this.eventListeners.splice(pos, 1);
     this.releaseId(eventID);
