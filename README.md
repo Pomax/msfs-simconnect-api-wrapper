@@ -85,9 +85,10 @@ Note that the event names are keys from the `SystemEvents` object, using UPPER_S
 
 ##### Special Events
 
-There is currently a single "not-official" event that can be listened to:
+There are currently two "unofficial" events that can be listened to:
 
-- `AIRPORTS`, registers a listener for which airports are nearby (or rather, "in the current Sim bubble", which is all world tiles currently loaded and active in the sim), which triggers every time an airport comes into range, _as well as_ when airports go out of range.
+- `AIRPORTS_IN_RANGE`, registers a listener for notifications about airports coming into range of our airplane (or rather, coming into range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
+- `AIRPORTS_OUT_OF_RANGE`, registers a listener for notifications about airports dropping out of range of our airplane (with the same note as above).
 
 #### `off(evtDefinition, handler)`
 
@@ -96,6 +97,12 @@ Stop listening for a specific simconnect event with a specific handler. You'll t
 #### `get(...propNames)`
 
 Accepts a list of simvars (with spaces or underscores) and async-returns a key/value pair object with each simvar as key (with spaces replaced by underscores).
+
+#### `getSpecial(propName)`
+
+A special get function for getting individual values that secretly require a whole bunch of complex SimConnect code. There is currently only one such value available:
+
+- `NEARBY_AIRPORTS`, which yields the list of airports that are currently in range of our airplane (or rather, in range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
 
 #### `schedule(handler, interval, ...propNames)`
 

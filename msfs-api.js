@@ -9,11 +9,14 @@ import {
 // imports used by the API
 import { SimVars } from "./simvars/index.js";
 
-// direct export for users:
+// Special import for working with airport data
 import { SystemEvents as SysEvents } from "./system-events/index.js";
-const AIRPORTS_EVENT = SysEvents.AIRPORTS;
+const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
+const { AIRPORTS_IN_RANGE, AIRPORTS_OUT_OF_RANGE } = SysEvents;
+
 const codeSafe = (string) => string.replaceAll(` `, `_`);
 
+// direct export for downstream users:
 export const SystemEvents = SysEvents;
 
 /**
@@ -25,8 +28,9 @@ export const SystemEvents = SysEvents;
  * - set(propName, value)
  */
 export class MSFS_API {
-  constructor(appName = "MSFS API") {
+  constructor(appName = "MSFS API", AirportDB) {
     this.appName = appName;
+    this.AirportDB = AirportDB;
 
     // set up a listener list for simconnect event handling:
     this.eventListeners = [];
@@ -84,25 +88,43 @@ export class MSFS_API {
   }
 
   addAirportHandling(handle) {
-    const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
+    // TODO: - [x] get(`NEARBY_AIRPORTS`) to get the current list of nearby airports.
+    //       - [ ] get(`ALL_AIRPORTS`) to get the list of all airports in the sim.
+    //       - [x] on(`AIRPORTS_IN_RANGE`) to subscribe to "new airports in range" events.
+    //       - [x] on(`AIRPORTS_OUT_OF_RANGE`) to subscribe to "airports dropping out of range" events.
+    //       - [x] document these four special cases
+    const TYPE = SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT;
     const IN_RANGE = this.nextId();
     const OUT_OF_RANGE = this.nextId();
 
-    this.airportData = [];
-
-    handle.subscribeToFacilitiesEx1(
-      SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT,
-      IN_RANGE,
-      OUT_OF_RANGE
-    );
+    handle.subscribeToFacilitiesEx1(TYPE, IN_RANGE, OUT_OF_RANGE);
 
     handle.on("airportList", (data) => {
-      this.airportData = data.aiports; // TODO: FIX THIS WHEN UPDATING NODE-SIMCONNECT
-      this.eventListeners.forEach(({ eventName, eventHandler }) => {
-        if (eventName === AIRPORTS_EVENT.name) {
-          eventHandler(...this.airportData);
-        }
-      });
+      const { requestID: id } = data;
+
+      // work around the node-simconnect typo, if it still exists
+      if (data.aiports) {
+        data.airports ??= data.aiports;
+        delete data.aiports;
+      }
+
+      // Are there new airports?
+      if (id === IN_RANGE) {
+        this.eventListeners.forEach(({ eventName, eventHandler }) => {
+          if (eventName === AIRPORTS_IN_RANGE.name) {
+            eventHandler(data.airports);
+          }
+        });
+      }
+
+      // Are there old airports?
+      else if (id === OUT_OF_RANGE) {
+        this.eventListeners.forEach(({ eventName, eventHandler }) => {
+          if (eventName === AIRPORTS_OUT_OF_RANGE.name) {
+            eventHandler(data.airports);
+          }
+        });
+      }
     });
   }
 
@@ -116,12 +138,20 @@ export class MSFS_API {
    * @returns
    */
   on(eventDefinition, eventHandler) {
+    if (!eventDefinition) {
+      console.error(`on() called without an event definition`);
+      console.trace();
+      return;
+    }
+
     const { name: eventName } = eventDefinition;
     const { handle } = this;
 
     // special case handling
-    if (eventName === AIRPORTS_EVENT.name) {
-      return this.__subscribeToAirports(eventHandler);
+    if (
+      [AIRPORTS_IN_RANGE.name, AIRPORTS_OUT_OF_RANGE.name].includes(eventName)
+    ) {
+      return this.__subscribeToAirports(eventName, eventHandler);
     }
 
     const eventID = this.nextId();
@@ -132,18 +162,10 @@ export class MSFS_API {
   }
 
   // Special case handler for getting "airports nearby" data.
-  __subscribeToAirports(eventHandler, eventName = AIRPORTS_EVENT.name) {
+  __subscribeToAirports(eventName, eventHandler) {
     const listenerId = -this.nextId();
     const bundle = { id: listenerId, eventName, eventHandler };
     this.eventListeners.push(bundle);
-    // As this is not a standard event, we need to trigger the event
-    // handler manually
-    setTimeout(() => {
-      // with a safety in case code immedately called off()...
-      if (this.eventListeners.indexOf(bundle) > -1) {
-        eventHandler(...this.airportData);
-      }
-    }, 100);
     return () => this.off(listenerId, eventName);
   }
 
@@ -260,6 +282,41 @@ export class MSFS_API {
     const defs = propNames.map((propName) => SimVars[propName]);
     this.addDataDefinitions(DATA_ID, propNames, defs);
     return this.generateGetPromise(DATA_ID, REQUEST_ID, propNames, defs);
+  }
+
+  /**
+   * Get a special value. Currently supported values:
+   * - [x] NEARBY_AIRPORTS, the list of airports around the plane inside the sim's "reality bubble".
+   * - [ ] ALL_AIRPORTS, the list of literally every airport known to the sim.
+   */
+  getSpecial(propName) {
+    propName.replaceAll(` `, `_`);
+    if (propName === `NEARBY_AIRPORTS`) {
+      return new Promise((resolve) => {
+        const getID = this.nextId();
+        const handler = (data) => {
+          if (data.requestID === getID) {
+            handle.off("airportList", handler);
+            this.releaseId(getID);
+            resolve({ NEARBY_AIRPORTS: data.airports ?? data.aiports});
+          }
+        };
+        const { handle } = this;
+        handle.on("airportList", handler);
+        handle.requestFacilitiesListEx1(
+          SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT,
+          getID
+        );
+      });
+    }
+    if (propName === `ALL_AIRPORTS`) {
+      console.warn(`getSpecial(ALL_AIRPORTS) is not currently supported.`);
+      if (!this.AirportDB) return [];
+      return new Promise((resolve) => {
+        // TODO: load sqlite db from this.AirportDB and convert to an array of {icao, latitude, longitude, elevation }
+        resolve([]);
+      });
+    }
   }
 
   /**

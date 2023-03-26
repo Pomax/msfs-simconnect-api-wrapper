@@ -103,8 +103,12 @@ export const SystemEvents = {
   },
 
   // CUSTOM LIST, NOT PART OF "REAL" SIMCONNECT
-  AIRPORTS: {
-    name: `Airports`,
-    desc: `Use this event with the on() function to register for airports coming into range and dropping out of range of the sim's reality bubble.`
-  }
+  AIRPORTS_IN_RANGE: {
+    name: `Airports in range`,
+    desc: `Use this event with the on() function to get notified about airports coming into range of our airplane (by being loaded into the sim's "reality bubble").`
+  },
+  AIRPORTS_OUT_OF_RANGE: {
+    name: `Airports out of range`,
+    desc: `Use this event with the on() function to get notified about airports dropping out of range of our airplane (by being loaded into the sim's "reality bubble").`
+  },
 };

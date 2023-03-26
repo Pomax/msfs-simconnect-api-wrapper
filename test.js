@@ -24,20 +24,21 @@ async function connect(handle) {
     console.log(`sim unpaused`);
   });
 
-  const off = api.on(SystemEvents.AIRPORTS, (data) => {
-    console.log(data);
-    off();
-  });
+  const { NEARBY_AIRPORTS } = await api.getSpecial(`NEARBY_AIRPORTS`);
+  console.log(`${NEARBY_AIRPORTS.length} nearby airports`);
 
-  for (let i=0; i<2000; i++) {
-    try {
-      await api.get(`PLANE_LONGITUDE`, `NO_THANKS`);
-    } catch (e) {
-      console.log(`${i}: ${e.message}`);
-    }
+  const inRange = api.on(SystemEvents.AIRPORTS_IN_RANGE, (data) => inRange());
+  const outOfRange = api.on(SystemEvents.AIRPORTS_OUT_OF_RANGE, (data) =>
+    outOfRange()
+  );
+
+  try {
+    await api.get(`PLANE_LONGITUDE`, `NO_THANKS`);
+  } catch (e) {
+    console.log(e.message);
   }
 
-   runTests(api);
+  runTests(api);
 }
 
 async function runTests(api) {
