@@ -13,6 +13,7 @@ import { CameraVariables } from "./camera-variables.js";
 import { MiscellaneousVariables } from "./miscellaneous-variables.js";
 import { HelicopterVariables } from "./helicopter-variables.js";
 import { ServiceVariables } from "./services-variables.js";
+import { WASMGaugeAPITokenVariables } from "./wasm-gauge-api-token-variables.js";
 
 const SimVars = {
   ...AircraftAutopilotAssistantVariables,
@@ -28,9 +29,10 @@ const SimVars = {
   ...MiscellaneousVariables,
   ...HelicopterVariables,
   ...ServiceVariables,
+  ...WASMGaugeAPITokenVariables,
 };
 
-Object.entries(SimVars).forEach(([key,value]) => (value.name = key));
+Object.entries(SimVars).forEach(([key, value]) => (value.name = key));
 
 // Make sure that variables that use a :number suffix resolve
 // to the ":index" definition for that variable, and to make

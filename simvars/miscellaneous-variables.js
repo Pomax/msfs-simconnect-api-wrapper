@@ -1,196 +1,167 @@
 // See https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Miscellaneous_Variables.htm
 
-import { dataType, SETTABLE } from "./simvar-utils.js";
+import { define } from "./simvar-utils.js";
+
+// data types
+import {
+  Int32,
+  SInt32,
+  Float64,
+  SFloat64,
+  String32,
+  String128,
+} from "./simvar-utils.js";
+
+// data units
+import {
+  Bool,
+  Knots,
+  Feet,
+  Number,
+  Degrees,
+  Enum,
+  NullUnit,
+  Mask,
+  Seconds,
+  Celsius,
+  FeetPerSecond,
+  Meters,
+  MetersPerSecond,
+  InchesOfMecury,
+  Millibars,
+  SlugsPerCubicFeet,
+  MillimetersOfWater,
+} from "./simvar-utils.js";
 
 const MISC = {
-  "ANIMATION DELTA TIME": {
-    desc: `Difference of time between the current frame and the last frame where this SimObject has been animated`,
-    units: `Seconds`,
-    ...dataType(`Float64`),
-  },
-  "ARTIFICIAL GROUND ELEVATION": {
-    desc: `In case scenery is not loaded for AI planes, this variable can be used to set a default surface elevation.`,
-    units: `Feet`,
-    ...dataType(`Float64`),
-  },
-  CATEGORY: {
-    desc: `Type of aircraft`,
-    units: null,
-    ...dataType(`String128`),
-  },
-  "CRASH FLAG": {
-    desc: `Flag value that indicates the cause of a crash.`,
-    units: `enum`,
-    ...dataType(`Int32`),
-  },
-  "CRASH SEQUENCE": {
-    desc: `The state of the crash event sequence.`,
-    units: `enum`,
-    ...dataType(`Int32`),
-  },
-  "GROUND ALTITUDE": {
-    desc: `Altitude of surface.`,
-    units: `Meters`,
-    ...dataType(`Float64`),
-  },
-  "HAND ANIM STATE": {
-    desc: `What frame of the hand is currently used.`,
-    units: `enum`,
-    ...dataType(`Int32`, SETTABLE),
-  },
-  "IDLE ANIMATION ID": {
-    desc: `The ID of the idle animation for the sim object.`,
-    units: null,
-    ...dataType(`String32`),
-  },
-  "MAGVAR": {
-    desc: `Magnetic variation.`,
-    units: `Degrees`,
-    ...dataType(`Float64`),
-  },
-  "MISSION SCORE": {
-    desc: ``,
-    units: `Number`,
-    ...dataType(`Int32`, SETTABLE),
-  },
-  "REALISM": {
-    desc: `General realism percent.`,
-    units: `Number`,
-    ...dataType(`Int32`, SETTABLE),
-  },
-  "REALISM CRASH DETECTION": {
-    desc: `True indicates crash detection is turned on.`,
-    units: `Bool`,
-    ...dataType(`Int32`),
-  },
-  "REALISM CRASH WITH OTHERS": {
-    desc: `True indicates crashing with other aircraft is possible.`,
-    units: `Bool`,
-    ...dataType(`Int32`),
-  },
-  "SIM DISABLED": {
-    desc: `Is sim disabled.`,
-    units: `Bool`,
-    ...dataType(`Int32`, SETTABLE),
-  },
-  "SIM ON GROUND": {
-    desc: `On ground flag.`,
-    units: `Bool`,
-    ...dataType(`Int32`),
-  },
-  "SIM SHOULD SET ON GROUND": {
-    desc: ``,
-    units: `Bool`,
-    ...dataType(`Int32`, SETTABLE),
-  },
-  "TRACK IR ENABLE": {
-    desc: `Returns true if Track IR is enabled or not.`,
-    units: `Bool`,
-    ...dataType(`Int32`, SETTABLE),
-  },
-  "TOTAL WORLD VELOCITY": {
-    desc: `Speed relative to the earths center.`,
-    units: `Feet per second`,
-    ...dataType(`Float64`, SETTABLE),
-  },
-  "USER INPUT ENABLED": {
-    desc: `Is input allowed from the user.`,
-    units: `Bool`,
-    ...dataType(`Int32`, SETTABLE),
-  },
-  "VISUAL MODEL RADIUS": {
-    desc: `Model radius.`,
-    units: `Meters`,
-    ...dataType(`Float64`),
-  },
-  "VELOCITY WORLD X": {
-    desc: `Speed relative to earth, in East/West direction.`,
-    units: `Feet per second`,
-    ...dataType(`Float64`, SETTABLE),
-  },
-  "VELOCITY WORLD Y": {
-    desc: `Speed relative to earth, in vertical direction.`,
-    units: `Feet per second`,
-    ...dataType(`Float64`, SETTABLE),
-  },
-  "VELOCITY WORLD Z": {
-    desc: `Speed relative to earth, in North/South direction.`,
-    units: `Feet per second`,
-    ...dataType(`Float64`, SETTABLE),
-  },
+  "ANIMATION DELTA TIME": define(
+    `Difference of time between the current frame and the last frame where this SimObject has been animated`,
+    Seconds,
+    Float64
+  ),
+  "ARTIFICIAL GROUND ELEVATION": define(
+    `In case scenery is not loaded for AI planes, this variable can be used to set a default surface elevation.`,
+    Feet,
+    Float64
+  ),
+  CATEGORY: define(`Type of aircraft`, NullUnit, String128),
+  "CRASH FLAG": define(
+    `Flag value that indicates the cause of a crash.`,
+    Enum,
+    Int32
+  ),
+  "CRASH SEQUENCE": define(
+    `The state of the crash event sequence.`,
+    Enum,
+    Int32
+  ),
+  "GROUND ALTITUDE": define(`Altitude of surface.`, Meters, Float64),
+  "HAND ANIM STATE": define(
+    `What frame of the hand is currently used.`,
+    Enum,
+    SInt32
+  ),
+  "IDLE ANIMATION ID": define(
+    `The ID of the idle animation for the sim object.`,
+    NullUnit,
+    String32
+  ),
+  MAGVAR: define(`Magnetic variation.`, Degrees, Float64),
+  "MISSION SCORE": define(``, Number, SInt32),
+  REALISM: define(`General realism percent.`, Number, SInt32),
+  "REALISM CRASH DETECTION": define(
+    `True indicates crash detection is turned on.`,
+    Bool,
+    Int32
+  ),
+  "REALISM CRASH WITH OTHERS": define(
+    `True indicates crashing with other aircraft is possible.`,
+    Bool,
+    Int32
+  ),
+  "SIM DISABLED": define(`Is sim disabled.`, Bool, SInt32),
+  "SIM ON GROUND": define(`On ground flag.`, Bool, Int32),
+  "SIM SHOULD SET ON GROUND": define(``, Bool, SInt32),
+  "TRACK IR ENABLE": define(
+    `Returns true if Track IR is enabled or not.`,
+    Bool,
+    SInt32
+  ),
+  "TOTAL WORLD VELOCITY": define(
+    `Speed relative to the earths center.`,
+    FeetPerSecond,
+    SFloat64
+  ),
+  "USER INPUT ENABLED": define(`Is input allowed from the user.`, Bool, SInt32),
+  "VISUAL MODEL RADIUS": define(`Model radius.`, Meters, Float64),
+  "VELOCITY WORLD X": define(
+    `Speed relative to earth, in East/West direction.`,
+    FeetPerSecond,
+    SFloat64
+  ),
+  "VELOCITY WORLD Y": define(
+    `Speed relative to earth, in vertical direction.`,
+    FeetPerSecond,
+    SFloat64
+  ),
+  "VELOCITY WORLD Z": define(
+    `Speed relative to earth, in North/South direction.`,
+    FeetPerSecond,
+    SFloat64
+  ),
 };
 
 const AMBIENT_WEATHER = {
-  "AMBIENT DENSITY": {
-    desc: `Ambient density.`,
-    units: `Slugs per cubic feet`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT PRECIP RATE": {
-    desc: `The current precipitation rate.`,
-    units: `millimeters of water`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT PRECIP STATE": {
-    desc: `The current state of precipitation.`,
-    units: `mask`,
-    ...dataType(`Int32`),
-  },
-  "AMBIENT PRESSURE": {
-    desc: `Ambient pressure.`,
-    units: `Inches of mercury`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT TEMPERATURE": {
-    desc: `Ambient temperature.`,
-    units: `Celsius`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT VISIBILITY": {
-    desc: `Ambient visibility (only measures ambient particle visibility - related to ambient density).`,
-    units: `Meters`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT WIND DIRECTION": {
-    desc: `Wind direction, relative to true north.`,
-    units: `Degrees`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT WIND VELOCITY": {
-    desc: `Wind velocity.`,
-    units: `Knots`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT WIND X": {
-    desc: `Wind component in East/West direction.`,
-    units: `Meters per second`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT WIND Y": {
-    desc: `Wind component in vertical direction.`,
-    units: `Meters per second`,
-    ...dataType(`Float64`),
-  },
-  "AMBIENT WIND Z": {
-    desc: `Wind component in North/South direction.`,
-    units: `Meters per second`,
-    ...dataType(`Float64`),
-  },
-  "BAROMETER PRESSURE": {
-    desc: `Barometric pressure.`,
-    units: `Millibars`,
-    ...dataType(`Float64`),
-  },
-  "SEA LEVEL PRESSURE": {
-    desc: `Barometric pressure at sea level.`,
-    units: `Millibars`,
-    ...dataType(`Float64`),
-  },
-  "STRUCT AMBIENT WIND": {
-    desc: `X (latitude), Y (vertical) and Z (longitude) components of the wind.`,
-    units: `Feet per second`,
-    ...dataType(`Float64`),
-  },
+  "AMBIENT DENSITY": define(`Ambient density.`, SlugsPerCubicFeet, Float64),
+  "AMBIENT PRECIP RATE": define(
+    `The current precipitation rate.`,
+    MillimetersOfWater,
+    Float64
+  ),
+  "AMBIENT PRECIP STATE": define(
+    `The current state of precipitation.`,
+    Mask,
+    Int32
+  ),
+  "AMBIENT PRESSURE": define(`Ambient pressure.`, InchesOfMecury, Float64),
+  "AMBIENT TEMPERATURE": define(`Ambient temperature.`, Celsius, Float64),
+  "AMBIENT VISIBILITY": define(
+    `Ambient visibility (only measures ambient particle visibility - related to ambient density).`,
+    Meters,
+    Float64
+  ),
+  "AMBIENT WIND DIRECTION": define(
+    `Wind direction, relative to true north.`,
+    Degrees,
+    Float64
+  ),
+  "AMBIENT WIND VELOCITY": define(`Wind velocity.`, Knots, Float64),
+  "AMBIENT WIND X": define(
+    `Wind component in East/West direction.`,
+    MetersPerSecond,
+    Float64
+  ),
+  "AMBIENT WIND Y": define(
+    `Wind component in vertical direction.`,
+    MetersPerSecond,
+    Float64
+  ),
+  "AMBIENT WIND Z": define(
+    `Wind component in North/South direction.`,
+    MetersPerSecond,
+    Float64
+  ),
+  "BAROMETER PRESSURE": define(`Barometric pressure.`, Millibars, Float64),
+  "SEA LEVEL PRESSURE": define(
+    `Barometric pressure at sea level.`,
+    Millibars,
+    Float64
+  ),
+  "STRUCT AMBIENT WIND": define(
+    `X (latitude), Y (vertical) and Z (longitude) components of the wind.`,
+    FeetPerSecond,
+    Float64
+  ),
 };
 
 export const MiscellaneousVariables = {
