@@ -33,10 +33,10 @@ export class MSFS_API {
     this.AirportDB = AirportDB;
 
     // set up a listener list for simconnect event handling:
-    this.eventListeners = [];
+    this.eventListeners = {};
 
     // set up an event/data/request id counter:
-    this.id = 0;
+    this.id = 1;
     this.reserved = new Set();
   }
 
@@ -79,12 +79,50 @@ export class MSFS_API {
     this.reserved.delete(id);
   }
 
+  // We want to make sure we only ever register for an event once
+  // because MSFS does not follow the JS "register multiple handlers"
+  // concept. That's up to you. So.... that's where this code comes in:
+  addEventListener(eventName, eventHandler) {
+    const { eventListeners: e } = this;
+    if (!e[eventName]) {
+      const eventID = this.nextId();
+      this.handle.subscribeToSystemEvent(eventID, eventName);
+      e[eventName] = {
+        eventID,
+        eventName,
+        data: undefined,
+        handlers: [eventHandler],
+      };
+      e[eventID] = e[eventName];
+    }
+
+    // do we need to send the most recently known value?
+    else {
+      e[eventName].handlers.push(eventHandler);
+      const { data } = e[eventName];
+      if (data) eventHandler(data);
+    }
+  }
+
+  removeEventListener(eventName, eventHandler) {
+    const { eventListeners: e } = this;
+    const obj = e[eventName];
+    const pos = obj.handlers.findIndex((h) => h === eventHandler);
+    if (pos > -1) obj.handlers.splice(pos, 1);
+  }
+
   handleSystemEvent(event) {
-    const { clientEventId, data } = event;
-    // console.log(event, this.eventListeners);
-    this.eventListeners.forEach(({ id, eventHandler }) => {
-      if (clientEventId === id) eventHandler(data);
-    });
+    const { clientEventId: eventID, data } = event;
+    const entry = this.eventListeners[eventID];
+
+    if (!entry) {
+      return console.error(
+        `handling data for id ${eventID} without an event handler entry??`
+      );
+    }
+
+    entry.data = data;
+    entry.handlers.forEach((handle) => handle(data));
   }
 
   addAirportHandling(handle) {
@@ -108,23 +146,10 @@ export class MSFS_API {
         delete data.aiports;
       }
 
-      // Are there new airports?
-      if (id === IN_RANGE) {
-        this.eventListeners.forEach(({ eventName, eventHandler }) => {
-          if (eventName === AIRPORTS_IN_RANGE.name) {
-            eventHandler(data.airports);
-          }
-        });
-      }
-
-      // Are there old airports?
-      else if (id === OUT_OF_RANGE) {
-        this.eventListeners.forEach(({ eventName, eventHandler }) => {
-          if (eventName === AIRPORTS_OUT_OF_RANGE.name) {
-            eventHandler(data.airports);
-          }
-        });
-      }
+      // Are there in/out of range airports?
+      this.eventListeners[id]?.handlers.forEach((handle) =>
+        handle(data.airports)
+      );
     });
   }
 
@@ -145,47 +170,31 @@ export class MSFS_API {
     }
 
     const { name: eventName } = eventDefinition;
-    const { handle } = this;
 
     // special case handling
-    if (
-      [AIRPORTS_IN_RANGE.name, AIRPORTS_OUT_OF_RANGE.name].includes(eventName)
-    ) {
+    const airports = [AIRPORTS_IN_RANGE.name, AIRPORTS_OUT_OF_RANGE.name];
+    if (airports.includes(eventName)) {
       return this.__subscribeToAirports(eventName, eventHandler);
     }
 
-    const eventID = this.nextId();
-    handle.subscribeToSystemEvent(eventID, eventName);
-    // console.log(`registering for "${eventName}" using id ${eventID}`);
-    this.eventListeners.push({ id: eventID, eventName, eventHandler });
-    return () => this.off(eventID, eventName);
+    this.addEventListener(eventName, eventHandler);
+    return () => this.off(eventName, eventHandler);
   }
 
   // Special case handler for getting "airports nearby" data.
   __subscribeToAirports(eventName, eventHandler) {
-    const listenerId = -this.nextId();
-    const bundle = { id: listenerId, eventName, eventHandler };
-    this.eventListeners.push(bundle);
-    return () => this.off(listenerId, eventName);
+    this.addEventListener(eventName, eventHandler);
+    return () => this.off(eventName, eventHandler);
   }
 
   /**
    * Remove an event listener.
    *
-   * @param {*} eventID the id that was used to register this event handler
-   * @param {*} eventName the event name associated with this event id
+   * @param {*} eventName the event name to stop listening to
+   * @param {*} eventHandler the event handler that should no longer trigger for this event
    */
-  off(eventID, eventName) {
-    const { handle } = this;
-    // If this was a negative number, it's an internal id rathe than a true event ID.
-    if (eventID > 0) handle.unsubscribeFromSystemEvent(eventID);
-    // console.log(`unregistering from "${eventName}" with id ${eventID}`);
-    const pos = this.eventListeners.findIndex(
-      (e) => e.id === eventID && e.eventName === eventName
-    );
-    // console.log(`removing listener in position ${pos}`)
-    this.eventListeners.splice(pos, 1);
-    this.releaseId(eventID);
+  off(eventName, eventHandler) {
+    this.removeEventListener(eventName, eventHandler);
   }
 
   /**
@@ -298,7 +307,7 @@ export class MSFS_API {
           if (data.requestID === getID) {
             handle.off("airportList", handler);
             this.releaseId(getID);
-            resolve({ NEARBY_AIRPORTS: data.airports ?? data.aiports});
+            resolve({ NEARBY_AIRPORTS: data.airports ?? data.aiports });
           }
         };
         const { handle } = this;
