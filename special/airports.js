@@ -260,7 +260,7 @@ export function airportGetHandler(api, propName) {
 
       handle.addToFacilityDefinition(FA, "CLOSE RUNWAY"); // "end of data" marker
 
-      const airportData = { runways: [] };
+      const airportData = { ICAO: AIRPORT_ICAO, runways: [] };
 
       const handler = ({ data, type }) => {
         // airport
@@ -271,7 +271,6 @@ export function airportGetHandler(api, propName) {
           const declination = data.readFloat32();
           const name = data.readString32();
           const name64 = data.readString64();
-          const ICAO = AIRPORT_ICAO;
           const region = data.readString8();
           const runwayCount = data.readInt32();
 
