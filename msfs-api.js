@@ -8,16 +8,22 @@ import {
 
 // imports used by the API
 import { SimVars } from "./simvars/index.js";
+import { SystemEvents as SysEvents } from "./system-events/index.js";
+import {
+  SystemEvents as AirportEvents,
+  airportGetHandler,
+} from "./special/airports.js";
 
 // Special import for working with airport data
-import { SystemEvents as SysEvents } from "./system-events/index.js";
-const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
 const { AIRPORTS_IN_RANGE, AIRPORTS_OUT_OF_RANGE } = SysEvents;
+
+const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
+const SIMCONNECT_FACILITY_AIRPORT = 1000;
 
 const codeSafe = (string) => string.replaceAll(` `, `_`);
 
 // direct export for downstream users:
-export const SystemEvents = SysEvents;
+export const SystemEvents = Object.assign({}, SysEvents, AirportEvents);
 
 /**
  * API:
@@ -34,6 +40,9 @@ export class MSFS_API {
 
     // set up a listener list for simconnect event handling:
     this.eventListeners = {};
+
+    // set up a list for special (non-simconnect) get handlers
+    this.specialGetHandlers = [airportGetHandler];
 
     // set up an event/data/request id counter:
     this.id = 1;
@@ -168,21 +177,7 @@ export class MSFS_API {
       console.trace();
       return;
     }
-
     const { name: eventName } = eventDefinition;
-
-    // special case handling
-    const airports = [AIRPORTS_IN_RANGE.name, AIRPORTS_OUT_OF_RANGE.name];
-    if (airports.includes(eventName)) {
-      return this.__subscribeToAirports(eventName, eventHandler);
-    }
-
-    this.addEventListener(eventName, eventHandler);
-    return () => this.off(eventName, eventHandler);
-  }
-
-  // Special case handler for getting "airports nearby" data.
-  __subscribeToAirports(eventName, eventHandler) {
     this.addEventListener(eventName, eventHandler);
     return () => this.off(eventName, eventHandler);
   }
@@ -288,44 +283,21 @@ export class MSFS_API {
     const DATA_ID = this.nextId();
     const REQUEST_ID = DATA_ID;
     propNames = propNames.map((s) => s.replaceAll(`_`, ` `));
+
+    // see if this is a special, non-simconnect variable:
+    if (propNames.length === 1) {
+      const [propName] = propNames;
+      for (const get of this.specialGetHandlers) {
+        if (get.supports(propName)) {
+          return get(this, propName);
+        }
+      }
+    }
+
+    // if not, regular lookup.
     const defs = propNames.map((propName) => SimVars[propName]);
     this.addDataDefinitions(DATA_ID, propNames, defs);
     return this.generateGetPromise(DATA_ID, REQUEST_ID, propNames, defs);
-  }
-
-  /**
-   * Get a special value. Currently supported values:
-   * - [x] NEARBY_AIRPORTS, the list of airports around the plane inside the sim's "reality bubble".
-   * - [ ] ALL_AIRPORTS, the list of literally every airport known to the sim.
-   */
-  getSpecial(propName) {
-    propName.replaceAll(` `, `_`);
-    if (propName === `NEARBY_AIRPORTS`) {
-      return new Promise((resolve) => {
-        const getID = this.nextId();
-        const handler = (data) => {
-          if (data.requestID === getID) {
-            handle.off("airportList", handler);
-            this.releaseId(getID);
-            resolve({ NEARBY_AIRPORTS: data.airports ?? data.aiports });
-          }
-        };
-        const { handle } = this;
-        handle.on("airportList", handler);
-        handle.requestFacilitiesListEx1(
-          SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT,
-          getID
-        );
-      });
-    }
-    if (propName === `ALL_AIRPORTS`) {
-      console.warn(`getSpecial(ALL_AIRPORTS) is not currently supported.`);
-      if (!this.AirportDB) return [];
-      return new Promise((resolve) => {
-        // TODO: load sqlite db from this.AirportDB and convert to an array of {icao, latitude, longitude, elevation }
-        resolve([]);
-      });
-    }
   }
 
   /**

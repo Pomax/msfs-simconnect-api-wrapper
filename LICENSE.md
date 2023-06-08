@@ -1,0 +1,1 @@
+This code is free to use for non-commercial purposes. If you wish to use it in a commercial project, please file an issue to request a paid license.

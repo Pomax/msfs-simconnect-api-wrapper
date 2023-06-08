@@ -24,13 +24,24 @@ async function connect(handle) {
     console.log(`sim unpaused`);
   });
 
-  const { NEARBY_AIRPORTS } = await api.getSpecial(`NEARBY_AIRPORTS`);
+  const { NEARBY_AIRPORTS } = await api.get(`NEARBY_AIRPORTS`);
   console.log(`${NEARBY_AIRPORTS.length} nearby airports`);
 
-  const inRange = api.on(SystemEvents.AIRPORTS_IN_RANGE, (data) => inRange());
-  const outOfRange = api.on(SystemEvents.AIRPORTS_OUT_OF_RANGE, (data) =>
-    outOfRange()
-  );
+  const { ALL_AIRPORTS } = await api.get(`ALL_AIRPORTS`);
+  console.log(`${ALL_AIRPORTS.length} total airports on the planet`);
+
+  const airportData = await api.get(`AIRPORT:CYYJ`);
+  console.log(JSON.stringify(airportData, null, 2));
+
+  const inRange = api.on(SystemEvents.AIRPORTS_IN_RANGE, (data) => {
+    console.log(data);
+    inRange();
+  });
+
+  const outOfRange = api.on(SystemEvents.AIRPORTS_OUT_OF_RANGE, (data) => {
+    console.log(data);
+    outOfRange();
+  });
 
   try {
     await api.get(`PLANE_LONGITUDE`, `NO_THANKS`);

@@ -71,7 +71,7 @@ import { SystemEvents, MSFS_API } from "./msfs-api.js";
 const api = new MSFS_API();
 
 api.connect({
-  retries: 2Infinity,
+  retries: Infinity,
   retryInterval: 5,
   onConnect: () => {
     api.on(SystemEvents.PAUSED, () => {
@@ -85,7 +85,7 @@ Note that the event names are keys from the `SystemEvents` object, using UPPER_S
 
 ##### Special Events
 
-There are currently two "unofficial" events that can be listened to:
+There are currently two non-simconnect events that can be listened to:
 
 - `AIRPORTS_IN_RANGE`, registers a listener for notifications about airports coming into range of our airplane (or rather, coming into range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
 - `AIRPORTS_OUT_OF_RANGE`, registers a listener for notifications about airports dropping out of range of our airplane (with the same note as above).
@@ -98,11 +98,80 @@ Stop listening for a specific simconnect event with a specific handler. You'll t
 
 Accepts a list of simvars (with spaces or underscores) and async-returns a key/value pair object with each simvar as key (with spaces replaced by underscores).
 
-#### `getSpecial(propName)`
+##### special (non-simconnect) variables
 
-A special get function for getting individual values that secretly require a whole bunch of complex SimConnect code. There is currently only one such value available:
+There are a number of special variables that can only be retrieved using a get call with a single variable name, yielding data that is not services by SimConnect's own variables (or data that requires a considerable amount of low-level event handling).
+
+There are currently three variables:
 
 - `NEARBY_AIRPORTS`, which yields the list of airports that are currently in range of our airplane (or rather, in range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
+- `ALL_AIRPORTS`, which yields the list of all airports known to MSFS.
+
+Both calls return objects of the following type:
+
+```
+FacilityAirport {
+  icao: four character ICAO code
+  latitude: number in degrees
+  longitude: number in degrees
+  altitude: number in meters
+}
+```
+
+Pay special attention to the altitude, which is *not* in feet, it is in meters.
+
+- `AIRPORT:index`, which yields an airport's information (including runway information), with `index` being the airport's ICAO code.
+
+This call returns objects of the following type:
+
+```
+{
+  latitude: number in degrees
+  longitude: number in degrees
+  altitude: number in meters
+  declination: number in degree
+  name: airport name as a string with at most 32 characters
+  name64: airport name as a string with at most 64 characters
+  ICAO: four character ICAO code for this airport
+  region: the ICAO region for this airport as string
+  runwayCount: number of runways at this airport
+  runways: array of runway objects
+}
+```
+
+Again, pay special attention to the altitude, which is *not* in feet, it is in meters.
+
+Runway objects are of the following type:
+
+```
+{
+  latitude: number in degrees, marking the center of the runway
+  longitude: number in degrees, marking the center of the runway
+  altitude: number in meters
+  heading: number in degrees
+  length: number in meters
+  width: number in meters
+  patternAltitude: number in meters
+  slope: number in degrees
+  slopeTrue: number in degrees
+  surface: surface material, as string
+  approach: array of runway approaches
+}
+```
+
+Approaches are of the following type:
+
+```
+{
+  designation: runway designation as string
+  marking: runway marking, as string (can be a number, or cardinal direction)
+  ILS: {
+    type: ILS type as string
+    ICAO": ICAO code for this approach's ILS
+    region": ICAO region for this approach's ILS
+  }
+}
+```
 
 #### `schedule(handler, interval, ...propNames)`
 

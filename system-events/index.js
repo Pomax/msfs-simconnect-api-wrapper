@@ -101,14 +101,4 @@ export const SystemEvents = {
     name: `View`,
     desc: `Requests a notification when the user aircraft view is changed. This request will also return the current view immediately. A flag is returned in the dwData parameter, one of: SIMCONNECT_VIEW_SYSTEM_EVENT_DATA_COCKPIT_2D SIMCONNECT_VIEW_SYSTEM_EVENT_DATA_COCKPIT_VIRTUAL SIMCONNECT_VIEW_SYSTEM_EVENT_DATA_ORTHOGONAL (the map view).`,
   },
-
-  // CUSTOM LIST, NOT PART OF "REAL" SIMCONNECT
-  AIRPORTS_IN_RANGE: {
-    name: `Airports in range`,
-    desc: `Use this event with the on() function to get notified about airports coming into range of our airplane (by being loaded into the sim's "reality bubble").`
-  },
-  AIRPORTS_OUT_OF_RANGE: {
-    name: `Airports out of range`,
-    desc: `Use this event with the on() function to get notified about airports dropping out of range of our airplane (by being loaded into the sim's "reality bubble").`
-  },
 };
