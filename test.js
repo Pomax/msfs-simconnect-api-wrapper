@@ -32,6 +32,7 @@ async function connect(handle) {
 
   const airportData = await api.get(`AIRPORT:CYYJ`);
   console.log(JSON.stringify(airportData, null, 2));
+  console.log(JSON.stringify(await api.get(`AIRPORT:CYYJ`), null, 2));
 
   const inRange = api.on(SystemEvents.AIRPORTS_IN_RANGE, (data) => {
     console.log(data);

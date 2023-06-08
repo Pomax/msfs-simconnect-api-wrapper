@@ -1,3 +1,7 @@
+v2.0.1
+
+- fix exception on repeated airport:index calls.
+
 v2.0.0
 
 Added support for airport queries:

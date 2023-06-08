@@ -131,30 +131,63 @@ const ILS_TYPES = {
 
 const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
 const SIMCONNECT_FACILITY_AIRPORT = 1000;
-
 const AIRPORT_TYPE = SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT;
 
-function addAirportHandling(api) {
-  const { handle } = api;
+let facilityDefinitionRegistered = false;
 
-  const TYPE = SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT;
-  const IN_RANGE = api.nextId();
-  const OUT_OF_RANGE = api.nextId();
+function registerFacilityDefinition(handle) {
+  if (facilityDefinitionRegistered) return;
+  facilityDefinitionRegistered = true;
 
-  handle.subscribeToFacilitiesEx1(TYPE, IN_RANGE, OUT_OF_RANGE);
+  const FA = SIMCONNECT_FACILITY_AIRPORT;
 
-  handle.on("airportList", (data) => {
-    const { requestID: id } = data;
+  // Airport
+  handle.addToFacilityDefinition(FA, "OPEN AIRPORT"); // Open
 
-    // work around the node-simconnect typo, if it still exists
-    if (data.aiports) {
-      data.airports ??= data.aiports;
-      delete data.aiports;
-    }
+  [
+    `LATITUDE`,
+    `LONGITUDE`,
+    `ALTITUDE`,
+    `MAGVAR`,
+    `NAME`,
+    `NAME64`,
+    `REGION`,
+    `N_RUNWAYS`,
+  ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
 
-    // Are there in/out of range airports?
-    api.eventListeners[id]?.handlers.forEach((handle) => handle(data.airports));
-  });
+  // Runway
+  handle.addToFacilityDefinition(FA, "OPEN RUNWAY"); // "start of data" marker
+
+  [
+    `LATITUDE`,
+    `LONGITUDE`,
+    `ALTITUDE`,
+    `HEADING`,
+    `LENGTH`,
+    `WIDTH`,
+    `PATTERN_ALTITUDE`,
+    `SLOPE`,
+    `TRUE_SLOPE`,
+    `SURFACE`,
+  ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
+
+  [
+    `PRIMARY_NUMBER`,
+    `PRIMARY_DESIGNATOR`,
+    `PRIMARY_ILS_TYPE`,
+    `PRIMARY_ILS_ICAO`,
+    `PRIMARY_ILS_REGION`,
+  ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
+
+  [
+    `SECONDARY_NUMBER`,
+    `SECONDARY_DESIGNATOR`,
+    `SECONDARY_ILS_TYPE`,
+    `SECONDARY_ILS_ICAO`,
+    `SECONDARY_ILS_REGION`,
+  ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
+
+  handle.addToFacilityDefinition(FA, "CLOSE RUNWAY"); // "end of data" marker
 }
 
 // Add support for three new airport-related variables
@@ -210,55 +243,7 @@ export function airportGetHandler(api, propName) {
       const AIRPORT_ICAO = propName.substring(propName.indexOf(`:`) + 1);
       const getID = api.nextId();
 
-      const FA = SIMCONNECT_FACILITY_AIRPORT;
-
-      // Airport
-      handle.addToFacilityDefinition(FA, "OPEN AIRPORT"); // Open
-
-      [
-        `LATITUDE`,
-        `LONGITUDE`,
-        `ALTITUDE`,
-        `MAGVAR`,
-        `NAME`,
-        `NAME64`,
-        `REGION`,
-        `N_RUNWAYS`,
-      ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
-
-      // Runway
-      handle.addToFacilityDefinition(FA, "OPEN RUNWAY"); // "start of data" marker
-
-      [
-        `LATITUDE`,
-        `LONGITUDE`,
-        `ALTITUDE`,
-        `HEADING`,
-        `LENGTH`,
-        `WIDTH`,
-        `PATTERN_ALTITUDE`,
-        `SLOPE`,
-        `TRUE_SLOPE`,
-        `SURFACE`,
-      ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
-
-      [
-        `PRIMARY_NUMBER`,
-        `PRIMARY_DESIGNATOR`,
-        `PRIMARY_ILS_TYPE`,
-        `PRIMARY_ILS_ICAO`,
-        `PRIMARY_ILS_REGION`,
-      ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
-
-      [
-        `SECONDARY_NUMBER`,
-        `SECONDARY_DESIGNATOR`,
-        `SECONDARY_ILS_TYPE`,
-        `SECONDARY_ILS_ICAO`,
-        `SECONDARY_ILS_REGION`,
-      ].forEach((thing) => handle.addToFacilityDefinition(FA, thing));
-
-      handle.addToFacilityDefinition(FA, "CLOSE RUNWAY"); // "end of data" marker
+      registerFacilityDefinition(handle);
 
       const airportData = { ICAO: AIRPORT_ICAO, runways: [] };
 
