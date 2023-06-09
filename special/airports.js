@@ -247,7 +247,9 @@ export function airportGetHandler(api, propName) {
 
       const airportData = { icao: AIRPORT_ICAO, runways: [] };
 
-      const handler = ({ data, type }) => {
+      const handler = ({ data, type, userRequestId }) => {
+        if (userRequestId !== getID) return;
+
         // airport
         if (type === 0) {
           const latitude = data.readFloat64();
@@ -338,7 +340,9 @@ export function airportGetHandler(api, propName) {
           api.releaseId(getID);
           handle.off("facilityDataEnd", checkDone);
           handle.off("facilityData", handler);
-          resolve(airportData);
+          resolve({
+            [propName]: airportData,
+          });
         }
       };
 
