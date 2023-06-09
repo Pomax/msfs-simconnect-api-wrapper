@@ -132,7 +132,7 @@ This call returns objects of the following type:
   declination: number in degree
   name: airport name as a string with at most 32 characters
   name64: airport name as a string with at most 64 characters
-  ICAO: four character ICAO code for this airport
+  icao: four character ICAO code for this airport
   region: the ICAO region for this airport as string
   runwayCount: number of runways at this airport
   runways: array of runway objects
@@ -167,7 +167,7 @@ Approaches are of the following type:
   marking: runway marking, as string (can be a number, or cardinal direction)
   ILS: {
     type: ILS type as string
-    ICAO": ICAO code for this approach's ILS
+    icao: ICAO code for this approach's ILS
     region": ICAO region for this approach's ILS
   }
 }
