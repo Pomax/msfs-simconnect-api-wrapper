@@ -245,7 +245,7 @@ export function airportGetHandler(api, propName) {
 
       registerFacilityDefinition(handle);
 
-      const airportData = { ICAO: AIRPORT_ICAO, runways: [] };
+      const airportData = { icao: AIRPORT_ICAO, runways: [] };
 
       const handler = ({ data, type }) => {
         // airport
@@ -313,7 +313,7 @@ export function airportGetHandler(api, propName) {
                 marking: primary_number,
                 ILS: {
                   type: primary_ils_type,
-                  ICAO: primary_ils_icao,
+                  icao: primary_ils_icao,
                   region: primary_ils_region,
                 },
               },
@@ -322,7 +322,7 @@ export function airportGetHandler(api, propName) {
                 marking: secondary_number,
                 ILS: {
                   type: secondary_ils_type,
-                  ICAO: secondary_ils_icao,
+                  icao: secondary_ils_icao,
                   region: secondary_ils_region,
                 },
               },
