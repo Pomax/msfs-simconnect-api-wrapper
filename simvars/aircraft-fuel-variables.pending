@@ -1,3 +1,5 @@
+// See https://docs.flightsimulator.com/html/Programming_Tools/SimVars/Aircraft_SimVars/Aircraft_Fuel_Variables.htm
+
 [General]
 
 FUEL CROSS FEED:index 	Cross feed valve setting. This will return the current setting for the fuel crossfeed for the indexed engine, based on the current status of the simulation and the Cross Feed key events. 	
