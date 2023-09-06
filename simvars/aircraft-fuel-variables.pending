@@ -1,0 +1,185 @@
+[General]
+
+FUEL CROSS FEED:index 	Cross feed valve setting. This will return the current setting for the fuel crossfeed for the indexed engine, based on the current status of the simulation and the Cross Feed key events. 	
+
+Enum:
+
+    0 = Closed
+    1 = Open
+    2 = Left to Right
+    3 = Right to Left
+
+	
+FUEL DUMP ACTIVE 	If 1 (TRUE) then the aircraft can dump fuel. 	Bool 	
+FUEL DUMP SWITCH 	If set to 1 (TRUE) then the aircraft will dump fuel at the rate set by fuel_dump_rate parameter in the flight_model.cfg file. 	Bool 	
+FUEL LEFT CAPACITY 	Maximum capacity in volume of all the tanks on the left side of the aircraft. 	Gallons 	
+FUEL LEFT QUANTITY 	Current quantity in volume of all the tanks on the left side of the aircraft. 	Gallons 	
+FUEL PUMP 	Currently not used within the simulation. 	Number 	
+FUEL RIGHT CAPACITY 	Maximum capacity in volume of all the tanks on the right side of the aircraft. 	Gallons 	
+FUEL RIGHT QUANTITY 	Current quantity in volume of all the tanks on the right side of the aircraft. 	Gallons 	
+FUEL SELECTED QUANTITY:index 	Quantity of fuel in the tank referenced by the indexed selector. When using the legacy fuel system, this SimVar will return the quantity of fuel in the tank pointed to by the selector you chose with the index. If passing an index higher than the number of selectors - or when using the modern fuel system - it will return the total fuel quantity available. 	Gallons 	
+FUEL SELECTED QUANTITY PERCENT:index 	Percent or capacity for the tank referenced by the indexed selector. When using the legacy fuel system, this SimVar will return the percentage of fuel in the tank pointed to by the selector you chose with the index. If passing an index higher than the number of selectors available - or when using the modern fuel system - it will return the percentage of total fuel quantity available. 	Percent Over 100 	
+FUEL SELECTED TRANSFER MODE 	
+
+The method of transfer for the fuel. Each of the available transfer options are explained below:
+
+    off - Fuel transfer is switched off.
+    auto - Automatically balance the fuel between the Center1 and Center2 tanks to maintain the center of gravity.
+    forward - Fuel will be transferred forwards from the Center1 tank to the Center2 tank.
+    aft - Fuel will be transferred aftwards from the Center2 tank to the Center1 tank.
+    manual - Fuel will be transferred for 1 second from the Center1 tank to the Center2 tank at a rate of 1lbs/s.
+    custom - This requires one or more pumps to have been defined using the fuel_transfer_pump.N parameter in the flight_model.cfg file, as well as their associated electrical circuits.
+
+	
+
+Enum:
+
+    0 = off
+    1 = auto
+    2 = forward
+    3 = aft
+    4 = manual
+    5 = custom
+
+	
+FUEL TOTAL CAPACITY 	Total fuel capacity of the aircraft for all tanks. 	Gallons 	
+FUEL TOTAL QUANTITY 	Current total quantity of fuel in volume for all tanks of the aircraft. 	Gallons 	
+FUEL TOTAL QUANTITY WEIGHT 	Current total fuel weight for all tanks of the aircraft 	Pounds 	
+FUEL TRANSFER PUMP ON:index 	Returns 1 (TRUE) if the indexed pump is active. 	Bool 	
+FUEL WEIGHT PER GALLON 	The weight of the fuel, per gallon. 	Pounds 	
+NEW FUEL SYSTEM 	Will return 1 (TRUE) if the aircraft is using the modern [FUEL_SYSTEM] or 0 (FALSE) for the legacy [FUEL]. 	Bool 	
+NUM FUEL SELECTORS 	The number of fuel selectors on the aircraft. 	Number 	
+UNLIMITED FUEL 	Will return 1 (TRUE) if the unlimited fuel flag has been enabled, or 0 (FALSE) otherwise. 	Bool 	
+UNUSABLE FUEL TOTAL QUANTITY 	The total amount of fuel in all tanks of the aircraft which is not usable. 	Gallons 	
+
+
+[Fuel System]
+
+FUELSYSTEM ENGINE PRESSURE:index 	The pressure of the fuel coming to the indexed engine. The index is the number of the engine N component as defined by the Engine.N parameter. 	Kilo pascal 	
+FUELSYSTEM JUNCTION SETTING:index 	This will return the current Option for the indexed junction. The index is the number of the line N component as defined by the Junction.N parameter. 	Number 	
+FUELSYSTEM LINE FUEL FLOW:index 	The fuel flowing through the indexed line in Gallons per Hour. The index is the number of the line N component as defined by the Line.N parameter. 	Gallons per hour 	
+FUELSYSTEM LINE FUEL LEVEL:index 	The level of fuel in the indexed line in Gallons. The index is the number of the line N component as defined by the Line.N parameter. 	Gallons 	
+FUELSYSTEM LINE FUEL PRESSURE:index 	The pressure in the indexed fuel line, measured in KiloPascal. The index is the number of the line N component as defined by the Line.N parameter. 	Kilo pascal 	
+FUELSYSTEM PUMP ACTIVE:index 	Whether or not the indexed pump is actually active. The index is the number of the pump N component as defined by the Pump.N parameter. 	Bool 	
+FUELSYSTEM PUMP SWITCH:index 	Whether or not the indexed pump is enabled. The index is the number of the pump N component as defined by the Pump.N parameter. 	Bool 	
+FUELSYSTEM TANK CAPACITY:index 	
+
+Total capacity of the indexed fuel tank. The index is the number of the tank N component as defined by the Tank.N parameter.
+
+NOTE: This SimVar can only be used with the modern Fuel System.
+	Gallons 	
+FUELSYSTEM TANK LEVEL:index 	
+
+Quantity of fuel available in the indexed fuel tank. The index is the number of the tank N component as defined by the Tank.N parameter.
+
+NOTE: This SimVar can only be used with the modern Fuel System.
+	Percent Over 100 	
+FUELSYSTEM TANK QUANTITY:index 	
+
+Quantity of fuel currently available in the indexed fuel tank. The index is the number of the tank N component as defined by the Tank.N parameter.
+
+NOTE: If the fuel system Version is 2 or below, the index value will be one of the Fuel Tank Selection indices.
+	Gallons 	
+FUELSYSTEM TANK TOTAL QUANTITY:index 	
+
+Total quantity of fuel available in the indexed fuel tank, including any unusable fuel. The index is the number of the tank N component as defined by the Tank.N parameter.
+
+NOTE: If the fuel system Version is 2 or below, the index value will be one of the Fuel Tank Selection indices.
+	Gallons 	
+FUELSYSTEM TANK WEIGHT:index 	
+
+Weight of fuel available in the indexed fuel tank. The index is the number of the tank N component as defined by the Tank.N parameter.
+
+NOTE: If the fuel system Version is 2 or below, the index value will be one of the Fuel Tank Selection indices.
+	Pounds 	
+FUELSYSTEM TRIGGER STATUS:index 	Whether or not the indexed trigger is active. The index is the number of the trigger N component as defined by the Trigger.N parameter. 	Bool 	
+FUELSYSTEM VALVE OPEN:index 	Whether or not the indexed valve is actually fully opened. The index is the number of the valve N component as defined by the Valve.N parameter. 	Percent Over 100 	
+FUELSYSTEM VALVE SWITCH:index 	Whether or not the indexed valve is set to be opened. The index is the number of the valve N component as defined by the Valve.N parameter. 	Bool 	
+
+
+[Fuel tanks]
+
+FUEL TANK CENTER CAPACITY
+
+FUEL TANK CENTER2 CAPACITY
+
+FUEL TANK CENTER3 CAPACITY
+	Maximum capacity in volume of center tank 1/2/3. 	Gallons 	
+
+FUEL TANK CENTER LEVEL
+
+FUEL TANK CENTER2 LEVEL
+
+FUEL TANK CENTER3 LEVEL
+	Percent of maximum capacity of center tank 1/2/3. 	Percent Over 100 	
+
+FUEL TANK CENTER QUANTITY
+
+FUEL TANK CENTER2 QUANTITY
+
+FUEL TANK CENTER3 QUANTITY
+	Current quantity in volume of center tank 1/2/3. 	Gallons 	
+
+FUEL TANK EXTERNAL1 CAPACITY
+
+FUEL TANK EXTERNAL2 CAPACITY
+	Maximum capacity in volume of external tank 1/2. 	Gallons 	
+
+FUEL TANK EXTERNAL1 LEVEL
+
+FUEL TANK EXTERNAL2 LEVEL
+	Percent of maximum capacity of texternal tank 1/2. 	Percent Over 100 	
+
+FUEL TANK EXTERNAL1 QUANTITY
+
+FUEL TANK EXTERNAL2 QUANTITY
+	Current quantity in volume of external tank 1/2. 	Gallons 	
+FUEL TANK LEFT AUX CAPACITY 	Maximum capacity in volume of the left auxiliary tank. 	Gallons 	
+FUEL TANK LEFT AUX LEVEL 	Percent of maximum capacity of the left auxiliary tank. 	Percent Over 100 	
+FUEL TANK LEFT AUX QUANTITY 	Current quantity in volume of the left auxiliary tank. 	Gallons 	
+FUEL TANK LEFT MAIN CAPACITY 	Maximum capacity in volume of the left main tank. 	Gallons 	
+FUEL TANK LEFT MAIN LEVEL 	Percent of maximum capacity of the left main tank. 	Percent Over 100 	
+FUEL TANK LEFT MAIN QUANTITY 	Current quantity in volume of the left main tank. 	Gallons 	
+FUEL TANK LEFT TIP CAPACITY 	Maximum capacity in volume of the left tip tank. 	Gallons 	
+FUEL TANK LEFT TIP LEVEL 	Percent of maximum capacity of the left tip tank. 	Percent Over 100 	
+FUEL TANK LEFT TIP QUANTITY 	Current quantity in volume of the left tip tank. 	Gallons 	
+FUEL TANK RIGHT AUX CAPACITY 	Maximum capacity in volume of the right auxiliary tank. 	Gallons 	
+FUEL TANK RIGHT AUX LEVEL 	Percent of maximum capacity of the right auxiliary tank. 	Percent Over 100 	
+FUEL TANK RIGHT AUX QUANTITY 	Current quantity in volume of the right auxiliary tank. 	Gallons 	
+FUEL TANK RIGHT MAIN CAPACITY 	Maximum capacity in volume of the right main tank. 	Gallons 	
+FUEL TANK RIGHT MAIN LEVEL 	Percent of maximum capacity of the right main tank. 	Percent Over 100 	
+FUEL TANK RIGHT MAIN QUANTITY 	Current quantity in volume of the right main tank. 	Gallons 	
+FUEL TANK RIGHT TIP CAPACITY 	Maximum capacity in volume of the right tip tank. 	Gallons 	
+FUEL TANK RIGHT TIP LEVEL 	Percent of maximum capacity of the right tip tank. 	Percent Over 100 	
+FUEL TANK RIGHT TIP QUANTITY 	Current quantity in volume of the right tip tank. 	Gallons 	
+FUEL TANK SELECTOR:index 	
+
+Which tank the indexed selector is set to. The index is the selector to check (from 1 to 4), and the return value will be the Fuel Tank Selection index.
+
+NOTE: This SimVar is only valid for the legacy [FUEL] setup.
+	Enum 	
+
+[Fuel tank selection enum
+
+0 	Off
+1 	All
+2 	Left
+3 	Right
+4 	Left auxiliary
+5 	Right auxiliary
+6 	Center
+7 	Center2
+8 	Center3
+9 	External1
+10 	External2
+11 	Right tip
+12 	Left tip
+13 	Crossfeed
+14 	Crossfeed left to right
+15 	Crossfeed right to left
+16 	Both
+17 	External
+18 	Isolate
+19 	Left main
+20 	Right main]
+
