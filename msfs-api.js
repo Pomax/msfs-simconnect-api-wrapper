@@ -201,13 +201,17 @@ export class MSFS_API {
     const { handle } = this;
     const eventID = this.nextId();
     handle.mapClientEventToSimEvent(eventID, triggerName);
-    handle.transmitClientEvent(
-      SimConnectConstants.OBJECT_ID_USER,
-      eventID,
-      value,
-      1, // highest priority
-      16 // group id is priority
-    );
+    try {
+      handle.transmitClientEvent(
+        SimConnectConstants.OBJECT_ID_USER,
+        eventID,
+        value,
+        1, // highest priority
+        16 // group id is priority
+      );
+    } catch (e) {
+      console.warn(e);
+    }
   }
 
   /**

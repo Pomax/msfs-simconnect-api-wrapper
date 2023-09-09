@@ -1,3 +1,8 @@
+v2.1
+
+- added fuel variables. They were missing despite the readme saying they were implemented.
+- added a catch for unknown vars so the code doesn't actually crash.
+
 v2.0.1
 
 - fix exception on repeated airport:index calls.

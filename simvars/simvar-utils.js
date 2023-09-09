@@ -90,3 +90,4 @@ export const Position128 = { units: `position 128` };
 export const KPH = { units: `Kilometers per hour` };
 export const SlugsPerCubicFeet = { units: `Slugs per cubic feet` };
 export const MillimetersOfWater = { units: `millimeters of water` };
+export const KiloPascal = { units: `kilopascal` };
