@@ -17,9 +17,9 @@ import {
 // Special import for working with airport data
 const { AIRPORTS_IN_RANGE, AIRPORTS_OUT_OF_RANGE } = SysEvents;
 
+const NOT_CONNECTED = `Not connected to MSFS`;
 const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
 const SIMCONNECT_FACILITY_AIRPORT = 1000;
-
 const codeSafe = (string) => string.replaceAll(` `, `_`);
 
 // direct export for downstream users:
@@ -172,6 +172,7 @@ export class MSFS_API {
    * @returns
    */
   on(eventDefinition, eventHandler) {
+    if (!this.connected) throw new Error(NOT_CONNECTED);
     if (!eventDefinition) {
       console.error(`on() called without an event definition`);
       console.trace();
@@ -198,6 +199,7 @@ export class MSFS_API {
    * @param {*} value
    */
   trigger(triggerName, value = 0) {
+    if (!this.connected) throw new Error(NOT_CONNECTED);
     const { handle } = this;
     const eventID = this.nextId();
     handle.mapClientEventToSimEvent(eventID, triggerName);
@@ -250,7 +252,6 @@ export class MSFS_API {
    */
   generateGetPromise(DATA_ID, REQUEST_ID, propNames, defs) {
     const { handle } = this;
-
     return new Promise((resolve, _reject) => {
       const handleDataRequest = ({ requestID, data }) => {
         if (requestID === REQUEST_ID) {
@@ -264,9 +265,7 @@ export class MSFS_API {
           this.releaseId(DATA_ID);
         }
       };
-
       handle.on("simObjectData", handleDataRequest);
-
       handle.requestDataOnSimObject(
         REQUEST_ID,
         DATA_ID,
@@ -284,10 +283,10 @@ export class MSFS_API {
    * @returns
    */
   get(...propNames) {
+    if (!this.connected) throw new Error(NOT_CONNECTED);
     const DATA_ID = this.nextId();
     const REQUEST_ID = DATA_ID;
     propNames = propNames.map((s) => s.replaceAll(`_`, ` `));
-
     // see if this is a special, non-simconnect variable:
     if (propNames.length === 1) {
       const [propName] = propNames;
@@ -297,7 +296,6 @@ export class MSFS_API {
         }
       }
     }
-
     // if not, regular lookup.
     const defs = propNames.map((propName) => SimVars[propName]);
     this.addDataDefinitions(DATA_ID, propNames, defs);
@@ -312,6 +310,7 @@ export class MSFS_API {
    * @throws
    */
   set(propName, value) {
+    if (!this.connected) throw new Error(NOT_CONNECTED);
     const { handle } = this;
     propName = propName.replaceAll(`_`, ` `);
     if (value == parseFloat(value)) {
@@ -347,8 +346,8 @@ export class MSFS_API {
    * @param  {...any} propNames
    */
   schedule(handler, interval, ...propNames) {
+    if (!this.connected) throw new Error(NOT_CONNECTED);
     let running = true;
-
     const run = async () => {
       handler(await this.get(...propNames));
       if (running) setTimeout(run, interval);

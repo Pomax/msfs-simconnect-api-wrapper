@@ -1,3 +1,9 @@
+v2.1.1
+
+- Added an explicit throw when calling `on`, `trigger`, `get`, `set`, and `schedule` when the API is not
+  connected to MSFS. This would already throw, but only at the point where the simconnect DLL was asked
+  to do things, which led to unnecessarily cryptic errors with unnecessarily deep stack traces.
+
 v2.1
 
 - added fuel variables. They were missing despite the readme saying they were implemented.
