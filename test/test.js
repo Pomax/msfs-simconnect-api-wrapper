@@ -1,19 +1,57 @@
-import { SystemEvents, MSFS_API } from "./msfs-api.js";
-import { SimVars } from "./simvars/index.js";
+import { SystemEvents, MSFS_API, MSFS_NOT_CONNECTED } from "../msfs-api.js";
+import { SimVars } from "../simvars/index.js";
 
 const api = new MSFS_API();
 
+/**
+ * ...docs go here...
+ */
 (async function tryConnect() {
+  console.log(`Testing call prevention prior to connection`);
+  await testAPriori();
   api.connect({
     retries: Infinity,
     retryInterval: 5,
-    onConnect: (nodeSimconnectHandle) => connect(nodeSimconnectHandle),
+    onConnect: connect,
     onRetry: (_retries, interval) =>
       console.log(`Connection failed: retrying in ${interval} seconds.`),
   });
 })();
 
+/**
+ * ...docs go here...
+ */
+async function testAPriori() {
+  try {
+    await Promise.all(
+      [`on`, `trigger`, `get`, `set`, `schedule`].map(async (fname) => {
+        try {
+          await api[fname](`the function input should not matter`);
+          throw new Error(
+            `"${fname}" was allowed through, despite there not being a connection yet.`
+          );
+        } catch (e) {
+          if (e.message !== MSFS_NOT_CONNECTED) throw e;
+        }
+      })
+    );
+  } catch (e) {
+    throw e;
+  }
+}
+
+/**
+ * ...docs go here...
+ * @param {*} handle
+ */
 async function connect(handle) {
+  console.log(`MSFS connected`);
+
+  const { CAMERA_STATE: camera } = await api.get(`CAMERA_STATE`);
+  if (camera > 10) {
+    throw new Error(`MSFS needs to be "in game" for the tests to run\n`);
+  }
+
   const pauseOff = api.on(SystemEvents.PAUSED, () => {
     pauseOff();
     console.log(`sim paused`);
@@ -45,22 +83,36 @@ async function connect(handle) {
   });
 
   try {
+    console.log(`Quick "unknown var" test`);
     await api.get(`PLANE_LONGITUDE`, `NO_THANKS`);
   } catch (e) {
-    console.log(e.message);
+    if (e.message !== `Cannot get SimVar: "NO THANKS" unknown.`) throw e;
   }
 
   runTests(api);
 }
 
+/**
+ * ...docs go here...
+ * @param {*} api
+ */
 async function runTests(api) {
+  console.log(`Running sim variables tests`);
   await testSimVars(api);
+
+  console.log(`Running sim events tests`);
   await testSimEvents(api);
+
+  console.log(`Running interval test`);
   testInterval(api, () => {
     process.exit(0);
   });
 }
 
+/**
+ * ...docs go here...
+ * @param {*} api
+ */
 async function testSimVars(api) {
   const varKeys = Object.keys(SimVars);
 
@@ -73,6 +125,10 @@ async function testSimVars(api) {
   console.log(`Tested ${varKeys.length} sim vars.`);
 }
 
+/**
+ * ...docs go here...
+ * @param {*} api
+ */
 async function testSimEvents(api) {
   let lock = await api.get(`TAILWHEEL_LOCK_ON`);
   await api.trigger(`TOGGLE_TAILWHEEL_LOCK`);
@@ -83,6 +139,11 @@ async function testSimEvents(api) {
   console.log(`\nSim event trigger passed.\n`);
 }
 
+/**
+ * ...docs go here...
+ * @param {*} api
+ * @param {*} done
+ */
 function testInterval(api, done) {
   const stop = api.schedule(
     (data) => {

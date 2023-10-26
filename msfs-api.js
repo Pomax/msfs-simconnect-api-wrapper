@@ -17,7 +17,7 @@ import {
 // Special import for working with airport data
 const { AIRPORTS_IN_RANGE, AIRPORTS_OUT_OF_RANGE } = SysEvents;
 
-const NOT_CONNECTED = `Not connected to MSFS`;
+export const MSFS_NOT_CONNECTED = `Not connected to MSFS`;
 const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
 const SIMCONNECT_FACILITY_AIRPORT = 1000;
 const codeSafe = (string) => string.replaceAll(` `, `_`);
@@ -172,7 +172,7 @@ export class MSFS_API {
    * @returns
    */
   on(eventDefinition, eventHandler) {
-    if (!this.connected) throw new Error(NOT_CONNECTED);
+    if (!this.connected) throw new Error(MSFS_NOT_CONNECTED);
     if (!eventDefinition) {
       console.error(`on() called without an event definition`);
       console.trace();
@@ -199,7 +199,7 @@ export class MSFS_API {
    * @param {*} value
    */
   trigger(triggerName, value = 0) {
-    if (!this.connected) throw new Error(NOT_CONNECTED);
+    if (!this.connected) throw new Error(MSFS_NOT_CONNECTED);
     const { handle } = this;
     const eventID = this.nextId();
     handle.mapClientEventToSimEvent(eventID, triggerName);
@@ -283,7 +283,7 @@ export class MSFS_API {
    * @returns
    */
   get(...propNames) {
-    if (!this.connected) throw new Error(NOT_CONNECTED);
+    if (!this.connected) throw new Error(MSFS_NOT_CONNECTED);
     const DATA_ID = this.nextId();
     const REQUEST_ID = DATA_ID;
     propNames = propNames.map((s) => s.replaceAll(`_`, ` `));
@@ -310,7 +310,7 @@ export class MSFS_API {
    * @throws
    */
   set(propName, value) {
-    if (!this.connected) throw new Error(NOT_CONNECTED);
+    if (!this.connected) throw new Error(MSFS_NOT_CONNECTED);
     const { handle } = this;
     propName = propName.replaceAll(`_`, ` `);
     if (value == parseFloat(value)) {
@@ -346,7 +346,7 @@ export class MSFS_API {
    * @param  {...any} propNames
    */
   schedule(handler, interval, ...propNames) {
-    if (!this.connected) throw new Error(NOT_CONNECTED);
+    if (!this.connected) throw new Error(MSFS_NOT_CONNECTED);
     let running = true;
     const run = async () => {
       handler(await this.get(...propNames));
