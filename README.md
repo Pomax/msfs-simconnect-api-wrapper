@@ -16,8 +16,9 @@ This API manager has an argless constructor that does nothing other than allocat
 
 ```javascript
 {
-  retries:  positive number or Infinity
-  retryInterval: positive number, representing number of seconds (not milliseconds) between retries,
+  autoReconnect: true or false (will try to reconnect to MSFS if the connection gets closed), defaults to `false`.
+  retries: positive number or Infinity, defaults to 0.
+  retryInterval: positive number, representing number of seconds (not milliseconds) between retries, defaults to 2.
   onConnect: callback function with the node-simconnect handle as its only argument.
   onRetry: callback function with (retries left, retry interval) as its two arguments. This triggers _before_ the next attempt is scheduled.
 }

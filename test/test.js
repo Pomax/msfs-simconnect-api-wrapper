@@ -10,6 +10,7 @@ const api = new MSFS_API();
   console.log(`Testing call prevention prior to connection`);
   await testAPriori();
   api.connect({
+    autoReconnect: true,
     retries: Infinity,
     retryInterval: 5,
     onConnect: connect,
