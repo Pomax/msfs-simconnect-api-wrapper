@@ -1,3 +1,7 @@
+v2.2.1
+
+- removed a rogue console.log from the reconnect code
+
 v2.2.0
 
 - added an `autoReconnect` property to the `connect()` options. When `true`, this will try to automatically reconnect to MSFS if it happens to disappear/disconnect at any point. Note that this _will_ retrigger `onConnect`.

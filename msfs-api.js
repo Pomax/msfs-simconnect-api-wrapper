@@ -62,10 +62,7 @@ export class MSFS_API {
       this.connected = true;
       opts.onConnect(handle);
       handle.on("event", (event) => this.handleSystemEvent(event));
-      handle.on("close", () => {
-        console.log("whoa");
-        if (opts.autoReconnect) this.connect(opts);
-      });
+      handle.on("close", () => opts.autoReconnect && this.connect(opts));
       handle.on("exception", (e) => console.error(e));
       this.addAirportHandling(handle);
     } catch (err) {
