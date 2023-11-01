@@ -1,3 +1,7 @@
+v2.3.0
+
+- Added all env. vars listed on https://docs.flightsimulator.com/html/Additional_Information/Reverse_Polish_Notation.htm#EnvironmentVariables
+
 v2.2.1
 
 - removed a rogue console.log from the reconnect code
@@ -51,3 +55,4 @@ v1.4.1
 ---
 
 There was no changelog prior to v1.4.1
+

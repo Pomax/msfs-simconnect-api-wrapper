@@ -206,7 +206,11 @@ All simvars are supported, barring several simvars with data types for which I n
   - [x] Aircraft System Variables (_not verified_)
   - [x] Helicopter Variables (_not verified_)
 
-"not verified" means that they've been ported, marked settable where appropriate, pass the test run, but they've not been individually confirmed to be correct with respect to the documentation yet.
+Further more, all environment variables listed over on https://docs.flightsimulator.com/html/Additional_Information/Reverse_Polish_Notation.htm#EnvironmentVariables are supported as well.
+
+- [ ] WASM guage token variables (see https://github.com/Pomax/msfs-simconnect-api-wrapper/issues/12)
+
+(note: "not verified" means that they've been ported, marked settable where appropriate, pass the test run, but they've not been individually confirmed to be correct with respect to the documentation yet).
 
 ### Supported SimEvents:
 
