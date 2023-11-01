@@ -15,6 +15,7 @@ import { MiscellaneousVariables } from "./miscellaneous-variables.js";
 import { HelicopterVariables } from "./helicopter-variables.js";
 import { ServiceVariables } from "./services-variables.js";
 import { WASMGaugeAPITokenVariables } from "./wasm-gauge-api-token-variables.js";
+import { EnvironmentVariables } from "./environment-variables.js";
 
 
 const SimVars = {
@@ -33,6 +34,7 @@ const SimVars = {
   ...HelicopterVariables,
   ...ServiceVariables,
   ...WASMGaugeAPITokenVariables,
+  ...EnvironmentVariables,
 };
 
 Object.entries(SimVars).forEach(([key, value]) => (value.name = key));
