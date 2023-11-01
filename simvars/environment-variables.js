@@ -1,10 +1,10 @@
-import { Bool, Int32, Seconds, define } from "./simvar-utils.js";
+import { define } from "./simvar-utils.js";
 
 // data types
-import { Float64 } from "./simvar-utils.js";
+import { Float64, Int32 } from "./simvar-utils.js";
 
 // data units
-import { Number } from "./simvar-utils.js";
+import { Number, Seconds, Bool } from "./simvar-utils.js";
 
 export const EnvironmentVariables = {
   "ABSOLUTE TIME": define(
