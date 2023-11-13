@@ -87,12 +87,16 @@ api.connect({
 
 Note that the event names are keys from the `SystemEvents` object, using UPPER_SNAKE_CASE, not strings.
 
+<!--
+
 ##### Special Events
 
 There are currently two non-simconnect events that can be listened to:
 
 - `AIRPORTS_IN_RANGE`, registers a listener for notifications about airports coming into range of our airplane (or rather, coming into range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
 - `AIRPORTS_OUT_OF_RANGE`, registers a listener for notifications about airports dropping out of range of our airplane (with the same note as above).
+
+--->
 
 #### `off(evtDefinition, handler)`
 
@@ -102,6 +106,8 @@ Stop listening for a specific simconnect event with a specific handler. You'll t
 
 Accepts a list of simvars (with spaces or underscores) and async-returns a key/value pair object with each simvar as key (with spaces replaced by underscores).
 
+
+<!--
 ##### special (non-simconnect) variables
 
 There are a number of special variables that can only be retrieved using a get call with a single variable name, yielding data that is not services by SimConnect's own variables (or data that requires a considerable amount of low-level event handling).
@@ -176,6 +182,7 @@ Approaches are of the following type:
   }
 }
 ```
+-->
 
 #### `schedule(handler, interval, ...propNames)`
 
