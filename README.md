@@ -21,6 +21,9 @@ This API manager has an argless constructor that does nothing other than allocat
   retryInterval: positive number, representing number of seconds (not milliseconds) between retries, defaults to 2.
   onConnect: callback function with the node-simconnect handle as its only argument.
   onRetry: callback function with (retries left, retry interval) as its two arguments. This triggers _before_ the next attempt is scheduled.
+  onException: callback function with (exceptionName) as argument.
+  host: a domain or IP string (e.g. "localhost" or "127.0.0.1", default: "0.0.0.0").
+  port: the port at which to contact MSFS (default: 500).
 }
 ```
 

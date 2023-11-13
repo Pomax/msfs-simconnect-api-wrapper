@@ -16,6 +16,7 @@ import {
 
 // Special import for working with airport data
 const { AIRPORTS_IN_RANGE, AIRPORTS_OUT_OF_RANGE } = SysEvents;
+import { SIMCONNECT_EXCEPTION } from "./exceptions.js";
 
 export const MSFS_NOT_CONNECTED = `Not connected to MSFS`;
 const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
@@ -56,15 +57,20 @@ export class MSFS_API {
     opts.onConnect ??= () => {};
     opts.onRetry ??= () => {};
     try {
-      const { handle } = await open(this.appName, Protocol.KittyHawk);
+      const { host = `0.0.0.0`, port = 500 } = opts;
+      const { handle } = await open(this.appName, Protocol.KittyHawk, {
+        remote: { host, port },
+      });
       if (!handle) throw new Error(`No connection handle to MSFS`);
       this.handle = handle;
       this.connected = true;
-      opts.onConnect(handle);
       handle.on("event", (event) => this.handleSystemEvent(event));
       handle.on("close", () => opts.autoReconnect && this.connect(opts));
-      handle.on("exception", (e) => console.error(e));
+      handle.on("exception", (e) =>
+        opts.onException?.(SIMCONNECT_EXCEPTION[e.exception])
+      );
       this.addAirportHandling(handle);
+      opts.onConnect(handle);
     } catch (err) {
       if (opts.retries) {
         opts.retries--;

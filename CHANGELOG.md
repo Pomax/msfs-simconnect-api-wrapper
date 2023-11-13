@@ -1,3 +1,9 @@
+v3.0.0
+
+- The airport code has been disabled, because it's all kinds of broken at the moment, and needs to be redone.
+- you can now pass `host` and `port` values as part of the `.connect()` options.
+- you can now pass an `onException` handler as part of the `.connect()` options.
+
 v2.3.0
 
 - Added all env. vars listed on https://docs.flightsimulator.com/html/Additional_Information/Reverse_Polish_Notation.htm#EnvironmentVariables
