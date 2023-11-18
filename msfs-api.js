@@ -9,22 +9,14 @@ import {
 // imports used by the API
 import { SimVars } from "./simvars/index.js";
 import { SystemEvents as SysEvents } from "./system-events/index.js";
-import {
-  SystemEvents as AirportEvents,
-  airportGetHandler,
-} from "./special/airports.js";
 
 // Special import for working with airport data
-const { AIRPORTS_IN_RANGE, AIRPORTS_OUT_OF_RANGE } = SysEvents;
+import { getAirportHandler } from "./special/airports.js";
 import { SIMCONNECT_EXCEPTION } from "./exceptions.js";
 
+export const SystemEvents = Object.assign({}, SysEvents);
 export const MSFS_NOT_CONNECTED = `Not connected to MSFS`;
-const SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT = 0;
-const SIMCONNECT_FACILITY_AIRPORT = 1000;
 const codeSafe = (string) => string.replaceAll(` `, `_`);
-
-// direct export for downstream users:
-export const SystemEvents = Object.assign({}, SysEvents, AirportEvents);
 
 /**
  * API:
@@ -35,15 +27,11 @@ export const SystemEvents = Object.assign({}, SysEvents, AirportEvents);
  * - set(propName, value)
  */
 export class MSFS_API {
-  constructor(appName = "MSFS API", AirportDB) {
+  constructor(appName = "MSFS API") {
     this.appName = appName;
-    this.AirportDB = AirportDB;
 
     // set up a listener list for simconnect event handling:
     this.eventListeners = {};
-
-    // set up a list for special (non-simconnect) get handlers
-    this.specialGetHandlers = [airportGetHandler];
 
     // set up an event/data/request id counter:
     this.id = 1;
@@ -56,11 +44,12 @@ export class MSFS_API {
     opts.retryInterval ??= 2;
     opts.onConnect ??= () => {};
     opts.onRetry ??= () => {};
+    const { host, port } = opts;
     try {
-      const { host = `0.0.0.0`, port = 500 } = opts;
-      const { handle } = await open(this.appName, Protocol.KittyHawk, {
-        remote: { host, port },
-      });
+      const remote = (this.remote = host
+        ? { host, port: port ?? 500 }
+        : undefined);
+      const { handle } = await open(this.appName, Protocol.KittyHawk, remote);
       if (!handle) throw new Error(`No connection handle to MSFS`);
       this.handle = handle;
       this.connected = true;
@@ -69,7 +58,9 @@ export class MSFS_API {
       handle.on("exception", (e) =>
         opts.onException?.(SIMCONNECT_EXCEPTION[e.exception])
       );
-      this.addAirportHandling(handle);
+      // special non-simconnect handling
+      this.specialGetHandlers = [await getAirportHandler(this, handle)];
+      // Signal that we're done
       opts.onConnect(handle);
     } catch (err) {
       if (opts.retries) {
@@ -140,34 +131,6 @@ export class MSFS_API {
 
     entry.data = data;
     entry.handlers.forEach((handle) => handle(data));
-  }
-
-  addAirportHandling(handle) {
-    // TODO: - [x] get(`NEARBY_AIRPORTS`) to get the current list of nearby airports.
-    //       - [ ] get(`ALL_AIRPORTS`) to get the list of all airports in the sim.
-    //       - [x] on(`AIRPORTS_IN_RANGE`) to subscribe to "new airports in range" events.
-    //       - [x] on(`AIRPORTS_OUT_OF_RANGE`) to subscribe to "airports dropping out of range" events.
-    //       - [x] document these four special cases
-    const TYPE = SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT;
-    const IN_RANGE = this.nextId();
-    const OUT_OF_RANGE = this.nextId();
-
-    handle.subscribeToFacilitiesEx1(TYPE, IN_RANGE, OUT_OF_RANGE);
-
-    handle.on("airportList", (data) => {
-      const { requestID: id } = data;
-
-      // work around the node-simconnect typo, if it still exists
-      if (data.aiports) {
-        data.airports ??= data.aiports;
-        delete data.aiports;
-      }
-
-      // Are there in/out of range airports?
-      this.eventListeners[id]?.handlers.forEach((handle) =>
-        handle(data.airports)
-      );
-    });
   }
 
   /**
@@ -292,6 +255,7 @@ export class MSFS_API {
    */
   get(...propNames) {
     if (!this.connected) throw new Error(MSFS_NOT_CONNECTED);
+
     const DATA_ID = this.nextId();
     const REQUEST_ID = DATA_ID;
     propNames = propNames.map((s) => s.replaceAll(`_`, ` `));
@@ -300,7 +264,7 @@ export class MSFS_API {
       const [propName] = propNames;
       for (const get of this.specialGetHandlers) {
         if (get.supports(propName)) {
-          return get(this, propName);
+          return get(propName);
         }
       }
     }
