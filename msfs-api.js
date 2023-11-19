@@ -11,10 +11,10 @@ import { SimVars } from "./simvars/index.js";
 import { SystemEvents as SysEvents } from "./system-events/index.js";
 
 // Special import for working with airport data
-import { getAirportHandler } from "./special/airports.js";
+import { AirportEvents, getAirportHandler } from "./special/airports.js";
 import { SIMCONNECT_EXCEPTION } from "./exceptions.js";
 
-export const SystemEvents = Object.assign({}, SysEvents);
+export const SystemEvents = Object.assign({}, SysEvents, AirportEvents);
 export const MSFS_NOT_CONNECTED = `Not connected to MSFS`;
 const codeSafe = (string) => string.replaceAll(` `, `_`);
 

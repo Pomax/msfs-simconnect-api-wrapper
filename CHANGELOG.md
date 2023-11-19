@@ -1,3 +1,9 @@
+v3.1.0
+
+- Airport code has been restored, in a radically different way internally, but with the same API as before.
+
+The airport data is now stored in a bundled database file. If the bundled database and the in-game airport database different in the number of airports, you'll get a console warning that you'll probably want to update your version of `msfs-simconnect-api-wrapper`.
+
 v3.0.0
 
 - The airport code has been disabled, because it's all kinds of broken at the moment, and needs to be redone.
@@ -61,4 +67,3 @@ v1.4.1
 ---
 
 There was no changelog prior to v1.4.1
-
