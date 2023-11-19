@@ -9,6 +9,7 @@ const api = new MSFS_API();
 (async function tryConnect() {
   console.log(`Testing call prevention prior to connection`);
   await testAPriori();
+  console.log(`Awaiting connection`);
   api.connect({
     autoReconnect: true,
     retries: Infinity,
@@ -63,27 +64,30 @@ async function connect(handle) {
     console.log(`sim unpaused`);
   });
 
-  // AIRPORT CODE IS BROKEN
+  const { ALL_AIRPORTS } = await api.get(`ALL_AIRPORTS`);
+  console.log(`${ALL_AIRPORTS.length} total airports on the planet`);
 
-  // const { NEARBY_AIRPORTS } = await api.get(`NEARBY_AIRPORTS`);
-  // console.log(`${NEARBY_AIRPORTS.length} nearby airports`);
+  const { NEARBY_AIRPORTS } = await api.get(`NEARBY_AIRPORTS`);
+  console.log(`${NEARBY_AIRPORTS.length} airports in local reality bubble`);
 
-  // const { ALL_AIRPORTS } = await api.get(`ALL_AIRPORTS`);
-  // console.log(`${ALL_AIRPORTS.length} total airports on the planet`);
+  const radius = 10;
+  const near = await api.get(`NEARBY_AIRPORTS:${radius}`);
+  const nearList = near[`NEARBY_AIRPORTS:${radius}`];
+  console.log(
+    `${nearList.length} airports found within a ${radius}NM radius around the plane`
+  );
 
-  // const airportData = await api.get(`AIRPORT:CYYJ`);
-  // console.log(JSON.stringify(airportData, null, 2));
-  // console.log(JSON.stringify(await api.get(`AIRPORT:CYYJ`), null, 2));
+  console.log(`getting ${NEARBY_AIRPORTS[0].icao}`);
+  const airportData = await api.get(`AIRPORT:${NEARBY_AIRPORTS[0].icao}`);
+  console.log(`result:`, JSON.stringify(airportData, null, 2));
 
-  // const inRange = api.on(SystemEvents.AIRPORTS_IN_RANGE, (data) => {
-  //   console.log(data);
-  //   inRange();
-  // });
+  api.on(SystemEvents.AIRPORTS_IN_RANGE, (data) => {
+    console.log(`New in range:`, data);
+  });
 
-  // const outOfRange = api.on(SystemEvents.AIRPORTS_OUT_OF_RANGE, (data) => {
-  //   console.log(data);
-  //   outOfRange();
-  // });
+  api.on(SystemEvents.AIRPORTS_OUT_OF_RANGE, (data) => {
+    console.log(`Out of range:`, data);
+  });
 
   try {
     console.log(`Quick "unknown var" test`);

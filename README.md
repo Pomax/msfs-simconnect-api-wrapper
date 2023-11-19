@@ -87,16 +87,12 @@ api.connect({
 
 Note that the event names are keys from the `SystemEvents` object, using UPPER_SNAKE_CASE, not strings.
 
-<!--
-
 ##### Special Events
 
 There are currently two non-simconnect events that can be listened to:
 
 - `AIRPORTS_IN_RANGE`, registers a listener for notifications about airports coming into range of our airplane (or rather, coming into range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
 - `AIRPORTS_OUT_OF_RANGE`, registers a listener for notifications about airports dropping out of range of our airplane (with the same note as above).
-
---->
 
 #### `off(evtDefinition, handler)`
 
@@ -106,39 +102,26 @@ Stop listening for a specific simconnect event with a specific handler. You'll t
 
 Accepts a list of simvars (with spaces or underscores) and async-returns a key/value pair object with each simvar as key (with spaces replaced by underscores).
 
-
-<!--
 ##### special (non-simconnect) variables
 
-There are a number of special variables that can only be retrieved using a get call with a single variable name, yielding data that is not services by SimConnect's own variables (or data that requires a considerable amount of low-level event handling).
+There are a number of special variables that can only be retrieved using a get call with a single variable name, yielding data that is not serviced by SimConnect's own variables (or data that requires a considerable amount of low-level event handling).
 
 There are currently three variables:
 
-- `NEARBY_AIRPORTS`, which yields the list of airports that are currently in range of our airplane (or rather, in range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
 - `ALL_AIRPORTS`, which yields the list of all airports known to MSFS.
-
-Both calls return objects of the following type:
-
-```
-FacilityAirport {
-  icao: four character ICAO code
-  latitude: number in degrees
-  longitude: number in degrees
-  altitude: number in meters
-}
-```
-
-Pay special attention to the altitude, which is *not* in feet, it is in meters.
-
+- `NEARBY_AIRPORTS`, which yields the list of airports that are currently in range of our airplane (or rather, in range of "the current Sim bubble", which is all world tiles currently loaded and active in the sim).
+- `NEARBY_AIRPORTS:NM`, which yields the list of airports within a radius of `NM` nautical miles around the airplane's location.
 - `AIRPORT:index`, which yields an airport's information (including runway information), with `index` being the airport's ICAO code.
 
-This call returns objects of the following type:
+The first three return arrays of Airport object, the last one returns a single Airport object
+
+Airport objects have the following shape:
 
 ```
 {
   latitude: number in degrees
   longitude: number in degrees
-  altitude: number in meters
+  altitude: number in feet
   declination: number in degree
   name: airport name as a string with at most 32 characters
   name64: airport name as a string with at most 64 characters
@@ -149,15 +132,13 @@ This call returns objects of the following type:
 }
 ```
 
-Again, pay special attention to the altitude, which is *not* in feet, it is in meters.
-
-Runway objects are of the following type:
+Runway objects have the following shape:
 
 ```
 {
   latitude: number in degrees, marking the center of the runway
   longitude: number in degrees, marking the center of the runway
-  altitude: number in meters
+  altitude: number in feet
   heading: number in degrees
   length: number in meters
   width: number in meters
@@ -169,7 +150,7 @@ Runway objects are of the following type:
 }
 ```
 
-Approaches are of the following type:
+Approaches gave the following shape:
 
 ```
 {
@@ -182,7 +163,6 @@ Approaches are of the following type:
   }
 }
 ```
--->
 
 #### `schedule(handler, interval, ...propNames)`
 
