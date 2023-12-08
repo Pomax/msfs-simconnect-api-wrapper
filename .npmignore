@@ -2,3 +2,4 @@ examples
 node_modules
 test
 .gitignore
+*.old
