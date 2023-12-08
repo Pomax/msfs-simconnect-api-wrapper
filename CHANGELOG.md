@@ -1,3 +1,7 @@
+v3.2.0
+
+- The airport data has been updated for MSFS2020 v1.35.21.0 (SU14)
+
 v3.1.0
 
 - Airport code has been restored, in a radically different way internally, but with the same API as before.
