@@ -372,8 +372,8 @@ function addAirportRunway(data, airportData) {
   const length = data.readFloat32();
   const width = data.readFloat32();
   const patternAltitude = data.readFloat32();
-  const slope = degrees(data.readFloat32());
-  const slopeTrue = degrees(data.readFloat32());
+  const slope = data.readFloat32();
+  const slopeTrue = data.readFloat32();
   const surface = RUNWAY_SURFACES[data.readInt32()];
 
   const primary_number = RUNWAY_NUMBER[data.readInt32()];
