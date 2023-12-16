@@ -1,3 +1,7 @@
+v4.0.0
+
+- Fixed an issue with runway slope values being double-converted. This is a breaking change for any code that relied on runway slope.
+
 v3.2.0
 
 - The airport data has been updated for MSFS2020 v1.35.21.0 (SU14)
