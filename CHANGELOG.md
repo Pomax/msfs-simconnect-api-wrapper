@@ -1,3 +1,8 @@
+v4.1.0
+
+- Added `heading` and `trueHeading` to runway approach objects, because having to write code that turns an approach marking into a heading is something you should not have to do, that's something an API should have already done for you.
+- Added instructions on how to regenerate the airport database file, in case that should ever be necessary for you to do manually.
+
 v4.0.0
 
 - Fixed an issue with runway slope values being double-converted. This is a breaking change for any code that relied on runway slope.

@@ -364,7 +364,7 @@ function addAirportDetails(data, airportData) {
  * @param {*} data
  * @param {*} airportData
  */
-function addAirportRunway(data, airportData) {
+function addAirportRunway(data, airportData, airport) {
   const latitude = data.readFloat64();
   const longitude = data.readFloat64();
   const altitude = data.readFloat64() * FEET_PER_METERS;
@@ -392,6 +392,7 @@ function addAirportRunway(data, airportData) {
     {
       designation: primary_designator,
       marking: primary_number,
+      ...getHeadingFromMarking(primary_number, airportData.declination),
       ILS: {
         type: primary_ils_type,
         icao: primary_ils_icao,
@@ -401,6 +402,7 @@ function addAirportRunway(data, airportData) {
     {
       designation: secondary_designator,
       marking: secondary_number,
+      ...getHeadingFromMarking(secondary_number, airportData.declination),
       ILS: {
         type: secondary_ils_type,
         icao: secondary_ils_icao,
@@ -422,4 +424,35 @@ function addAirportRunway(data, airportData) {
     surface,
     approach,
   });
+}
+
+function getHeadingFromMarking(marking, declination) {
+  const headingData = {
+    heading: undefined,
+    trueHeading: undefined,
+  };
+
+  const num = parseFloat(marking);
+
+  if (isNaN(num)) {
+    const mapping = {
+      north: 360,
+      northeast: 45,
+      east: 90,
+      southeast: 135,
+      south: 180,
+      southwest: 225,
+      west: 270,
+      northwest: 315,
+    };
+    headingData.heading = mapping[marking];
+    if (headingData.heading === 0) headingData.heading = 360;
+  } else if (1 <= num && num <= 36) headingData.heading = num * 10;
+
+  if (headingData.heading) {
+    headingData.trueHeading = (headingData.heading + declination) % 360;
+    if (headingData.trueHeading === 0) headingData.trueHeading = 360;
+  }
+
+  return headingData;
 }

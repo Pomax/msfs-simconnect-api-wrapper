@@ -156,6 +156,7 @@ Approaches gave the following shape:
 {
   designation: runway designation as string
   marking: runway marking, as string (can be a number, or cardinal direction)
+  heading: approach heading in degrees
   ILS: {
     type: ILS type as string
     icao: ICAO code for this approach's ILS
@@ -207,6 +208,18 @@ Further more, all environment variables listed over on https://docs.flightsimula
 SimEvents are resolved by key name, so as long as you use a valid key name, you can trigger it.
 
 See https://docs.flightsimulator.com/html/Programming_Tools/Event_IDs/Event_IDs.htm for the full list (there are... a lot).
+
+## Regenerating the airport list
+
+It's conceivable that this API library becomes poorly maintained, or abandoned. In that case, the airport list will go out of sync with the in-game data. If and when that happens, you can trivially (but not quickly) regenerate the airport data by:
+
+1. first, deleting the `airport.db.gz` file in your `node_modules/msfs-simconnect-api-wrapper` directory, then
+2. making sure MSFS is running, then
+3. run any code that creates an instance of the MSFS API.
+
+This will kick off a database regeneration pass, **_which will take a while to finish_** since it's processing data for 44,000+ airports, querying the details for each and turning it into not just a JSON format, but with more, and easier to work with, data than MSFS's response for each airport is.
+
+Thankfully, you will only need to do this once every time there's a sim update release, because the result is (obviously) cached to file, after which the airport data will be in-sync again and will load just as fast as before.
 
 ## Helping out
 
