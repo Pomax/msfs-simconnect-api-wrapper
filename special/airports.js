@@ -41,8 +41,9 @@ export const AirportEvents = {
 
 const KM_PER_NM = 1.852;
 const FEET_PER_METERS = 3.28084;
-const degrees = (rad) => (rad / Math.PI) * 180;
-const radians = (deg) => (deg / 180) * Math.PI;
+const { abs, asin, atan2, sin, cos, PI } = Math;
+const degrees = (rad) => (rad / PI) * 180;
+const radians = (deg) => (deg / 180) * PI;
 
 const NEARBY_AIRPORTS = `NEARBY AIRPORTS`;
 const ALL_AIRPORTS = `ALL AIRPORTS`;
@@ -194,6 +195,7 @@ export class AirportHandler {
         const processDataEnd = ({ userRequestId: id, ...rest }) => {
           handle.off("facilityData", processData);
           handle.off("facilityDataEnd", processDataEnd);
+          postProcessAirport(airportData);
           resolve(airportData);
         };
 
@@ -402,7 +404,7 @@ function addAirportRunway(data, airportData, airport) {
     {
       designation: primary_designator,
       marking: primary_number,
-      ...getHeadingFromMarking(primary_number, airportData.declination),
+      heading: 0,
       ILS: {
         type: primary_ils_type,
         icao: primary_ils_icao,
@@ -412,7 +414,7 @@ function addAirportRunway(data, airportData, airport) {
     {
       designation: secondary_designator,
       marking: secondary_number,
-      ...getHeadingFromMarking(secondary_number, airportData.declination),
+      heading: 0,
       ILS: {
         type: secondary_ils_type,
         icao: secondary_ils_icao,
@@ -436,33 +438,108 @@ function addAirportRunway(data, airportData, airport) {
   });
 }
 
-function getHeadingFromMarking(marking, declination) {
-  const headingData = {
-    heading: undefined,
-    trueHeading: undefined,
-  };
+// Improve the airport information
+function postProcessAirport(airport) {
+  // abstract our runways
+  airport.runways.forEach((runway) => setRunwayBounds(runway));
+  // set the approach headings in true degrees, rather than using the runway markings
+  airport.runways.forEach((runway) => setRunwayApproachHeadings(runway));
+}
 
-  const num = parseFloat(marking);
+function setRunwayApproachHeadings(runway) {
+  const { start, end } = runway;
+  runway.approach[0].heading = getHeadingFromTo(...end, ...start);
+  runway.approach[1].heading = getHeadingFromTo(...start, ...end);
+}
 
-  if (isNaN(num)) {
-    const mapping = {
-      north: 360,
-      northeast: 45,
-      east: 90,
-      southeast: 135,
-      south: 180,
-      southwest: 225,
-      west: 270,
-      northwest: 315,
-    };
-    headingData.heading = mapping[marking];
-    if (headingData.heading === 0) headingData.heading = 360;
-  } else if (1 <= num && num <= 36) headingData.heading = num * 10;
+// by including runway start, end, and bounding box information
+function setRunwayBounds(runway) {
+  const {
+    latitude: lat,
+    longitude: long,
+    length,
+    width,
+    heading,
+  } = runway;
+  let args;
 
-  if (headingData.heading) {
-    headingData.trueHeading = (headingData.heading + declination) % 360;
-    if (headingData.trueHeading === 0) headingData.trueHeading = 360;
+  // Find the runway endpoints. length is in meters, getPointAtDistance
+  // needs kilometers, so we divide by 1000, and then each end is half
+  // the length from the center.
+
+  args = [lat, long, length / 2000, heading];
+  const { lat: latS, long: longS } = getPointAtDistance(...args);
+
+  args = [lat, long, length / 2000, heading + 180];
+  const { lat: latE, long: longE } = getPointAtDistance(...args);
+
+  // Runway start/end coordinates
+  const start = (runway.start = [latS, longS]);
+  const end = (runway.end = [latE, longE]);
+
+  // Do we need to swap these? The runway heading indicates
+  // the heading for approaches, so the heading from start
+  // to end should be the opposite heading.
+  const lineHeading = getHeadingFromTo(...start, ...end);
+  const diff = getCompassDiff(lineHeading, heading);
+  if (abs(diff) < 90) {
+    runway.start = end;
+    runway.end = start;
   }
 
-  return headingData;
+  // Runway bbox
+  args = [latS, longS, width / 2000, heading + 90];
+  const { lat: lat1, long: long1 } = getPointAtDistance(...args);
+  args = [latS, longS, width / 2000, heading - 90];
+  const { lat: lat2, long: long2 } = getPointAtDistance(...args);
+  args = [latE, longE, width / 2000, heading - 90];
+  const { lat: lat3, long: long3 } = getPointAtDistance(...args);
+  args = [latE, longE, width / 2000, heading + 90];
+  const { lat: lat4, long: long4 } = getPointAtDistance(...args);
+  runway.bbox = [
+    [lat1, long1],
+    [lat2, long2],
+    [lat3, long3],
+    [lat4, long4],
+  ];
+}
+
+function getPointAtDistance(lat1, long1, d, heading, R = 6371) {
+  `
+    lat: initial latitude, in degrees
+    lon: initial longitude, in degrees
+    d: target distance from initial in kilometers
+    heading: (true) heading in degrees
+    R: optional radius of sphere, defaults to mean radius of earth
+
+    Returns new lat/lon coordinate {d}km from initial, in degrees
+  `;
+
+  lat1 = radians(lat1);
+  long1 = radians(long1);
+  const a = radians(heading);
+  const lat2 = asin(sin(lat1) * cos(d / R) + cos(lat1) * sin(d / R) * cos(a));
+  const dx = cos(d / R) - sin(lat1) * sin(lat2);
+  const dy = sin(a) * sin(d / R) * cos(lat1);
+  const long2 = long1 + atan2(dy, dx);
+  return { lat: degrees(lat2), long: degrees(long2) };
+}
+
+export function getHeadingFromTo(lat1, long1, lat2, long2, declination = 0) {
+  lat1 = radians(parseFloat(lat1));
+  long1 = radians(parseFloat(long1));
+  lat2 = radians(parseFloat(lat2));
+  long2 = radians(parseFloat(long2));
+  const dLon = long2 - long1;
+  const x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+  const y = cos(lat2) * sin(dLon);
+  return (degrees(atan2(y, x)) - declination + 360) % 360;
+}
+
+function getCompassDiff(current, target, direction = 1) {
+  const diff = current > 180 ? current - 360 : current;
+  target = target - diff;
+  const result = target < 180 ? target : target - 360;
+  if (direction > 0) return result;
+  return target < 180 ? 360 - target : target - 360;
 }

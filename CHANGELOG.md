@@ -1,3 +1,17 @@
+# How this library is versioned
+
+This library _strictly_ adheres to [semver](https://semver.org)'s major.minor.patch versioning:
+
+- patch version changes indicate bug fixes and/or internal-only code changes,
+- minor version changes indicate new functionality that does not break backward compatibility,
+- major version changes indicate backward-incompatible external API changes, no matter how small.
+
+# Version history
+
+v4.3.0 (19 December 2023)
+
+- Updated runway objects with their in-game start and end point, as well as the in-game runway bounding box, so that you don't have to do that work if you just want to visualize airports, or do runway related calculations.
+
 v4.2.0
 
 - Added an export for `loadAirportDB`, so that you can directly load the airport data rather than having to go through the API. If you want to do that, of course.

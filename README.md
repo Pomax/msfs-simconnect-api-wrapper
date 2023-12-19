@@ -4,6 +4,10 @@ A JavaScripty wrapper around EvenAR's excellent [node-simconnect](https://github
 
 See [test.js](./test/test.js) for the basics, which you can run (with MSFS open and sitting on the apron with a plane =) using `npm test`.
 
+## Versioning
+
+This library uses strict [semver](http://server.org) versioning. The current version of this library is **4.3.0**. See the [changelog](./CHANGELOG.md) for the full version history.
+
 ## Installation and use
 
 Install with `npm install msfs-simconnect-api-wrapper`.
@@ -130,7 +134,7 @@ Airport objects have the following shape:
   latitude: number in degrees
   longitude: number in degrees
   altitude: number in feet
-  declination: number in degree
+  declination: when the magnetic compass says 360, what true heading are we on, in degrees
   name: airport name as a string with at most 32 characters
   name64: airport name as a string with at most 64 characters
   icao: four character ICAO code for this airport
@@ -144,17 +148,20 @@ Runway objects have the following shape:
 
 ```
 {
-  latitude: number in degrees, marking the center of the runway
-  longitude: number in degrees, marking the center of the runway
   altitude: number in feet
+  approach: array of runway approaches
+  bbox: array with the runway's corner points encoded as [lat,long]
+  end: [lat, long] coordinate for the runway end
   heading: number in degrees
+  latitude: number in degrees, marking the center of the runway
   length: number in meters
-  width: number in meters
+  longitude: number in degrees, marking the center of the runway
   patternAltitude: number in meters
   slope: number in degrees
   slopeTrue: number in degrees
+  start: [lat, long] coordinate for the runway start
   surface: surface material, as string
-  approach: array of runway approaches
+  width: number in meters
 }
 ```
 
@@ -164,7 +171,7 @@ Approaches gave the following shape:
 {
   designation: runway designation as string
   marking: runway marking, as string (can be a number, or cardinal direction)
-  heading: approach heading in degrees
+  heading: true approach heading, in degrees
   ILS: {
     type: ILS type as string
     icao: ICAO code for this approach's ILS
