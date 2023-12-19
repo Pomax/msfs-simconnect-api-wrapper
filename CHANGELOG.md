@@ -1,3 +1,7 @@
+v4.2.0
+
+- Added an export for `loadAirportDB`, so that you can directly load the airport data rather than having to go through the API. If you want to do that, of course.
+
 v4.1.0
 
 - Added `heading` and `trueHeading` to runway approach objects, because having to write code that turns an approach marking into a heading is something you should not have to do, that's something an API should have already done for you.

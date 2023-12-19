@@ -51,6 +51,14 @@ function run() {
 }
 ```
 
+### Secondary exports
+
+The API also offers the following exports:
+
+- `loadAirportDB()` is a function that will load the airport database and return it as array of airports.
+- `SystemEvents` The symevent object that the API uses for registering and removing event listeners using `on` and `off`.
+- `MSFS_NOT_CONNECTED` A constant that the API uses for its "not connected" error. You should never need this.
+
 ### Properties
 
 The API has a single property `.connected` which is either `undefined` or `true` and can be used to determine whether the API has a connection to MSFS outside of code that relies on the `onConnect` callback.

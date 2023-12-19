@@ -1,4 +1,9 @@
-import { SystemEvents, MSFS_API, MSFS_NOT_CONNECTED } from "../msfs-api.js";
+import {
+  SystemEvents,
+  MSFS_API,
+  MSFS_NOT_CONNECTED,
+  loadAirportDB,
+} from "../msfs-api.js";
 import { SimVars } from "../simvars/index.js";
 
 const api = new MSFS_API();
@@ -9,6 +14,18 @@ const api = new MSFS_API();
 (async function tryConnect() {
   console.log(`Testing call prevention prior to connection`);
   await testAPriori();
+  console.log(`testing direct airport access`);
+  const airports = loadAirportDB();
+  console.log(`${airports.length} airports loaded directly`);
+  // find all airports near Denver
+  const [lat, long] = [39.7642219, -105.0202604];
+  const start = performance.now();
+  const denver = airports.filter((a) => {
+    const { latitude: y, longitude: x } = a;
+    return lat - 0.5 < y && y < lat + 0.5 && long - 0.5 < x && x < long + 0.5;
+  });
+  const end = performance.now();
+  console.log(`found ${denver.length} airports found in a 1 arc degree rect around Denver in ${end - start}ms`);
   console.log(`Awaiting connection`);
   api.connect({
     autoReconnect: true,

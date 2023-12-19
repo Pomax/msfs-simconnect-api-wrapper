@@ -99,6 +99,32 @@ export async function getAirportHandler(api, handle) {
   });
 }
 
+let cachedAirportData = undefined;
+
+export function parseAirportDB(location = AIRPORT_DB_LOCATION) {
+  if (cachedAirportData) return cachedAirportData;
+
+  if (fs.existsSync(location)) {
+    let zipped, json;
+    try {
+      zipped = fs.readFileSync(location);
+    } catch (e) {
+      console.error(`file read error:`, e);
+    }
+    try {
+      json = zlib.gunzipSync(zipped);
+    } catch (e) {
+      console.error(`zlib error:`, e);
+    }
+    try {
+      cachedAirportData = JSON.parse(json);
+    } catch (e) {
+      console.log(`JSON parse error:`, e);
+    }
+  }
+  return cachedAirportData;
+}
+
 /**
  * ...docs go here...
  */
@@ -135,34 +161,18 @@ export class AirportHandler {
     const airportCount = list.length;
     // console.log(`MSFS reported ${airportCount} airports`)
 
-    if (fs.existsSync(AIRPORT_DB_LOCATION)) {
-      let zipped, json;
-      try {
-        zipped = fs.readFileSync(AIRPORT_DB_LOCATION);
-      } catch (e) {
-        console.error(`file read error:`, e);
+    this.airports = parseAirportDB(AIRPORT_DB_LOCATION);
+    if (this.airports) {
+      handle.close();
+      if (this.airports.length !== airportCount) {
+        console.warn(
+          `MSFS has ${airportCount} airports, db has ${this.airports.length} airports.`
+        );
+        console.warn(
+          `You may need to update your version of msfs-simconnet-api-wrapper...`
+        );
       }
-      try {
-        json = zlib.gunzipSync(zipped);
-      } catch (e) {
-        console.error(`zlib error:`, e);
-      }
-      try {
-        this.airports = JSON.parse(json);
-        handle.close();
-        // console.log(`Finished loading airport database (${this.airports.length} airports).`);
-        if (this.airports.length !== airportCount) {
-          console.warn(
-            `MSFS has ${airportCount} airports, db has ${this.airports.length} airports.`
-          );
-          console.warn(
-            `You may need to update your version of msfs-simconnet-api-wrapper...`
-          );
-        }
-        return finished();
-      } catch (e) {
-        console.log(`JSON parse error:`, e);
-      }
+      return finished();
     }
 
     console.log(`No airport database found: building a new one.`);
