@@ -15,7 +15,7 @@ import { SIMCONNECT_EXCEPTION } from "./exceptions.js";
 import { AirportEvents, getAirportHandler } from "./special/airports.js";
 
 // export the airport db function, so other code can work with it directly.
-export { parseAirportDB } from "./special/airports.js";
+export { loadAirportDB } from "./special/airports.js";
 
 export const SystemEvents = Object.assign({}, SysEvents, AirportEvents);
 export const MSFS_NOT_CONNECTED = `Not connected to MSFS`;

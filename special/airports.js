@@ -101,7 +101,7 @@ export async function getAirportHandler(api, handle) {
 
 let cachedAirportData = undefined;
 
-export function parseAirportDB(location = AIRPORT_DB_LOCATION) {
+export function loadAirportDB(location = AIRPORT_DB_LOCATION) {
   if (cachedAirportData) return cachedAirportData;
 
   if (fs.existsSync(location)) {
@@ -161,7 +161,7 @@ export class AirportHandler {
     const airportCount = list.length;
     // console.log(`MSFS reported ${airportCount} airports`)
 
-    this.airports = parseAirportDB(AIRPORT_DB_LOCATION);
+    this.airports = loadAirportDB(AIRPORT_DB_LOCATION);
     if (this.airports) {
       handle.close();
       if (this.airports.length !== airportCount) {
