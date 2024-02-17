@@ -50,7 +50,7 @@ export class MSFS_API {
     const { host, port } = opts;
     try {
       const remote = (this.remote = host
-        ? { host, port: port ?? 500 }
+        ? { host, port: port ?? 5000 }
         : undefined);
       const { handle } = await open(this.appName, Protocol.KittyHawk, remote);
       if (!handle) throw new Error(`No connection handle to MSFS`);

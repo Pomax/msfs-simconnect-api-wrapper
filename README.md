@@ -6,7 +6,7 @@ See [test.js](./test/test.js) for the basics, which you can run (with MSFS open 
 
 ## Versioning
 
-This library uses strict [semver](http://server.org) versioning. The current version of this library is **4.4.0**. See the [changelog](./CHANGELOG.md) for the full version history.
+This library uses strict [semver](http://server.org) versioning. The current version of this library is **4.5.0**. See the [changelog](./CHANGELOG.md) for the full version history.
 
 ## Installation and use
 
@@ -151,7 +151,7 @@ Runway objects have the following shape:
   altitude: number in feet
   approach: array of runway approaches
   bbox: array with the runway's corner points encoded as [lat,long]
-  end: [lat, long] coordinate for the runway end
+  end: [lat, long, alt] coordinate for the runway end
   heading: number in degrees
   latitude: number in degrees, marking the center of the runway
   length: number in meters
@@ -159,7 +159,7 @@ Runway objects have the following shape:
   patternAltitude: number in meters
   slope: number in degrees
   slopeTrue: number in degrees
-  start: [lat, long] coordinate for the runway start
+  start: [lat, long, alt] coordinate for the runway start
   surface: surface material, as string
   width: number in meters
 }

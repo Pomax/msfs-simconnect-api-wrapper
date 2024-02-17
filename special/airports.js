@@ -41,7 +41,7 @@ export const AirportEvents = {
 
 const KM_PER_NM = 1.852;
 const FEET_PER_METERS = 3.28084;
-const { abs, asin, atan2, sin, cos, PI } = Math;
+const { abs, asin, atan2, sin, cos, tan, PI } = Math;
 const degrees = (rad) => (rad / PI) * 180;
 const radians = (deg) => (deg / 180) * PI;
 
@@ -455,11 +455,13 @@ function setRunwayApproachHeadings(runway) {
 // by including runway start, end, and bounding box information
 function setRunwayBounds(runway) {
   const {
+    altitude,
     latitude: lat,
     longitude: long,
     length,
     width,
     heading,
+    slopeTrue,
   } = runway;
   let args;
 
@@ -476,6 +478,12 @@ function setRunwayBounds(runway) {
   // Runway start/end coordinates
   const start = (runway.start = [latS, longS]);
   const end = (runway.end = [latE, longE]);
+
+  // Runway start/end altitudes
+  start[2] = altitude;
+  const run = length * 3.28084;
+  const rise = tan(radians(slopeTrue)) * run;
+  end[2] = altitude + rise;
 
   // Do we need to swap these? The runway heading indicates
   // the heading for approaches, so the heading from start

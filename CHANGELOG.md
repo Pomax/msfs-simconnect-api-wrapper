@@ -8,6 +8,10 @@ This library _strictly_ adheres to [semver](https://semver.org)'s major.minor.pa
 
 # Version history
 
+v4.5.0 (16 February 2024)
+
+- Updated runway start and end points with an altitude value in the third array position.
+
 v4.4.0 (16 February 2024)
 
 - Updated airports based on MSFS v1.36.2.0
