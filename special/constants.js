@@ -34,6 +34,7 @@ export const RUNWAY_SURFACES = [
 ];
 
 RUNWAY_SURFACES[254] = `unknown`;
+RUNWAY_SURFACES[255] = `unknown`;
 
 export const RUNWAY_NUMBER = [
   `none`,

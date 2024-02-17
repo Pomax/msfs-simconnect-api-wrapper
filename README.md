@@ -6,7 +6,7 @@ See [test.js](./test/test.js) for the basics, which you can run (with MSFS open 
 
 ## Versioning
 
-This library uses strict [semver](http://server.org) versioning. The current version of this library is **4.3.0**. See the [changelog](./CHANGELOG.md) for the full version history.
+This library uses strict [semver](http://server.org) versioning. The current version of this library is **4.4.0**. See the [changelog](./CHANGELOG.md) for the full version history.
 
 ## Installation and use
 

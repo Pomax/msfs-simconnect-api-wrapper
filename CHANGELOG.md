@@ -8,6 +8,10 @@ This library _strictly_ adheres to [semver](https://semver.org)'s major.minor.pa
 
 # Version history
 
+v4.4.0 (16 February 2024)
+
+- Updated airports based on MSFS v1.36.2.0
+
 v4.3.0 (19 December 2023)
 
 - Updated runway objects with their in-game start and end point, as well as the in-game runway bounding box, so that you don't have to do that work if you just want to visualize airports, or do runway related calculations.
