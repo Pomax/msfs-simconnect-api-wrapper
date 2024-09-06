@@ -5,7 +5,7 @@
   "main": "msfs-api.js",
   "type": "module",
   "dependencies": {
-    "node-simconnect": "^3.5.0"
+    "node-simconnect": "^4.0.0"
   },
   "scripts": {
     "test": "node test/test.js"
