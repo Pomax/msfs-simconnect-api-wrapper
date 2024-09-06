@@ -15,26 +15,6 @@ const api = new MSFS_API();
   console.log(`Testing call prevention prior to connection`);
   await testAPriori();
 
-  if (true) {
-    console.log(`testing direct airport access`);
-    const airports = loadAirportDB();
-    console.log(`${airports.length} airports loaded directly`);
-
-    // find all airports near Denver
-    const [lat, long] = [39.7642219, -105.0202604];
-    const start = performance.now();
-    const denver = airports.filter((a) => {
-      const { latitude: y, longitude: x } = a;
-      return lat - 0.5 < y && y < lat + 0.5 && long - 0.5 < x && x < long + 0.5;
-    });
-    const end = performance.now();
-    console.log(
-      `found ${
-        denver.length
-      } airports found in a 1 arc degree rect around Denver in ${end - start}ms`
-    );
-  }
-
   console.log(`Awaiting connection`);
   api.connect({
     autoReconnect: true,
@@ -74,6 +54,26 @@ async function testAPriori() {
  */
 async function connect(handle) {
   console.log(`MSFS connected`);
+
+  if (true) {
+    console.log(`testing direct airport access`);
+    const airports = loadAirportDB();
+    console.log(`${airports.length} airports loaded directly`);
+
+    // find all airports near Denver
+    const [lat, long] = [39.7642219, -105.0202604];
+    const start = performance.now();
+    const denver = airports.filter((a) => {
+      const { latitude: y, longitude: x } = a;
+      return lat - 0.5 < y && y < lat + 0.5 && long - 0.5 < x && x < long + 0.5;
+    });
+    const end = performance.now();
+    console.log(
+      `found ${
+        denver.length
+      } airports found in a 1 arc degree rect around Denver in ${end - start}ms`
+    );
+  }
 
   const { CAMERA_STATE: camera } = await api.get(`CAMERA_STATE`);
   if (camera > 10) {

@@ -123,6 +123,7 @@ export function loadAirportDB(location = AIRPORT_DB_LOCATION) {
       console.log(`JSON parse error:`, e);
     }
   }
+
   return cachedAirportData;
 }
 

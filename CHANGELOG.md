@@ -8,6 +8,11 @@ This library _strictly_ adheres to [semver](https://semver.org)'s major.minor.pa
 
 # Version history
 
+v4.6.0 (6 September 2024)
+
+- Updated airports based on MSFS v1.37.19.0
+- added the `.periodic()` function for scheduling event updates using MSFS's built in interval identifiers rather than specifying your own interval in milliseconds.
+
 v4.5.0 (16 February 2024)
 
 - Updated runway start and end points with an altitude value in the third array position.

@@ -6,10 +6,12 @@ import {
   Protocol,
 } from "node-simconnect";
 
+export { SimConnectPeriod };
+
 // imports used by the API
 import { SimVars } from "./simvars/index.js";
 import { SystemEvents as SysEvents } from "./system-events/index.js";
-import { SIMCONNECT_EXCEPTION } from "./exceptions.js";
+import { SIMCONNECT_EXCEPTION } from "./exceptions/exceptions.js";
 
 // Special import for working with airport data
 import { AirportEvents, getAirportHandler } from "./special/airports.js";
@@ -224,7 +226,13 @@ export class MSFS_API {
    * @param {*} defs
    * @returns
    */
-  generateGetPromise(DATA_ID, REQUEST_ID, propNames, defs) {
+  generateGetPromise(
+    DATA_ID,
+    REQUEST_ID,
+    propNames,
+    defs,
+    period = SimConnectPeriod.ONCE
+  ) {
     const { handle } = this;
     return new Promise((resolve, _reject) => {
       const handleDataRequest = ({ requestID, data }) => {
@@ -244,7 +252,7 @@ export class MSFS_API {
         REQUEST_ID,
         DATA_ID,
         SimConnectConstants.OBJECT_ID_USER,
-        SimConnectPeriod.ONCE,
+        period,
         ...[0, 0, 0, 0]
       );
     });
@@ -329,5 +337,43 @@ export class MSFS_API {
     };
     run();
     return () => (running = false);
+  }
+
+  /**
+   * similar to schedule, but using https://docs.flightsimulator.com/html/Programming_Tools/SimConnect/API_Reference/Structures_And_Enumerations/SIMCONNECT_PERIOD.htm
+   */
+  periodic(handler, period = SimConnectPeriod.SIM_FRAME, ...propNames) {
+    if (!this.connected) throw new Error(MSFS_NOT_CONNECTED);
+
+    // Stolen from `get`, DRY this out later.
+    const DATA_ID = this.nextId();
+    const REQUEST_ID = DATA_ID;
+    propNames = propNames.map((s) => s.replaceAll(`_`, ` `));
+
+    const defs = propNames.map((propName) => SimVars[propName]);
+    this.addDataDefinitions(DATA_ID, propNames, defs);
+
+    const { handle } = this;
+
+    const handleDataRequest = ({ requestID, data }) => {
+      if (requestID === REQUEST_ID) {
+        const result = {};
+        propNames.forEach((propName, pos) => {
+          result[codeSafe(propName)] = defs[pos].read(data);
+        });
+        handler(result);
+      }
+    };
+
+    handle.on("simObjectData", handleDataRequest);
+    const role = SimConnectConstants.OBJECT_ID_USER;
+    handle.requestDataOnSimObject(REQUEST_ID, DATA_ID, role, period);
+
+    return () => {
+      const never = SimConnectPeriod.NEVER;
+      handle.requestDataOnSimObject(REQUEST_ID, DATA_ID, role, never);
+      handle.clearDataDefinition(DATA_ID);
+      this.releaseId(DATA_ID);
+    };
   }
 }

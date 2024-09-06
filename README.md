@@ -184,6 +184,34 @@ Approaches gave the following shape:
 
 Sets up a periodic call to `handler` every `interval` milliseconds with the result of `get(...propNames)`. Returns an arg-less `off()` to end the scheduled call.
 
+#### `periodic(handler, period, ...propNames)`
+
+similar to `schedule`, but using MSFS's own timing constants rather than specifying a certain number of milliseconds. These can be found over on [the official documentation page](https://docs.flightsimulator.com/html/Programming_Tools/SimConnect/API_Reference/Structures_And_Enumerations/SIMCONNECT_PERIOD.htm) but are reproduced here (always check the website to make sure the information here isn't out of date though!). Note that the offical SDK versions have a `SIMCONNECT_PERIOD_` prefix which is not used in this library:
+
+Constant | Description
+ --- | ---
+`NEVER` | Specifies that the data is not to be sent.
+`ONCE` | Specifies that the data should be sent once only. Note that this is not an efficient way of receiving data frequently, use one of the other periods if there is a regular frequency to the data request.
+`VISUAL_FRAME` | Specifies that the data should be sent every visual (rendered) frame.
+`SIM_FRAME` | Specifies that the data should be sent every simulated frame, whether that frame is rendered or not.
+`SECOND` | Specifies that the data should be sent once every second.
+
+
+
+You can access these constants through the `SimConnectPeriod` export:
+
+```js
+import { MSFS_API, SimConnectPeriod } from "msfs-simconnect-api-wrapper";
+
+const api = new MSFS_API();
+api.connect({
+  ...
+  onConnect: () => {
+    api.period(..., SimConnectPeriod.VISUAL_FRAME, ...);
+  }
+});
+```
+
 #### `set(propName, value)`
 
 Accepts a single simvar and the value its should be set to. This will throw "SimVar ... is not settable" when attempting to set the value for a read-only variable.
