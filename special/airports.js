@@ -171,7 +171,7 @@ export class AirportHandler {
           `MSFS has ${airportCount} airports, db has ${this.airports.length} airports.`
         );
         console.warn(
-          `You may need to update your version of msfs-simconnet-api-wrapper...`
+          `You may need to update your version of msfs-simconnect-api-wrapper...`
         );
       }
       return finished();
