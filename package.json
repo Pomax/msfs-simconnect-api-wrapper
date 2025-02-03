@@ -1,6 +1,6 @@
 {
   "name": "msfs-simconnect-api-wrapper",
-  "version": "4.6.1",
+  "version": "4.6.2",
   "description": "A convenient SimConnect API for playing with Microsoft Flight Simulator 2020",
   "main": "msfs-api.js",
   "type": "module",
