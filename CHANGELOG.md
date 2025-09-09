@@ -8,6 +8,10 @@ This library _strictly_ adheres to [semver](https://semver.org)'s major.minor.pa
 
 # Version history
 
+v4.7.0 (6 September 2024)
+
+- Updated airports based on MSFS v1.39.9.0 - this omits a few dozen airports that are "not really airporst" but alias codes, and break SimConnect (so hard that it crashes MSFS).
+
 v4.6.0 (6 September 2024)
 
 - Updated airports based on MSFS v1.37.19.0
