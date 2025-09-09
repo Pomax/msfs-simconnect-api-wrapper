@@ -103,8 +103,8 @@ async function connect(handle) {
     `${nearList.length} airports found within a ${radius}NM radius around the plane`
   );
 
-  console.log(`getting ${NEARBY_AIRPORTS[0].icao}`);
-  const airportData = await api.get(`AIRPORT:${NEARBY_AIRPORTS[0].icao}`);
+  console.log(`getting ${NEARBY_AIRPORTS[0]?.icao}`);
+  const airportData = await api.get(`AIRPORT:${NEARBY_AIRPORTS[0]?.icao}`);
   console.log(`result:`, JSON.stringify(airportData, null, 2));
 
   api.on(SystemEvents.AIRPORTS_IN_RANGE, (data) => {

@@ -184,6 +184,10 @@ export class AirportHandler {
     setDetailFields(handle, AHC);
 
     function getAirportDetails({ icao }) {
+      if ([`NFVB`, `NTAM`].includes(icao)) {
+        throw new Error(`we're stopping now.`);
+      }
+
       return new Promise((resolve) => {
         const airportData = { icao, runways: [] };
         const requestID = nextId();
@@ -213,14 +217,22 @@ export class AirportHandler {
       const percentage = (1 - list.length / N) * 100;
       console.log(`${percentage.toFixed(2)}%`);
       const entry = list.shift();
-      const details = await getAirportDetails(entry);
-      this.airports.push(details);
-      processAirports(list, resolve);
+      try {
+        const details = await getAirportDetails(entry);
+        this.airports.push(details);
+        processAirports(list, resolve);
+      } catch (e) {
+        console.log(
+          `Skipping the last ${toProcess.length} airports due to MSFS 2020 v1.39.9.0 crashing on them.`
+        );
+        resolve();
+      }
     };
 
     const LIST_LIMIT = Infinity;
+    const toProcess = list.slice(0, LIST_LIMIT);
+
     await new Promise((resolve) => {
-      const toProcess = list.slice(0, LIST_LIMIT);
       N = toProcess.length;
       processAirports(toProcess, resolve);
     });
